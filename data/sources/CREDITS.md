@@ -25,3 +25,5 @@ Stand-in brand photos from [Unsplash](https://unsplash.com), used under the [Uns
 | casa-brisa/photos/vermut-bar.jpg | Joanna Stołowicz | https://unsplash.com/photos/three-bowls-filled-with-olives-on-top-of-a-table-u4b0swjq6_U |
 | grupo-mar/photos/paella-table.jpg | Rook of Arts | https://unsplash.com/photos/a-large-paella-of-seafood-and-rice-on-a-grill-3hVU03NA4q0 |
 | verde/photos/two-bowls.jpg | Martin Baron | https://unsplash.com/photos/a-bowl-filled-with-fruit-and-vegetables-on-top-of-a-table-PBgbIbOsprk |
+| bodega-pinyol/photos/shared-table.jpg | DJ Paine | https://unsplash.com/photos/a-group-of-people-sitting-around-a-table-with-plates-of-food-QJmXKQUniUg (copy of verde/photos/long-table.jpg) |
+| bodega-pinyol/photos/vermut-olives.jpg | Joanna Stołowicz | https://unsplash.com/photos/three-bowls-filled-with-olives-on-top-of-a-table-u4b0swjq6_U (copy of casa-brisa/photos/vermut-bar.jpg) |

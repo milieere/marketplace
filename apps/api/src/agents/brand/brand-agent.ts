@@ -13,7 +13,7 @@ import { extractRules } from "./extractors/rules";
 import { extractTypography } from "./extractors/typography";
 import { extractVoice } from "./extractors/voice";
 import type { Finding } from "./findings";
-import { mergeColors, mergeFonts } from "./normalize";
+import { mergeColors, mergeFonts, sameVenue } from "./normalize";
 import { readPack } from "./read";
 import { route } from "./route";
 import { mapOffersCsv, mapTokens, type Tokens } from "./structured";
@@ -177,7 +177,8 @@ export function createBrandAgent({ llm, sources, reader, brands, clock = () => n
         }
         const offerings: Offering[] = draft.offerings.map(({ venue, ...o }) => {
           if (!venue) return o;
-          const location = draft.locations.find((l) => l.name.toLowerCase() === venue.toLowerCase() || l.id === venue);
+          const matches = draft.locations.filter((l) => sameVenue(venue, l));
+          const location = matches.length === 1 ? matches[0] : undefined;
           if (!location) draft.notes.push(`Offer ${o.id}: venue "${venue}" isn't a known location; offered everywhere for now.`);
           return location ? { ...o, locationIds: [location.id] } : o;
         });

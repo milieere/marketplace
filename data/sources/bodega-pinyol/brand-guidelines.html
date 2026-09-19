@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Bodega Pinyol · Brand guidelines</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700;800&family=Work+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  @page { size: A4 landscape; margin: 0; }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: "Work Sans", system-ui, sans-serif; color: #1F1A17; background: #FBF6EC; }
+  .page { width: 297mm; height: 210mm; padding: 22mm 26mm; position: relative; page-break-after: always; overflow: hidden; }
+  .page:last-child { page-break-after: auto; }
+  h1, h2 { font-family: "Bricolage Grotesque", system-ui, sans-serif; font-weight: 800; margin: 0 0 8mm; letter-spacing: -0.01em; }
+  h1 { font-size: 72pt; }
+  h2 { font-size: 30pt; }
+  h3 { font-family: "Bricolage Grotesque", system-ui, sans-serif; font-weight: 700; font-size: 14pt; margin: 0 0 3mm; }
+  p, li { font-size: 11pt; line-height: 1.55; }
+  .kicker { font-weight: 500; letter-spacing: .08em; font-size: 9pt; color: #A8322D; margin-bottom: 4mm; }
+  .folio { position: absolute; bottom: 12mm; right: 26mm; font-size: 8pt; opacity: .6; }
+  .stamp { position: absolute; top: 18mm; right: 26mm; width: 26mm; height: 26mm; border-radius: 50%; border: 2px solid #A8322D; display: flex; align-items: center; justify-content: center; font-family: "Bricolage Grotesque", system-ui, sans-serif; font-weight: 800; font-size: 9pt; color: #A8322D; transform: rotate(-12deg); }
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 14mm; }
+  .swatches { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6mm; }
+  .swatch .chip { height: 42mm; border-radius: 4px; margin-bottom: 3mm; }
+  .swatch p { margin: 0; font-size: 9pt; line-height: 1.5; }
+  .caption { font-size: 8.5pt; opacity: .75; margin-top: 3mm; }
+  .cover { background: #A8322D; color: #FBF6EC; display: flex; flex-direction: column; justify-content: flex-end; }
+  .cover .stamp { border-color: #E8B84A; color: #E8B84A; width: 40mm; height: 40mm; font-size: 12pt; top: 26mm; }
+  .logo { border-radius: 4px; height: 40mm; display: flex; align-items: center; justify-content: center; font-family: "Bricolage Grotesque", system-ui, sans-serif; font-weight: 800; font-size: 26pt; margin-bottom: 3mm; }
+  .logos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8mm; }
+  .sample { font-family: "Bricolage Grotesque", system-ui, sans-serif; font-weight: 700; font-size: 18pt; margin: 0 0 3mm; }
+  .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5mm; margin-top: 6mm; }
+  .tile { height: 30mm; border-radius: 4px; display: flex; align-items: flex-end; padding: 3mm; font-size: 8.5pt; }
+  .do { background: #5C732E; color: #FBF6EC; }
+  .dont { background: #EDE3D1; color: #1F1A17; border: 1px dashed #A8322D; }
+  table { border-collapse: collapse; font-size: 11pt; }
+  td { padding: 1.5mm 8mm 1.5mm 0; vertical-align: top; }
+</style>
+</head>
+<body>
+
+<section class="page cover">
+  <div class="stamp">PINYOL</div>
+  <div class="kicker" style="color:#E8B84A">Brand guidelines · 2026 edition</div>
+  <h1>Bodega Pinyol</h1>
+  <p style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 700; font-size: 24pt; margin: 0">Vermut first, plans later.</p>
+  <p style="margin-top: 10mm; font-size: 9pt">Vermut · Paella · Terrassa — Gràcia, Barcelona · bodegapinyol.example</p>
+</section>
+
+<section class="page">
+  <div class="stamp">PINYOL</div>
+  <div class="kicker">01 · Our story</div>
+  <h2>The corner bodega where the whole street ends up.</h2>
+  <div class="cols">
+    <div>
+      <p>Bodega Pinyol is a neighbourhood vermouth bodega in Gràcia known for vegan paella for groups and a dog-friendly terrace. We started in 2019 with vermouth on tap and one big pan on Sundays; the pan got bigger every year.</p>
+      <p>We welcome guests in Catalan, Spanish and English.</p>
+      <p>Website: https://bodegapinyol.example</p>
+    </div>
+    <div>
+      <h3>We are</h3>
+      <p>Neighbourly, cheerful, plant-forward, happy to push two tables together.</p>
+      <h3>We are not</h3>
+      <p>A fine-dining room, a tourist trap or a place that rushes you out.</p>
+    </div>
+  </div>
+  <div class="folio">Bodega Pinyol · Brand guidelines · 2</div>
+</section>
+
+<section class="page">
+  <div class="kicker">02 · Logo</div>
+  <h2>A wordmark and a stamp</h2>
+  <div class="logos">
+    <div><div class="logo" style="background:#FBF6EC;color:#A8322D;border:1px solid #e6dcc8">Bodega Pinyol</div><p><b>Primary logo.</b> Bodega Red wordmark. Use it on Paper only.</p></div>
+    <div><div class="logo" style="background:#1F1A17;color:#FBF6EC">Bodega Pinyol</div><p><b>Mono logo.</b> Paper wordmark for dark backgrounds: Bodega Red, Oliva or Carbó.</p></div>
+    <div><div class="logo" style="background:#5C732E;color:#E8B84A">P</div><p><b>Stamp.</b> The round olive-stone stamp, for avatars, stickers and as an ornament.</p></div>
+  </div>
+  <p>Keep a clear space around the logo equal to the height of the letter "P". Minimum size: at least 96 px wide on screen.</p>
+  <p class="caption">Misuse: don't rotate, recolour or crop the wordmark. Never place the logo on busy photos.</p>
+  <div class="folio">Bodega Pinyol · Brand guidelines · 3</div>
+</section>
+
+<section class="page">
+  <div class="kicker">03 · Colour palette</div>
+  <h2>Colours from the bar top</h2>
+  <div class="swatches">
+    <div class="swatch"><div class="chip" style="background:#A8322D"></div><p><b>BODEGA RED (primary)</b><br>HEX #A8322D<br>RGB 168 50 45</p></div>
+    <div class="swatch"><div class="chip" style="background:#5C732E"></div><p><b>OLIVA (secondary)</b><br>CMYK 20 0 60 55<br>Pantone match pending</p></div>
+    <div class="swatch"><div class="chip" style="background:#E8B84A"></div><p><b>PINYOL YELLOW (accent)</b><br>HEX #E8B84A<br>RGB 232 184 74</p></div>
+    <div class="swatch"><div class="chip" style="background:#FBF6EC;border:1px solid #e6dcc8"></div><p><b>PAPER (background)</b><br>HEX #FBF6EC<br>RGB 251 246 236</p></div>
+    <div class="swatch"><div class="chip" style="background:#1F1A17"></div><p><b>CARBÓ (text)</b><br>HEX #1F1A17<br>RGB 31 26 23</p></div>
+  </div>
+  <div class="folio">Bodega Pinyol · Brand guidelines · 4</div>
+</section>
+
+<section class="page">
+  <div class="kicker">04 · Colour usage</div>
+  <h2>Mostly Paper, a splash of Vermut Red</h2>
+  <div class="cols">
+    <div>
+      <p>Balance: 60 % Paper, 30 % Vermut Red and Oliva, 10 % Pinyol Yellow.</p>
+      <p>Body text is always Carbó on Paper or Paper on Carbó. Headlines may be Paper on Vermut Red.</p>
+      <p>Text must reach at least 4.5:1 contrast against its background.</p>
+    </div>
+    <div>
+      <h3>Pinyol Yellow</h3>
+      <p>For stickers, stamps and small highlights only.</p>
+      <p class="caption">Never set Pinyol Yellow text on Paper: nobody can read it.</p>
+    </div>
+  </div>
+  <div class="folio">Bodega Pinyol · Brand guidelines · 5</div>
+</section>
+
+<section class="page">
+  <div class="kicker">05 · Typography</div>
+  <h2>Bricolage Grotesque and Work Sans</h2>
+  <div class="cols">
+    <div>
+      <h3>Display and headlines: Bricolage Grotesque</h3>
+      <p>A chunky grotesque sans-serif with character. Weights: Bold 700 and ExtraBold 800.</p>
+      <p class="sample">The paella's big. Bring the whole crew.</p>
+      <p>Headlines are set in sentence case and are at most 50 characters.</p>
+    </div>
+    <div>
+      <h3>Body: Work Sans</h3>
+      <p>A friendly sans-serif for menus, prices and small print. Weights: Regular 400 and Medium 500.</p>
+      <p>Layouts are balanced, with small 4 px corners. Photos sit framed beside the text, never full-bleed, and the round Pinyol stamp is our only ornament.</p>
+    </div>
+  </div>
+  <div class="folio">Bodega Pinyol · Brand guidelines · 6</div>
+</section>
+
+<section class="page">
+  <div class="kicker">06 · Tone of voice</div>
+  <h2>Casual, cheerful, neighbourly.</h2>
+  <p>We talk like the bartender who knows your dog's name. Casual, never formal; cheerful and lively, never frantic.</p>
+  <div class="cols">
+    <div>
+      <h3>We say</h3>
+      <p>vermut · the whole crew · dogs welcome · one more round</p>
+      <h3>We don't say</h3>
+      <p>cheap · bargain · exclusive · hurry</p>
+    </div>
+    <div>
+      <h3>Example headlines</h3>
+      <p class="sample">Vermut first, plans later.</p>
+      <p class="sample">The paella's big. Bring the whole crew.</p>
+      <p class="sample">Dogs on the terrace, friends at the table.</p>
+    </div>
+  </div>
+  <div class="folio">Bodega Pinyol · Brand guidelines · 7</div>
+</section>
+
+<section class="page">
+  <div class="kicker">07 · Photography and our venue</div>
+  <div class="cols">
+    <div>
+      <h3>Photography</h3>
+      <p>Natural daylight, big pans shot from above, shared tables, people and dogs on the terrace, candid moments.</p>
+      <p>Avoid: flash photography · staged smiles · empty tables</p>
+      <div class="grid">
+        <div class="tile do">Do: overhead pan</div>
+        <div class="tile do">Do: terrace crowd</div>
+        <div class="tile dont">Don't: flash</div>
+        <div class="tile dont">Don't: dog indoors</div>
+      </div>
+      <p class="caption">Dogs belong on the terrace. Never show dogs inside the dining room.</p>
+    </div>
+    <div>
+      <h3>Bodega Pinyol Gràcia</h3>
+      <table>
+        <tr><td>Address</td><td>Carrer de Verdi 41, 08012 Barcelona</td></tr>
+        <tr><td>Coordinates</td><td>41.4036, 2.1560</td></tr>
+        <tr><td>Reservations</td><td>https://bodegapinyol.example/reserve</td></tr>
+        <tr><td>Price level</td><td>€€</td></tr>
+      </table>
+      <h3 style="margin-top:5mm">Opening hours</h3>
+      <p>Monday closed<br>Tuesday–Friday 12:00–16:00, 19:00–23:30<br>Saturday–Sunday 12:00–00:00</p>
+      <p>Mediterranean cooking and vermouth. A terrace under the plane trees where dogs are welcome: we are pet-friendly. Step-free entrance and wheelchair accessible. Lively on weekend afternoons, family-friendly at Sunday lunch.</p>
+    </div>
+  </div>
+  <div class="folio">Bodega Pinyol · Brand guidelines · 8</div>
+</section>
+
+</body>
+</html>

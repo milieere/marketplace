@@ -1,0 +1,5 @@
+id,kind,name,description,price,currency,unit,from_price,min_party,max_party,days,time_from,time_to,venue,conditions,good_for,dietary,cuisine
+bp-vegan-paella,menu,Vegan paella for the table,"A big pan of seasonal vegetable paella for the table, with salad and bread. Vegan and gluten-free.",24,EUR,person,,6,12,sat-sun,12:00,16:00,,Order 24 hours ahead. Groups of 6–12.,"groups, celebrations",VG/GF,mediterranean
+bp-vermut-hour,promotion,Vermut hour,House vermouth on tap with olives and crisps.,6,EUR,person,,,,tue-fri,18:00,20:00,,"Tuesday to Friday, 18:00–20:00, terrace only.","after-work, groups",,
+bp-dinner-for-two,menu,Dinner for two,"Four small plates, one rice to share and two glasses of wine.",42,EUR,group,,2,2,tue-sat,19:30,,,,date night,,
+bp-terrace-takeover,event,Terrace takeover,"The whole terrace for your party, with vermouth, a set menu and dogs welcome.",30,EUR,person,yes,15,30,,,,Bodega Pinyol Gràcia,15–30 guests. Book at least 72 hours ahead.,"birthdays, business, groups",,

@@ -5,7 +5,9 @@ import { BrandRecord } from "@marketplace/contracts/brand-record";
 import { loadConfig } from "../src/config";
 import { createContainer } from "../src/container";
 
-const BRAND = "casa-brisa";
+// Usage: eval:extraction [brand-id] [saved-record.json]; a .json argument skips the live run
+const args = process.argv.slice(2);
+const BRAND = args.find((a) => !a.endsWith(".json")) ?? "casa-brisa";
 const root = fileURLToPath(new URL("../../../", import.meta.url));
 type Json = Record<string, any>;
 
@@ -27,8 +29,9 @@ async function liveRecord(): Promise<BrandRecord> {
   throw new Error("Brand Agent ended without a record");
 }
 
-// Relative to the caller's cwd; no path runs the live agent
-const path = process.argv[2] && resolve(process.env.INIT_CWD ?? process.cwd(), process.argv[2]);
+// Relative to the caller's cwd
+const recordArg = args.find((a) => a.endsWith(".json"));
+const path = recordArg && resolve(process.env.INIT_CWD ?? process.cwd(), recordArg);
 const actual: Json = path ? BrandRecord.parse(JSON.parse(await readFile(path, "utf8"))) : await liveRecord();
 
 type Check = { field: string; pass: boolean; critical?: boolean; got?: unknown; want?: unknown };

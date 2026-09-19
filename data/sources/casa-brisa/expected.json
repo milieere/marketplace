@@ -53,6 +53,7 @@
         "hex": "#2B2118",
         "role": "text",
         "pairsWith": [
+          "terracotta",
           "sand",
           "saffron"
         ]

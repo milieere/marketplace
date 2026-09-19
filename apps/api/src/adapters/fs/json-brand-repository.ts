@@ -1,4 +1,4 @@
-import { readdir, readFile } from "node:fs/promises";
+import { readdir, readFile, writeFile } from "node:fs/promises";
 import { extname, join, normalize } from "node:path";
 import { BrandRecord } from "@marketplace/contracts/brand-record";
 import { Vocabulary } from "@marketplace/contracts/vocabulary";
@@ -57,6 +57,10 @@ export async function createJsonBrandRepository(dataDir: string): Promise<BrandR
   return {
     listVerified: async () => [...records.values()].filter((r) => r.brand.id !== HOUSE_ID && r.status === "verified"),
     get: async (id) => records.get(id),
+    save: async (record) => {
+      await writeFile(join(dataDir, "brands", `${record.brand.id}.json`), `${JSON.stringify(record, null, 2)}\n`);
+      records.set(record.brand.id, record);
+    },
     house: async () => house,
     vocabulary: async (industry) => {
       const vocabulary = vocabularies.get(industry);
