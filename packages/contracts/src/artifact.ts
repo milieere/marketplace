@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { PriceUnit } from "./brand-record";
 
 const unit = z.number().min(0).max(1);
 
@@ -15,7 +16,7 @@ export const Artifact = z.object({
   intentId: z.string(),
   needIds: z.array(z.string()).min(1),
   brandId: z.string(),
-  venueId: z.string().optional(),
+  locationId: z.string().optional(),
   offeringIds: z.array(z.string()).min(1),
   language: z.string(),
   format: z.enum(["banner", "card"]),
@@ -28,7 +29,7 @@ export const Artifact = z.object({
     cta: z.object({ label: z.string(), url: z.string() }),
   }),
   priceLines: z.array(
-    z.object({ offeringId: z.string(), label: z.string(), amount: z.number().nonnegative(), unit: z.string(), from: z.boolean() }),
+    z.object({ offeringId: z.string(), label: z.string(), amount: z.number().nonnegative(), unit: PriceUnit, from: z.boolean() }),
   ),
   photoId: z.string().optional(),
   trace: z.array(z.object({ element: z.string(), drivenBy: z.array(z.string()), brandFacts: z.array(z.string()) })),

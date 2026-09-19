@@ -7,7 +7,7 @@ export const AttributeDef = z.object({
   key: z.string(),
   description: z.string(),
   values: z.array(z.string()).min(1),
-  appliesTo: z.array(z.enum(["venue", "offering", "photo"])).min(1),
+  appliesTo: z.array(z.enum(["location", "offering", "photo"])).min(1),
   constraint: z.enum(["hard", "soft", "either"]),
   relaxable: z.boolean(),
 });

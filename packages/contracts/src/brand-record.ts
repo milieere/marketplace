@@ -10,6 +10,12 @@ export type Weekday = z.infer<typeof Weekday>;
 
 export const TimeRange = z.object({ from: time, to: time });
 
+export const Currency = z.string().regex(/^[A-Z]{3}$/, "ISO 4217 code, e.g. EUR");
+
+// Units the budget arithmetic understands; new industries reuse these, they don't add their own.
+export const PriceUnit = z.enum(["person", "group", "night", "item", "hour"]);
+export type PriceUnit = z.infer<typeof PriceUnit>;
+
 export const SourceDocument = z.object({
   id: z.string(),
   kind: z.enum(["pdf", "json", "csv", "image", "url", "text"]),
@@ -57,7 +63,6 @@ export const Photo = z.object({
   id: z.string(),
   url: z.string(),
   description: z.string(),
-  people: z.enum(["none", "couple", "group", "family"]),
   orientation: z.enum(["landscape", "portrait", "square"]),
   attributes: Attributes,
 });
@@ -109,7 +114,8 @@ export const BrandKit = z.object({
 });
 export type BrandKit = z.infer<typeof BrandKit>;
 
-export const Venue = z.object({
+// A physical place where offerings are available. Online-only brands have none.
+export const Location = z.object({
   id: z.string(),
   name: z.string(),
   address: z.string(),
@@ -120,18 +126,18 @@ export const Venue = z.object({
   priceLevel: z.union([z.literal(1), z.literal(2), z.literal(3), z.literal(4)]).optional(),
   reserveUrl: z.string().optional(),
 });
-export type Venue = z.infer<typeof Venue>;
+export type Location = z.infer<typeof Location>;
 
 export const Offering = z.object({
   id: z.string(),
-  venueIds: z.array(z.string()).optional(),
+  locationIds: z.array(z.string()).optional(),
   kind: z.string(),
   name: z.string(),
   description: z.string(),
   price: z.object({
     amount: z.number().nonnegative(),
-    currency: z.literal("EUR"),
-    unit: z.enum(["person", "group", "night"]),
+    currency: Currency,
+    unit: PriceUnit,
     from: z.boolean().optional(),
   }),
   attributes: Attributes,
@@ -147,7 +153,7 @@ export const BrandRecord = z.object({
   status: z.enum(["draft", "verified"]),
   brand: Brand,
   brandKit: BrandKit,
-  venues: z.array(Venue).min(1),
+  locations: z.array(Location),
   offerings: z.array(Offering),
   documents: z.array(SourceDocument),
   evidence: z.array(Evidence),
