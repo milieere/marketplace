@@ -1,0 +1,344 @@
+{
+  "status": "verified",
+  "brand": {
+    "id": "terrat",
+    "name": "Terrat",
+    "industry": "hospitality",
+    "website": "https://terrat.example",
+    "summary": "Rooftop cocktail bar above the Gothic Quarter, best at sunset.",
+    "languages": [
+      "es",
+      "ca",
+      "en"
+    ]
+  },
+  "brandKit": {
+    "colors": [
+      {
+        "id": "night",
+        "hex": "#0D0D0D",
+        "role": "background",
+        "pairsWith": [
+          "cream",
+          "coral",
+          "gold"
+        ]
+      },
+      {
+        "id": "coral",
+        "hex": "#FF6F59",
+        "role": "primary",
+        "pairsWith": [
+          "night"
+        ]
+      },
+      {
+        "id": "cream",
+        "hex": "#F4E9DC",
+        "role": "text",
+        "pairsWith": [
+          "night"
+        ]
+      },
+      {
+        "id": "gold",
+        "hex": "#C9A227",
+        "role": "accent",
+        "pairsWith": [
+          "night"
+        ]
+      }
+    ],
+    "typography": [
+      {
+        "role": "display",
+        "family": "Limelight",
+        "weights": [
+          400
+        ],
+        "fallback": "Georgia, serif"
+      },
+      {
+        "role": "body",
+        "family": "Inter",
+        "weights": [
+          400,
+          600
+        ],
+        "fallback": "system-ui, sans-serif"
+      }
+    ],
+    "logos": [],
+    "style": {
+      "radius": 4,
+      "density": "balanced",
+      "headlineCase": "upper",
+      "imageTreatment": "duotone",
+      "composition": "image-side",
+      "ornament": "rule"
+    },
+    "voice": {
+      "summary": "Seductive, witty, a little theatrical. Evenings, never mornings.",
+      "toneRange": {
+        "formality": [
+          0.3,
+          0.6
+        ],
+        "energy": [
+          0.5,
+          0.9
+        ]
+      },
+      "doSay": [
+        "sunset",
+        "up here",
+        "the city below"
+      ],
+      "dontSay": [
+        "cheap",
+        "happy hour"
+      ],
+      "samples": [
+        "THE CITY IS BETTER FROM UP HERE.",
+        "Sunset, served shaken.",
+        "Two glasses, one skyline."
+      ]
+    },
+    "imagery": {
+      "style": "Golden hour, silhouettes against the skyline, coral glasses",
+      "avoid": [
+        "daylight interiors"
+      ]
+    },
+    "photos": [
+      {
+        "id": "skyline-pair",
+        "url": "/assets/terrat/photos/skyline-pair.jpg",
+        "description": "Couple toasting against the sunset skyline",
+        "orientation": "landscape",
+        "attributes": {
+          "people": [
+            "couple"
+          ],
+          "amenities": [
+            "rooftop"
+          ],
+          "ambience": [
+            "romantic"
+          ],
+          "occasion": [
+            "date-night"
+          ]
+        }
+      },
+      {
+        "id": "rooftop-crowd",
+        "url": "/assets/terrat/photos/rooftop-crowd.jpg",
+        "description": "Friends laughing on the rooftop at dusk",
+        "orientation": "landscape",
+        "attributes": {
+          "people": [
+            "group"
+          ],
+          "amenities": [
+            "rooftop",
+            "terrace"
+          ],
+          "ambience": [
+            "lively"
+          ],
+          "occasion": [
+            "group"
+          ]
+        }
+      }
+    ],
+    "rules": [
+      {
+        "id": "headline-length",
+        "text": "Headlines are at most 44 characters.",
+        "check": {
+          "kind": "max-length",
+          "slot": "headline",
+          "max": 44
+        },
+        "severity": "block"
+      },
+      {
+        "id": "forbidden-terms",
+        "text": "Never sound like a discount bar.",
+        "check": {
+          "kind": "forbidden-term",
+          "terms": [
+            "cheap",
+            "happy hour"
+          ]
+        },
+        "severity": "block"
+      },
+      {
+        "id": "text-contrast",
+        "text": "Text must stay readable: at least 4.5:1 contrast against its background.",
+        "check": {
+          "kind": "min-contrast",
+          "ratio": 4.5
+        },
+        "severity": "block"
+      }
+    ]
+  },
+  "locations": [
+    {
+      "id": "terrat-gotic",
+      "name": "Terrat Gòtic",
+      "address": "Plaça de Sant Jaume 3 (rooftop), 08002 Barcelona",
+      "timezone": "Europe/Madrid",
+      "geo": {
+        "lat": 41.3827,
+        "lng": 2.177
+      },
+      "openingHours": {
+        "mon": [
+          {
+            "from": "18:00",
+            "to": "02:00"
+          }
+        ],
+        "tue": [
+          {
+            "from": "18:00",
+            "to": "02:00"
+          }
+        ],
+        "wed": [
+          {
+            "from": "18:00",
+            "to": "02:00"
+          }
+        ],
+        "thu": [
+          {
+            "from": "18:00",
+            "to": "02:00"
+          }
+        ],
+        "fri": [
+          {
+            "from": "18:00",
+            "to": "02:00"
+          }
+        ],
+        "sat": [
+          {
+            "from": "18:00",
+            "to": "02:00"
+          }
+        ],
+        "sun": [
+          {
+            "from": "18:00",
+            "to": "02:00"
+          }
+        ]
+      },
+      "attributes": {
+        "cuisine": [
+          "cocktails"
+        ],
+        "amenities": [
+          "rooftop",
+          "terrace"
+        ],
+        "ambience": [
+          "romantic",
+          "lively"
+        ]
+      },
+      "priceLevel": 3,
+      "reserveUrl": "https://terrat.example/rooftop"
+    }
+  ],
+  "offerings": [
+    {
+      "id": "tr-cocktails-two",
+      "kind": "experience",
+      "name": "Cocktails for two",
+      "description": "Two signature cocktails and a sharing board.",
+      "price": {
+        "amount": 36,
+        "currency": "EUR",
+        "unit": "group"
+      },
+      "attributes": {
+        "cuisine": [
+          "cocktails"
+        ],
+        "occasion": [
+          "date-night"
+        ]
+      },
+      "partySize": {
+        "min": 2,
+        "max": 2
+      }
+    },
+    {
+      "id": "tr-sunset",
+      "kind": "experience",
+      "name": "Sunset session",
+      "description": "One signature cocktail at golden hour.",
+      "price": {
+        "amount": 12,
+        "currency": "EUR",
+        "unit": "person"
+      },
+      "attributes": {
+        "cuisine": [
+          "cocktails"
+        ],
+        "occasion": [
+          "group",
+          "work"
+        ]
+      },
+      "availability": {
+        "from": "18:00",
+        "to": "21:30"
+      }
+    },
+    {
+      "id": "tr-rooftop-round",
+      "kind": "experience",
+      "name": "Rooftop round",
+      "description": "A round of signature cocktails for the table, any time after dark.",
+      "price": {
+        "amount": 14,
+        "currency": "EUR",
+        "unit": "person"
+      },
+      "attributes": {
+        "cuisine": [
+          "cocktails"
+        ],
+        "occasion": [
+          "group",
+          "celebration"
+        ]
+      },
+      "availability": {
+        "from": "21:00",
+        "to": "02:00"
+      }
+    }
+  ],
+  "documents": [
+    {
+      "id": "doc-manual",
+      "kind": "text",
+      "uri": "hand-authored seed data",
+      "addedAt": "2026-09-19T12:00:00+02:00"
+    }
+  ],
+  "evidence": [],
+  "reviewNotes": []
+}

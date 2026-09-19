@@ -1,0 +1,412 @@
+{
+  "status": "verified",
+  "brand": {
+    "id": "hotel-albada",
+    "name": "Hotel Albada",
+    "industry": "hospitality",
+    "website": "https://hotelalbada.example",
+    "summary": "Boutique hotel with a spa and a quiet fine-dining restaurant in the Eixample.",
+    "languages": [
+      "es",
+      "ca",
+      "en",
+      "fr"
+    ]
+  },
+  "brandKit": {
+    "colors": [
+      {
+        "id": "navy",
+        "hex": "#1B2A41",
+        "role": "primary",
+        "pairsWith": [
+          "ivory",
+          "gold"
+        ]
+      },
+      {
+        "id": "gold",
+        "hex": "#B8975A",
+        "role": "accent",
+        "pairsWith": [
+          "navy"
+        ]
+      },
+      {
+        "id": "ivory",
+        "hex": "#FAF7F2",
+        "role": "background",
+        "pairsWith": [
+          "navy"
+        ]
+      },
+      {
+        "id": "ink",
+        "hex": "#1B2A41",
+        "role": "text",
+        "pairsWith": [
+          "ivory"
+        ]
+      }
+    ],
+    "typography": [
+      {
+        "role": "display",
+        "family": "Cormorant Garamond",
+        "weights": [
+          500,
+          700
+        ],
+        "fallback": "Georgia, serif"
+      },
+      {
+        "role": "body",
+        "family": "Lato",
+        "weights": [
+          400,
+          700
+        ],
+        "fallback": "system-ui, sans-serif"
+      }
+    ],
+    "logos": [],
+    "style": {
+      "radius": 2,
+      "density": "airy",
+      "headlineCase": "title",
+      "imageTreatment": "framed",
+      "composition": "image-side",
+      "ornament": "rule"
+    },
+    "voice": {
+      "summary": "Calm, attentive, understated luxury. Never loud, never salesy.",
+      "toneRange": {
+        "formality": [
+          0.7,
+          1.0
+        ],
+        "energy": [
+          0.1,
+          0.4
+        ]
+      },
+      "doSay": [
+        "unhurried",
+        "attentive",
+        "stay"
+      ],
+      "dontSay": [
+        "deal",
+        "cheap",
+        "amazing",
+        "best"
+      ],
+      "samples": [
+        "An Unhurried Evening, Just for Two.",
+        "Stay a Little Longer.",
+        "Quiet Rooms. Attentive Service."
+      ]
+    },
+    "imagery": {
+      "style": "Warm low light, linen textures, symmetrical interiors",
+      "avoid": [
+        "crowds",
+        "flash photography"
+      ]
+    },
+    "photos": [
+      {
+        "id": "suite",
+        "url": "/assets/hotel-albada/photos/suite.jpg",
+        "description": "Suite with linen bed and morning light",
+        "orientation": "landscape",
+        "attributes": {
+          "people": [
+            "none"
+          ],
+          "ambience": [
+            "quiet",
+            "romantic"
+          ],
+          "occasion": [
+            "date-night"
+          ]
+        }
+      },
+      {
+        "id": "candle-dinner",
+        "url": "/assets/hotel-albada/photos/candle-dinner.jpg",
+        "description": "Candle-lit table for two in the restaurant",
+        "orientation": "portrait",
+        "attributes": {
+          "people": [
+            "couple"
+          ],
+          "ambience": [
+            "romantic"
+          ],
+          "occasion": [
+            "date-night",
+            "celebration"
+          ]
+        }
+      },
+      {
+        "id": "sunday-brunch",
+        "url": "/assets/hotel-albada/photos/sunday-brunch.jpg",
+        "description": "Family brunch table in the courtyard",
+        "orientation": "landscape",
+        "attributes": {
+          "people": [
+            "family"
+          ],
+          "ambience": [
+            "family"
+          ],
+          "occasion": [
+            "family"
+          ]
+        }
+      },
+      {
+        "id": "spa",
+        "url": "/assets/hotel-albada/photos/spa.jpg",
+        "description": "Candle-lit spa pool",
+        "orientation": "landscape",
+        "attributes": {
+          "people": [
+            "none"
+          ],
+          "amenities": [
+            "spa"
+          ],
+          "ambience": [
+            "quiet"
+          ]
+        }
+      }
+    ],
+    "rules": [
+      {
+        "id": "headline-length",
+        "text": "Headlines are at most 56 characters.",
+        "check": {
+          "kind": "max-length",
+          "slot": "headline",
+          "max": 56
+        },
+        "severity": "block"
+      },
+      {
+        "id": "forbidden-terms",
+        "text": "No superlatives and no bargain language.",
+        "check": {
+          "kind": "forbidden-term",
+          "terms": [
+            "deal",
+            "cheap",
+            "amazing"
+          ]
+        },
+        "severity": "block"
+      },
+      {
+        "id": "text-contrast",
+        "text": "Text must stay readable: at least 4.5:1 contrast against its background.",
+        "check": {
+          "kind": "min-contrast",
+          "ratio": 4.5
+        },
+        "severity": "block"
+      }
+    ]
+  },
+  "locations": [
+    {
+      "id": "albada-eixample",
+      "name": "Hotel Albada Eixample",
+      "address": "Carrer de Mallorca 212, 08008 Barcelona",
+      "timezone": "Europe/Madrid",
+      "geo": {
+        "lat": 41.3917,
+        "lng": 2.159
+      },
+      "openingHours": {
+        "mon": [
+          {
+            "from": "00:00",
+            "to": "23:59"
+          }
+        ],
+        "tue": [
+          {
+            "from": "00:00",
+            "to": "23:59"
+          }
+        ],
+        "wed": [
+          {
+            "from": "00:00",
+            "to": "23:59"
+          }
+        ],
+        "thu": [
+          {
+            "from": "00:00",
+            "to": "23:59"
+          }
+        ],
+        "fri": [
+          {
+            "from": "00:00",
+            "to": "23:59"
+          }
+        ],
+        "sat": [
+          {
+            "from": "00:00",
+            "to": "23:59"
+          }
+        ],
+        "sun": [
+          {
+            "from": "00:00",
+            "to": "23:59"
+          }
+        ]
+      },
+      "attributes": {
+        "cuisine": [
+          "mediterranean",
+          "brunch"
+        ],
+        "amenities": [
+          "spa",
+          "wifi"
+        ],
+        "accessibility": [
+          "wheelchair",
+          "step-free",
+          "accessible-wc"
+        ],
+        "ambience": [
+          "quiet",
+          "romantic"
+        ]
+      },
+      "priceLevel": 4,
+      "reserveUrl": "https://hotelalbada.example/book"
+    }
+  ],
+  "offerings": [
+    {
+      "id": "ha-romantic-weekend",
+      "kind": "package",
+      "name": "Romantic weekend",
+      "description": "Two nights in a suite, spa access and a tasting dinner for two.",
+      "price": {
+        "amount": 340,
+        "currency": "EUR",
+        "unit": "group"
+      },
+      "attributes": {
+        "occasion": [
+          "date-night",
+          "celebration"
+        ]
+      },
+      "partySize": {
+        "min": 2,
+        "max": 2
+      },
+      "conditions": "Friday or Saturday check-in. Subject to availability."
+    },
+    {
+      "id": "ha-room",
+      "kind": "room",
+      "name": "Deluxe room",
+      "description": "Double room with breakfast.",
+      "price": {
+        "amount": 150,
+        "currency": "EUR",
+        "unit": "night"
+      },
+      "attributes": {
+        "occasion": [
+          "date-night",
+          "business"
+        ]
+      },
+      "partySize": {
+        "max": 2
+      }
+    },
+    {
+      "id": "ha-tasting-dinner",
+      "kind": "menu",
+      "name": "Tasting dinner for two",
+      "description": "Seven courses by chef Laia Roca.",
+      "price": {
+        "amount": 90,
+        "currency": "EUR",
+        "unit": "group"
+      },
+      "attributes": {
+        "cuisine": [
+          "mediterranean"
+        ],
+        "occasion": [
+          "date-night",
+          "celebration"
+        ]
+      },
+      "partySize": {
+        "min": 2,
+        "max": 2
+      },
+      "availability": {
+        "from": "19:30",
+        "to": "23:00"
+      }
+    },
+    {
+      "id": "ha-sunday-brunch",
+      "kind": "menu",
+      "name": "Sunday brunch",
+      "description": "Courtyard brunch; children under 6 eat free.",
+      "price": {
+        "amount": 32,
+        "currency": "EUR",
+        "unit": "person"
+      },
+      "attributes": {
+        "cuisine": [
+          "brunch"
+        ],
+        "occasion": [
+          "family"
+        ],
+        "dietary": [
+          "vegetarian"
+        ]
+      },
+      "availability": {
+        "days": [
+          "sun"
+        ],
+        "from": "10:00",
+        "to": "13:00"
+      }
+    }
+  ],
+  "documents": [
+    {
+      "id": "doc-manual",
+      "kind": "text",
+      "uri": "hand-authored seed data",
+      "addedAt": "2026-09-19T12:00:00+02:00"
+    }
+  ],
+  "evidence": [],
+  "reviewNotes": []
+}

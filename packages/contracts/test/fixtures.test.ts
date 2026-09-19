@@ -29,6 +29,6 @@ describe("data files", () => {
   });
 
   it("example brand validates", () => {
-    expect(() => BrandRecord.parse(readJson(join(root, "data/brands/example-brand.json")))).not.toThrow();
+    expect(() => BrandRecord.parse(readJson(join(root, "data/brands/casa-brisa.json")))).not.toThrow();
   });
 });

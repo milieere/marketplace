@@ -1,0 +1,126 @@
+{
+  "status": "verified",
+  "brand": {
+    "id": "_house",
+    "name": "INTENT",
+    "industry": "hospitality",
+    "summary": "INTENT's own identity, used only for fallback pages. Never matched.",
+    "languages": [
+      "en",
+      "es"
+    ]
+  },
+  "brandKit": {
+    "colors": [
+      {
+        "id": "ink",
+        "hex": "#0F0F14",
+        "role": "background",
+        "pairsWith": [
+          "paper",
+          "violet"
+        ]
+      },
+      {
+        "id": "paper",
+        "hex": "#F4F4F6",
+        "role": "text",
+        "pairsWith": [
+          "ink"
+        ]
+      },
+      {
+        "id": "violet",
+        "hex": "#7C5CFF",
+        "role": "primary",
+        "pairsWith": [
+          "ink",
+          "paper"
+        ]
+      },
+      {
+        "id": "mint",
+        "hex": "#3DDC97",
+        "role": "accent",
+        "pairsWith": [
+          "ink"
+        ]
+      }
+    ],
+    "typography": [
+      {
+        "role": "display",
+        "family": "Space Grotesk",
+        "weights": [
+          500,
+          700
+        ],
+        "fallback": "system-ui, sans-serif"
+      },
+      {
+        "role": "body",
+        "family": "Inter",
+        "weights": [
+          400,
+          500
+        ],
+        "fallback": "system-ui, sans-serif"
+      }
+    ],
+    "logos": [],
+    "style": {
+      "radius": 12,
+      "density": "balanced",
+      "headlineCase": "sentence",
+      "imageTreatment": "full-bleed",
+      "composition": "image-top",
+      "ornament": "none"
+    },
+    "voice": {
+      "summary": "Helpful, honest, brief.",
+      "toneRange": {
+        "formality": [
+          0.3,
+          0.5
+        ],
+        "energy": [
+          0.3,
+          0.5
+        ]
+      },
+      "doSay": [],
+      "dontSay": [],
+      "samples": [
+        "Almost there. Here's what comes closest."
+      ]
+    },
+    "imagery": {
+      "style": "none",
+      "avoid": []
+    },
+    "photos": [],
+    "rules": [
+      {
+        "id": "text-contrast",
+        "text": "Text must stay readable: at least 4.5:1 contrast against its background.",
+        "check": {
+          "kind": "min-contrast",
+          "ratio": 4.5
+        },
+        "severity": "block"
+      }
+    ]
+  },
+  "locations": [],
+  "offerings": [],
+  "documents": [
+    {
+      "id": "doc-manual",
+      "kind": "text",
+      "uri": "hand-authored seed data",
+      "addedAt": "2026-09-19T12:00:00+02:00"
+    }
+  ],
+  "evidence": [],
+  "reviewNotes": []
+}

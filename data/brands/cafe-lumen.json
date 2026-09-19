@@ -1,0 +1,339 @@
+{
+  "status": "verified",
+  "brand": {
+    "id": "cafe-lumen",
+    "name": "Café Lumen",
+    "industry": "hospitality",
+    "website": "https://cafelumen.example",
+    "summary": "Bright brunch café in Sant Antoni: good coffee, big tables, laptops and kids welcome.",
+    "languages": [
+      "es",
+      "en"
+    ]
+  },
+  "brandKit": {
+    "colors": [
+      {
+        "id": "butter",
+        "hex": "#F6D86B",
+        "role": "primary",
+        "pairsWith": [
+          "espresso"
+        ]
+      },
+      {
+        "id": "espresso",
+        "hex": "#3B2A20",
+        "role": "text",
+        "pairsWith": [
+          "butter",
+          "paper"
+        ]
+      },
+      {
+        "id": "sky",
+        "hex": "#7FB7E6",
+        "role": "accent",
+        "pairsWith": [
+          "espresso"
+        ]
+      },
+      {
+        "id": "paper",
+        "hex": "#FFFDF6",
+        "role": "background",
+        "pairsWith": [
+          "espresso"
+        ]
+      }
+    ],
+    "typography": [
+      {
+        "role": "display",
+        "family": "Poppins",
+        "weights": [
+          600,
+          700
+        ],
+        "fallback": "system-ui, sans-serif"
+      },
+      {
+        "role": "body",
+        "family": "Poppins",
+        "weights": [
+          400,
+          500
+        ],
+        "fallback": "system-ui, sans-serif"
+      }
+    ],
+    "logos": [],
+    "style": {
+      "radius": 20,
+      "density": "balanced",
+      "headlineCase": "sentence",
+      "imageTreatment": "full-bleed",
+      "composition": "image-top",
+      "ornament": "none"
+    },
+    "voice": {
+      "summary": "Warm, cheerful, practical. Talks like your favourite barista.",
+      "toneRange": {
+        "formality": [
+          0.1,
+          0.4
+        ],
+        "energy": [
+          0.4,
+          0.8
+        ]
+      },
+      "doSay": [
+        "come as you are",
+        "refills",
+        "big table"
+      ],
+      "dontSay": [
+        "exclusive",
+        "luxury"
+      ],
+      "samples": [
+        "Come as you are. Stay as long as you like.",
+        "Refills are on us.",
+        "Big table, bigger brunch."
+      ]
+    },
+    "imagery": {
+      "style": "Bright morning light, pastel crockery, people laughing",
+      "avoid": [
+        "night shots"
+      ]
+    },
+    "photos": [
+      {
+        "id": "family-brunch",
+        "url": "/assets/cafe-lumen/photos/family-brunch.jpg",
+        "description": "Family with two kids sharing pancakes at a big table",
+        "orientation": "landscape",
+        "attributes": {
+          "people": [
+            "family"
+          ],
+          "ambience": [
+            "family"
+          ],
+          "occasion": [
+            "family"
+          ]
+        }
+      },
+      {
+        "id": "laptop-corner",
+        "url": "/assets/cafe-lumen/photos/laptop-corner.jpg",
+        "description": "Sunny corner with a laptop and a flat white",
+        "orientation": "portrait",
+        "attributes": {
+          "people": [
+            "solo"
+          ],
+          "amenities": [
+            "wifi",
+            "power-outlets"
+          ],
+          "ambience": [
+            "quiet"
+          ],
+          "occasion": [
+            "work"
+          ]
+        }
+      }
+    ],
+    "rules": [
+      {
+        "id": "headline-length",
+        "text": "Headlines are at most 50 characters.",
+        "check": {
+          "kind": "max-length",
+          "slot": "headline",
+          "max": 50
+        },
+        "severity": "block"
+      },
+      {
+        "id": "text-contrast",
+        "text": "Text must stay readable: at least 4.5:1 contrast against its background.",
+        "check": {
+          "kind": "min-contrast",
+          "ratio": 4.5
+        },
+        "severity": "block"
+      }
+    ]
+  },
+  "locations": [
+    {
+      "id": "lumen-sant-antoni",
+      "name": "Café Lumen Sant Antoni",
+      "address": "Carrer del Comte Borrell 58, 08015 Barcelona",
+      "timezone": "Europe/Madrid",
+      "geo": {
+        "lat": 41.379,
+        "lng": 2.16
+      },
+      "openingHours": {
+        "mon": [
+          {
+            "from": "08:00",
+            "to": "18:00"
+          }
+        ],
+        "tue": [
+          {
+            "from": "08:00",
+            "to": "18:00"
+          }
+        ],
+        "wed": [
+          {
+            "from": "08:00",
+            "to": "18:00"
+          }
+        ],
+        "thu": [
+          {
+            "from": "08:00",
+            "to": "18:00"
+          }
+        ],
+        "fri": [
+          {
+            "from": "08:00",
+            "to": "18:00"
+          }
+        ],
+        "sat": [
+          {
+            "from": "09:00",
+            "to": "16:00"
+          }
+        ],
+        "sun": [
+          {
+            "from": "09:00",
+            "to": "16:00"
+          }
+        ]
+      },
+      "attributes": {
+        "cuisine": [
+          "brunch",
+          "cafe"
+        ],
+        "amenities": [
+          "wifi",
+          "power-outlets"
+        ],
+        "accessibility": [
+          "wheelchair",
+          "step-free",
+          "accessible-wc"
+        ],
+        "ambience": [
+          "quiet",
+          "family"
+        ]
+      },
+      "priceLevel": 1,
+      "reserveUrl": "https://cafelumen.example/table"
+    }
+  ],
+  "offerings": [
+    {
+      "id": "cl-family-brunch",
+      "kind": "menu",
+      "name": "Family brunch",
+      "description": "Pancakes, eggs, fruit and juices for the table.",
+      "price": {
+        "amount": 18,
+        "currency": "EUR",
+        "unit": "person"
+      },
+      "attributes": {
+        "cuisine": [
+          "brunch"
+        ],
+        "occasion": [
+          "family"
+        ],
+        "dietary": [
+          "vegetarian"
+        ]
+      },
+      "availability": {
+        "days": [
+          "sat",
+          "sun"
+        ],
+        "from": "09:00",
+        "to": "14:00"
+      }
+    },
+    {
+      "id": "cl-work-pass",
+      "kind": "experience",
+      "name": "Work day pass",
+      "description": "Unlimited filter coffee, a lunch bowl and a guaranteed seat by a plug.",
+      "price": {
+        "amount": 12,
+        "currency": "EUR",
+        "unit": "person"
+      },
+      "attributes": {
+        "occasion": [
+          "work"
+        ]
+      },
+      "availability": {
+        "days": [
+          "mon",
+          "tue",
+          "wed",
+          "thu",
+          "fri"
+        ],
+        "from": "08:00",
+        "to": "13:00"
+      }
+    },
+    {
+      "id": "cl-kids-menu",
+      "kind": "menu",
+      "name": "Kids' menu",
+      "description": "Mini pancakes and a juice.",
+      "price": {
+        "amount": 8,
+        "currency": "EUR",
+        "unit": "person"
+      },
+      "attributes": {
+        "occasion": [
+          "family"
+        ],
+        "dietary": [
+          "vegetarian"
+        ]
+      }
+    }
+  ],
+  "documents": [
+    {
+      "id": "doc-manual",
+      "kind": "text",
+      "uri": "hand-authored seed data",
+      "addedAt": "2026-09-19T12:00:00+02:00"
+    }
+  ],
+  "evidence": [],
+  "reviewNotes": []
+}

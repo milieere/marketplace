@@ -13,6 +13,10 @@ export const Need = z.object({
   budget: budget.optional(),
   required: Attributes,
   preferred: Attributes,
+  avoid: Attributes.default({}),
+  wishes: z.array(z.string()).default([]),
+  priceLevel: z.object({ min: z.number().int().min(1).max(4).optional(), max: z.number().int().min(1).max(4).optional() }).optional(),
+  brandIds: z.array(z.string()).default([]),
 });
 export type Need = z.infer<typeof Need>;
 
@@ -29,6 +33,8 @@ export const Intent = z.object({
   budget: budget.optional(),
   phrases: z.array(z.string()),
   needs: z.array(Need).max(3),
+  assumed: z.array(z.string()).default([]),
+  dropped: z.array(z.string()).default([]),
   missing: z.array(z.string()),
 });
 export type Intent = z.infer<typeof Intent>;

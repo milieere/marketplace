@@ -1,0 +1,454 @@
+{
+  "status": "verified",
+  "brand": {
+    "id": "grupo-mar",
+    "name": "Grupo Mar",
+    "industry": "hospitality",
+    "website": "https://grupomar.example",
+    "summary": "Family-run seafood restaurants: a big one on the beach and a small one in Gràcia.",
+    "languages": [
+      "es",
+      "ca",
+      "en"
+    ]
+  },
+  "brandKit": {
+    "colors": [
+      {
+        "id": "sea",
+        "hex": "#0B5394",
+        "role": "primary",
+        "pairsWith": [
+          "white",
+          "sand"
+        ]
+      },
+      {
+        "id": "white",
+        "hex": "#FFFFFF",
+        "role": "background",
+        "pairsWith": [
+          "sea",
+          "deep"
+        ]
+      },
+      {
+        "id": "deep",
+        "hex": "#0A2540",
+        "role": "text",
+        "pairsWith": [
+          "white",
+          "sand"
+        ]
+      },
+      {
+        "id": "sand",
+        "hex": "#E9DCC3",
+        "role": "accent",
+        "pairsWith": [
+          "deep"
+        ]
+      }
+    ],
+    "typography": [
+      {
+        "role": "display",
+        "family": "Playfair Display",
+        "weights": [
+          600,
+          800
+        ],
+        "fallback": "Georgia, serif"
+      },
+      {
+        "role": "body",
+        "family": "Source Sans 3",
+        "weights": [
+          400,
+          600
+        ],
+        "fallback": "system-ui, sans-serif"
+      }
+    ],
+    "logos": [],
+    "style": {
+      "radius": 10,
+      "density": "balanced",
+      "headlineCase": "title",
+      "imageTreatment": "full-bleed",
+      "composition": "image-top",
+      "ornament": "stamp"
+    },
+    "voice": {
+      "summary": "Warm, generous, family pride. Fresh from the market every morning.",
+      "toneRange": {
+        "formality": [
+          0.4,
+          0.7
+        ],
+        "energy": [
+          0.3,
+          0.6
+        ]
+      },
+      "doSay": [
+        "fresh",
+        "the whole family",
+        "from the market"
+      ],
+      "dontSay": [
+        "frozen",
+        "cheap"
+      ],
+      "samples": [
+        "Fresh From the Market This Morning.",
+        "A Long Table by the Sea.",
+        "Three Generations, One Paella."
+      ]
+    },
+    "imagery": {
+      "style": "Bright seaside light, big paella pans, family tables",
+      "avoid": [
+        "raw fish close-ups"
+      ]
+    },
+    "photos": [
+      {
+        "id": "paella-table",
+        "url": "/assets/grupo-mar/photos/paella-table.jpg",
+        "description": "Big family table with a paella pan by the sea",
+        "orientation": "landscape",
+        "attributes": {
+          "people": [
+            "family"
+          ],
+          "amenities": [
+            "terrace"
+          ],
+          "occasion": [
+            "celebration",
+            "family"
+          ]
+        }
+      },
+      {
+        "id": "private-dining",
+        "url": "/assets/grupo-mar/photos/private-dining.jpg",
+        "description": "Private dining room set for a celebration",
+        "orientation": "landscape",
+        "attributes": {
+          "people": [
+            "none"
+          ],
+          "amenities": [
+            "private-room"
+          ],
+          "occasion": [
+            "celebration",
+            "business"
+          ]
+        }
+      }
+    ],
+    "rules": [
+      {
+        "id": "headline-length",
+        "text": "Headlines are at most 52 characters.",
+        "check": {
+          "kind": "max-length",
+          "slot": "headline",
+          "max": 52
+        },
+        "severity": "block"
+      },
+      {
+        "id": "text-contrast",
+        "text": "Text must stay readable: at least 4.5:1 contrast against its background.",
+        "check": {
+          "kind": "min-contrast",
+          "ratio": 4.5
+        },
+        "severity": "block"
+      }
+    ]
+  },
+  "locations": [
+    {
+      "id": "mar-barceloneta",
+      "name": "Grupo Mar Barceloneta",
+      "address": "Passeig Marítim 22, 08003 Barcelona",
+      "timezone": "Europe/Madrid",
+      "geo": {
+        "lat": 41.379,
+        "lng": 2.192
+      },
+      "openingHours": {
+        "mon": [
+          {
+            "from": "13:00",
+            "to": "16:30"
+          },
+          {
+            "from": "20:00",
+            "to": "23:30"
+          }
+        ],
+        "tue": [
+          {
+            "from": "13:00",
+            "to": "16:30"
+          },
+          {
+            "from": "20:00",
+            "to": "23:30"
+          }
+        ],
+        "wed": [
+          {
+            "from": "13:00",
+            "to": "16:30"
+          },
+          {
+            "from": "20:00",
+            "to": "23:30"
+          }
+        ],
+        "thu": [
+          {
+            "from": "13:00",
+            "to": "16:30"
+          },
+          {
+            "from": "20:00",
+            "to": "23:30"
+          }
+        ],
+        "fri": [
+          {
+            "from": "13:00",
+            "to": "16:30"
+          },
+          {
+            "from": "20:00",
+            "to": "23:30"
+          }
+        ],
+        "sat": [
+          {
+            "from": "13:00",
+            "to": "16:30"
+          },
+          {
+            "from": "20:00",
+            "to": "23:30"
+          }
+        ],
+        "sun": [
+          {
+            "from": "13:00",
+            "to": "16:30"
+          },
+          {
+            "from": "20:00",
+            "to": "23:30"
+          }
+        ]
+      },
+      "attributes": {
+        "cuisine": [
+          "seafood",
+          "mediterranean"
+        ],
+        "amenities": [
+          "terrace",
+          "private-room"
+        ],
+        "ambience": [
+          "lively",
+          "family"
+        ]
+      },
+      "priceLevel": 3,
+      "reserveUrl": "https://grupomar.example/barceloneta"
+    },
+    {
+      "id": "mar-gracia",
+      "name": "Grupo Mar Gràcia",
+      "address": "Carrer de Torrijos 40, 08012 Barcelona",
+      "timezone": "Europe/Madrid",
+      "geo": {
+        "lat": 41.402,
+        "lng": 2.159
+      },
+      "openingHours": {
+        "tue": [
+          {
+            "from": "13:00",
+            "to": "16:00"
+          },
+          {
+            "from": "20:00",
+            "to": "23:00"
+          }
+        ],
+        "wed": [
+          {
+            "from": "13:00",
+            "to": "16:00"
+          },
+          {
+            "from": "20:00",
+            "to": "23:00"
+          }
+        ],
+        "thu": [
+          {
+            "from": "13:00",
+            "to": "16:00"
+          },
+          {
+            "from": "20:00",
+            "to": "23:00"
+          }
+        ],
+        "fri": [
+          {
+            "from": "13:00",
+            "to": "16:00"
+          },
+          {
+            "from": "20:00",
+            "to": "23:00"
+          }
+        ],
+        "sat": [
+          {
+            "from": "13:00",
+            "to": "16:00"
+          },
+          {
+            "from": "20:00",
+            "to": "23:00"
+          }
+        ],
+        "sun": [
+          {
+            "from": "13:00",
+            "to": "16:00"
+          },
+          {
+            "from": "20:00",
+            "to": "23:00"
+          }
+        ]
+      },
+      "attributes": {
+        "cuisine": [
+          "seafood"
+        ],
+        "accessibility": [
+          "wheelchair"
+        ],
+        "ambience": [
+          "cosy"
+        ]
+      },
+      "priceLevel": 2,
+      "reserveUrl": "https://grupomar.example/gracia"
+    }
+  ],
+  "offerings": [
+    {
+      "id": "gm-celebration",
+      "kind": "menu",
+      "name": "Celebration menu",
+      "description": "Seafood starters, paella or fideuà, dessert and cava.",
+      "price": {
+        "amount": 45,
+        "currency": "EUR",
+        "unit": "person"
+      },
+      "attributes": {
+        "cuisine": [
+          "seafood"
+        ],
+        "occasion": [
+          "celebration",
+          "family",
+          "business"
+        ]
+      },
+      "locationIds": [
+        "mar-barceloneta"
+      ],
+      "partySize": {
+        "min": 8,
+        "max": 16
+      },
+      "conditions": "Private room. Book 48 hours ahead."
+    },
+    {
+      "id": "gm-paella-two",
+      "kind": "menu",
+      "name": "Paella for two",
+      "description": "Seafood paella with a starter to share.",
+      "price": {
+        "amount": 38,
+        "currency": "EUR",
+        "unit": "group"
+      },
+      "attributes": {
+        "cuisine": [
+          "seafood"
+        ],
+        "occasion": [
+          "date-night"
+        ]
+      },
+      "partySize": {
+        "min": 2,
+        "max": 2
+      }
+    },
+    {
+      "id": "gm-weekday-lunch",
+      "kind": "menu",
+      "name": "Weekday lunch",
+      "description": "Three courses with rice of the day.",
+      "price": {
+        "amount": 20,
+        "currency": "EUR",
+        "unit": "person"
+      },
+      "attributes": {
+        "cuisine": [
+          "seafood"
+        ],
+        "occasion": [
+          "work"
+        ]
+      },
+      "availability": {
+        "days": [
+          "mon",
+          "tue",
+          "wed",
+          "thu",
+          "fri"
+        ],
+        "from": "13:00",
+        "to": "16:00"
+      }
+    }
+  ],
+  "documents": [
+    {
+      "id": "doc-manual",
+      "kind": "text",
+      "uri": "hand-authored seed data",
+      "addedAt": "2026-09-19T12:00:00+02:00"
+    }
+  ],
+  "evidence": [],
+  "reviewNotes": []
+}
