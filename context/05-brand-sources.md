@@ -9,6 +9,7 @@ What a hospitality brand realistically hands over, and what the Brand Agent extr
 | `brand-guidelines.pdf` | Unstructured, 8–12 pages, designed | Story, logo, colours, type, photography, tone of voice | `Brand`, `BrandKit` |
 | `design-tokens.json` *(optional)* | Structured | Colours and fonts as exported from Frontify/Figma | `BrandKit.colors`, `typography` (overrides the PDF) |
 | `logo.svg`, `logo-mono.svg` | Asset | The logo files | `BrandKit.logos` |
+| `photos/*.jpg` (6–10) | Asset | The brand's own photography: terrace, tables, people, interior | `BrandKit.photos`, tagged by the vision model |
 | `offers.pdf` or `offers.csv` | Semi-structured, 1–2 pages | Current promotable offers: name, price, conditions, occasion | `Offering[]` |
 | `venue-factsheet.pdf` or website URL | Semi-structured | Address, hours, amenities, accessibility | `Venue[]` |
 

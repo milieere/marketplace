@@ -71,14 +71,14 @@ Details: [04-agents.md](04-agents.md), data: [03-data-model.md](03-data-model.md
 
 ## Risks
 
-- **Image models distort logos and text.** Only generate imagery; layer the logo and typography on top from the brand kit.
-- **Latency and cost:** generate copy in real time, and reuse or cache images.
+- **Imagery:** Nebius has no image generation, so artifacts use the brand's own photos, tagged by a vision model and picked per query. Generated scenes are a later option with a second provider.
+- **Latency:** big models are slow (Qwen3-235B took ~14 s for one intent parse), so each step uses the smallest model that is reliable enough, and results are streamed.
 - **Crowded space** (Meta/Google auto-creatives, Adobe GenStudio): differentiate on per-query personalization, checkable brand rules and grounded offers.
 
 ## Open questions
 
 - [ ] Tech stack (proposal: TypeScript/Next.js throughout, OpenAI-compatible SDK → Nebius Token Factory)
-- [ ] Which Nebius models to use for text and for images? Speech-to-text provider?
+- [ ] Which Nebius models to use per step (see the model comparison)
 - [ ] Demo brands: real (via Frontify) or fictional? Which city?
 - [ ] UI language: Spanish, English, or follow the user?
 - [ ] Hackathon judging criteria, and team ownership

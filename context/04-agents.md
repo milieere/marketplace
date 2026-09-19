@@ -19,14 +19,14 @@ Both agents are **workflows with agentic loops where judgment is needed**. Fixed
 
 ## Brand Agent
 
-**Goal:** a brand source pack in, a `BrandRecord` (`brand`, `brandKit`, `venues`, `offerings`, `documents`) out, with evidence for every field and status `draft`.
+**Goal:** a brand source pack in, a `BrandRecord` (`brand`, `brandKit` including tagged `photos`, `venues`, `offerings`, `documents`, `evidence`) out, with evidence for every field and status `draft`.
 
 | Step | How | LLM? |
 |---|---|---|
-| **1 Read** | One `DocumentReader` per kind. **PDF** → text per page plus a PNG per page (vision models read colour swatches and logo pages better than text). **Structured** (design-tokens JSON, offers CSV) → parsed directly. **URL** → page text plus colours and fonts found in the site's CSS. | No |
+| **1 Read** | One `DocumentReader` per kind. **PDF** → text per page plus a PNG per page (the image shows layout, logo and colour roles; exact hex values come from the text layer or pixel sampling). **Photos** → image bytes for the tagger. **Structured** (design-tokens JSON, offers CSV) → parsed directly. **URL** → page text plus colours and fonts found in the site's CSS. | No |
 | **2 Route** | Tag each page or chunk with topics: `identity`, `logo`, `color`, `typography`, `voice`, `imagery`, `rules`, `venue`, `offers`. Each extractor then only sees relevant pages: smaller prompts and better accuracy. | Yes (cheap model) |
-| **3 Extract** | One **extractor per topic**, run in parallel. Each gets its pages, a Zod schema, and the vocabulary where relevant (offers, venues). It returns the partial record plus `Evidence` (page, quote, confidence). Vision pages go to colour, logo and imagery. | Yes |
-| **4 Normalize** | Convert CMYK/RGB/Pantone to hex, compute contrast-safe `pairsWith` (WCAG), give each font a web fallback, map free-text attributes onto vocabulary values (synonyms first, then an LLM for leftovers), dedupe. | Mostly no |
+| **3 Extract** | One **extractor per topic**, run in parallel. Each gets its pages, a Zod schema, and the vocabulary where relevant (offers, venues, photos). It returns the partial record plus `Evidence` (page, quote, confidence). Page images go to the logo, colour-role and style extractors. **Photo tagger:** a vision model describes each brand photo and tags it with vocabulary values and `people`. | Yes |
+| **4 Normalize** | **Hex values come from the PDF text layer, or from sampling pixels in code — never from a vision model** (tested: vision models misread #C8553D as #D2691E). Convert CMYK/RGB/Pantone to hex in code, compute contrast-safe `pairsWith` (WCAG), give each font a web fallback, map free-text attributes onto vocabulary values (synonyms first, then an LLM for leftovers), dedupe. | Mostly no |
 | **5 Verify** *(agentic)* | Find conflicts (two different "primary" colours), low-confidence fields and missing required fields. For each one, the agent re-reads the specific pages with a targeted question. Maximum 2 rounds; anything still unresolved is flagged for human review. | Yes, loop |
 | **6 Save** | Assemble the `BrandRecord`, validate it against the full schema, store it as `draft`. The review UI shows each field with its evidence, and the brand approves it (`verified`). | No |
 
@@ -40,9 +40,9 @@ Both agents are **workflows with agentic loops where judgment is needed**. Fixed
 |---|---|---|
 | **1 Understand** | Query text + vocabulary + current date/time → `Intent` (Zod). Hard needs go to `required`, nice-to-haves to `preferred`, and the user's own words to `phrases`. | Yes |
 | **2 Filter** | Over verified records: required attributes present, price within budget, open during `when`, party size fits. It is pure and unit-tested; if nothing survives, retry once with `preferred` only and say so in the trace. | No |
-| **3 Rank** | Survivors + intent → top N brands. For each one: which offers to feature, which venue, and a one-line rationale. | Yes |
-| **4 Create** *(agentic, per brand, in parallel)* | The LLM gets the intent, the brand kit (voice, samples, rules, tone range) and the chosen offers. It returns an `ArtifactDraft`: format, tone, slots, badges, image prompt, trace, and offer ids (never prices). `checkArtifact()` runs the brand rules plus grounding checks (offer ids exist, tone within range). If a `block` issue is found, the issues are fed back and the LLM revises, up to 3 rounds. The check result is always attached. | Yes, loop |
-| **5 Render** | Generate the image (scene only; fallback gradient in brand colours). Copy `priceLines` from the offers. Fill a template (`banner` / `card`) with brand tokens, logo, fonts and slots, producing self-contained HTML. Store it and emit an `artifact` event. | Image model only |
+| **3 Rank** | Survivors + intent → top N brands. For each one: which offers to feature, which venue, the best-matching photo (from its tags and description), and a one-line rationale. | Yes |
+| **4 Create** *(agentic, per brand, in parallel)* | The LLM gets the intent, the brand kit (voice, samples, rules, tone range) and the chosen offers. It returns an `ArtifactDraft`: format, tone, slots, badges, trace, and offer ids (never prices). `checkArtifact()` runs the brand rules plus grounding checks (offer ids exist, tone within range). If a `block` issue is found, the issues are fed back and the LLM revises, up to 3 rounds. The check result is always attached. | Yes, loop |
+| **5 Render** | Copy `priceLines` from the offers. Fill a template (`banner` / `card`) with brand tokens, `style`, logo, fonts, the selected photo and the slots, producing self-contained HTML. Run the contrast check on the rendered colours. Store it and emit an `artifact` event. | No |
 
 ## Shared building blocks
 
@@ -52,7 +52,6 @@ interface Llm {
 }
 interface DocumentReader { read(doc: SourceDocument): Promise<Page[]> }          // Page = { n, text, image? }
 interface SectionExtractor<T> { topic: Topic; extract(pages: Page[], ctx: ExtractCtx): Promise<Extracted<T>> }
-interface ImageGenerator { generate(prompt: string, size: Size): Promise<Uint8Array> }
 interface BrandRepository { list(): Promise<BrandRecord[]>; get(id: string): Promise<BrandRecord>; save(r: BrandRecord): Promise<void> }
 interface BlobStore { put(key: string, data: Uint8Array | string, type: string): Promise<string> }
 interface AgentEvents { emit(e: AgentEvent): void }
@@ -65,7 +64,7 @@ interface AgentEvents { emit(e: AgentEvent): void }
   - A new industry is a new vocabulary file.
   - The agents themselves stay unchanged.
 - **Prompts** live in `apps/api/src/prompts/*.md`, one per LLM step, so they can be iterated without touching code.
-- **Models are config per step** (routing: a small model; extraction and creation: a strong model; pages with images: a vision model), all served by Nebius Token Factory.
+- **Models are config per step** (routing: a small model; extraction and creation: a strong model; pages with images and photo tagging: a vision model), all served by Nebius Token Factory. Nebius has no image generation, so imagery is the brand's own tagged photos.
 
 ## Agent events (the UI timeline)
 

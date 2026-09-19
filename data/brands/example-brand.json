@@ -1,23 +1,18 @@
 {
+  "status": "verified",
   "brand": {
     "id": "casa-brisa",
     "name": "Casa Brisa",
     "industry": "hospitality",
     "website": "https://casabrisa.example",
     "summary": "Mediterranean tapas bar in Barcelona built around sharing plates and long terrace evenings.",
-    "status": "verified",
-    "evidence": [
-      {
-        "field": "summary",
-        "documentId": "doc-guidelines",
-        "page": 2,
-        "quote": "We are the table you share with the people you love.",
-        "confidence": 0.9
-      }
+    "languages": [
+      "es",
+      "ca",
+      "en"
     ]
   },
   "brandKit": {
-    "brandId": "casa-brisa",
     "colors": [
       {
         "id": "terracotta",
@@ -102,9 +97,13 @@
         ]
       }
     ],
-    "shape": {
+    "style": {
       "radius": 16,
-      "spacing": "airy"
+      "density": "airy",
+      "headlineCase": "sentence",
+      "imageTreatment": "full-bleed",
+      "composition": "text-over-image",
+      "ornament": "rule"
     },
     "voice": {
       "summary": "Warm, generous, Mediterranean. Talks like a host, never like an ad.",
@@ -142,19 +141,94 @@
         "flash photography",
         "empty rooms",
         "close-ups of hands eating"
-      ],
-      "generation": "scene-only"
+      ]
     },
+    "photos": [
+      {
+        "id": "terrace-group",
+        "url": "/assets/casa-brisa/photos/terrace-group.jpg",
+        "description": "Group of friends sharing tapas on a sunny terrace",
+        "people": "group",
+        "orientation": "landscape",
+        "attributes": {
+          "amenities": [
+            "terrace"
+          ],
+          "ambience": [
+            "lively"
+          ],
+          "occasion": [
+            "group",
+            "celebration"
+          ]
+        }
+      },
+      {
+        "id": "candle-couple",
+        "url": "/assets/casa-brisa/photos/candle-couple.jpg",
+        "description": "Couple at a candle-lit corner table with cava glasses",
+        "people": "couple",
+        "orientation": "portrait",
+        "attributes": {
+          "ambience": [
+            "romantic",
+            "cosy"
+          ],
+          "occasion": [
+            "date-night"
+          ]
+        }
+      },
+      {
+        "id": "table-overhead",
+        "url": "/assets/casa-brisa/photos/table-overhead.jpg",
+        "description": "Overhead shot of a table covered in small plates",
+        "people": "none",
+        "orientation": "square",
+        "attributes": {
+          "occasion": [
+            "group"
+          ]
+        }
+      },
+      {
+        "id": "vermut-bar",
+        "url": "/assets/casa-brisa/photos/vermut-bar.jpg",
+        "description": "Vermouth glasses and olives on the bar at golden hour",
+        "people": "none",
+        "orientation": "landscape",
+        "attributes": {
+          "occasion": [
+            "work",
+            "group"
+          ]
+        }
+      },
+      {
+        "id": "private-room",
+        "url": "/assets/casa-brisa/photos/private-room.jpg",
+        "description": "Long table set for a celebration in a warm private room",
+        "people": "none",
+        "orientation": "landscape",
+        "attributes": {
+          "amenities": [
+            "private-room"
+          ],
+          "occasion": [
+            "celebration",
+            "business"
+          ]
+        }
+      }
+    ],
     "rules": [
       {
         "id": "headline-length",
         "text": "Headlines are at most 60 characters.",
         "check": {
           "kind": "max-length",
-          "params": {
-            "slot": "headline",
-            "max": 60
-          }
+          "slot": "headline",
+          "max": 60
         },
         "severity": "block"
       },
@@ -163,13 +237,20 @@
         "text": "Never frame offers as cheap or discounted.",
         "check": {
           "kind": "forbidden-term",
-          "params": {
-            "terms": [
-              "cheap",
-              "discount",
-              "deal"
-            ]
-          }
+          "terms": [
+            "cheap",
+            "discount",
+            "deal"
+          ]
+        },
+        "severity": "block"
+      },
+      {
+        "id": "text-contrast",
+        "text": "Text must stay readable: at least 4.5:1 contrast against its background.",
+        "check": {
+          "kind": "min-contrast",
+          "ratio": 4.5
         },
         "severity": "block"
       },
@@ -178,29 +259,14 @@
         "text": "Primary logo only on sand; use the mono logo on dark colours.",
         "severity": "block"
       }
-    ],
-    "status": "verified",
-    "evidence": [
-      {
-        "field": "colors",
-        "documentId": "doc-guidelines",
-        "page": 5,
-        "confidence": 0.95
-      },
-      {
-        "field": "voice.samples",
-        "documentId": "doc-guidelines",
-        "page": 8,
-        "confidence": 0.85
-      }
     ]
   },
   "venues": [
     {
       "id": "casa-brisa-born",
-      "brandId": "casa-brisa",
       "name": "Casa Brisa El Born",
       "address": "Carrer de l'Argenteria 12, 08003 Barcelona",
+      "timezone": "Europe/Madrid",
       "geo": {
         "lat": 41.3839,
         "lng": 2.1817
@@ -262,21 +328,12 @@
         ]
       },
       "priceLevel": 2,
-      "reserveUrl": "https://casabrisa.example/reserve?venue=born",
-      "status": "verified",
-      "evidence": [
-        {
-          "field": "openingHours",
-          "documentId": "doc-website",
-          "confidence": 0.9
-        }
-      ]
+      "reserveUrl": "https://casabrisa.example/reserve?venue=born"
     }
   ],
   "offerings": [
     {
       "id": "cb-sharing-menu",
-      "brandId": "casa-brisa",
       "kind": "menu",
       "name": "Menú para compartir",
       "description": "Eight seasonal tapas for the table with bread and house vermouth. Vegan and gluten-free versions on request.",
@@ -301,21 +358,10 @@
       },
       "partySize": {
         "min": 4
-      },
-      "status": "verified",
-      "evidence": [
-        {
-          "field": "price",
-          "documentId": "doc-offers",
-          "page": 1,
-          "quote": "Sharing menu · 28 € p.p. (min. 4) · V/VG/GF options",
-          "confidence": 0.95
-        }
-      ]
+      }
     },
     {
       "id": "cb-tasting-for-two",
-      "brandId": "casa-brisa",
       "kind": "menu",
       "name": "Tasting for two",
       "description": "Six-course chef's selection with a glass of cava each.",
@@ -342,21 +388,10 @@
           "sat"
         ],
         "from": "19:30"
-      },
-      "status": "verified",
-      "evidence": [
-        {
-          "field": "price",
-          "documentId": "doc-offers",
-          "page": 1,
-          "quote": "Tasting for two · 46 €",
-          "confidence": 0.95
-        }
-      ]
+      }
     },
     {
       "id": "cb-vermut-hour",
-      "brandId": "casa-brisa",
       "kind": "promotion",
       "name": "Vermut hour",
       "description": "House vermouth with olives and chips.",
@@ -380,21 +415,10 @@
         "from": "18:00",
         "to": "20:00"
       },
-      "conditions": "Tuesday to Thursday, 18:00–20:00, terrace only.",
-      "status": "verified",
-      "evidence": [
-        {
-          "field": "conditions",
-          "documentId": "doc-offers",
-          "quote": "Vermut hour Tue–Thu 18–20h, terrace",
-          "confidence": 0.85
-        }
-      ]
+      "conditions": "Tuesday to Thursday, 18:00–20:00, terrace only."
     },
     {
       "id": "cb-private-room",
-      "brandId": "casa-brisa",
-      "venueId": "casa-brisa-born",
       "kind": "event",
       "name": "Private room celebration",
       "description": "Our back room for 10–20 guests with a set tapas menu and a dedicated host.",
@@ -416,39 +440,94 @@
         "max": 20
       },
       "conditions": "10–20 guests. Book at least 48 hours ahead.",
-      "status": "verified",
-      "evidence": [
-        {
-          "field": "conditions",
-          "documentId": "doc-offers",
-          "page": 1,
-          "quote": "Private room · from 35 € p.p. · 10–20 guests · 48h notice",
-          "confidence": 0.9
-        }
+      "venueIds": [
+        "casa-brisa-born"
       ]
     }
   ],
   "documents": [
     {
       "id": "doc-guidelines",
-      "brandId": "casa-brisa",
       "kind": "pdf",
       "uri": "data/sources/casa-brisa/brand-guidelines.pdf",
       "addedAt": "2026-09-19T10:00:00Z"
     },
     {
       "id": "doc-offers",
-      "brandId": "casa-brisa",
       "kind": "pdf",
       "uri": "data/sources/casa-brisa/offers.pdf",
       "addedAt": "2026-09-19T10:00:00Z"
     },
     {
+      "id": "doc-photos",
+      "kind": "image",
+      "uri": "data/sources/casa-brisa/photos/",
+      "addedAt": "2026-09-19T10:00:00Z"
+    },
+    {
       "id": "doc-website",
-      "brandId": "casa-brisa",
       "kind": "url",
       "uri": "https://casabrisa.example",
       "addedAt": "2026-09-19T10:00:00Z"
     }
-  ]
+  ],
+  "evidence": [
+    {
+      "field": "brand.summary",
+      "documentId": "doc-guidelines",
+      "page": 2,
+      "quote": "We are the table you share with the people you love.",
+      "confidence": 0.9
+    },
+    {
+      "field": "brandKit.colors[terracotta].hex",
+      "documentId": "doc-guidelines",
+      "page": 5,
+      "confidence": 0.95
+    },
+    {
+      "field": "brandKit.voice.samples",
+      "documentId": "doc-guidelines",
+      "page": 8,
+      "confidence": 0.85
+    },
+    {
+      "field": "brandKit.photos[terrace-group].attributes",
+      "documentId": "doc-photos",
+      "confidence": 0.85
+    },
+    {
+      "field": "venues[casa-brisa-born].openingHours",
+      "documentId": "doc-website",
+      "confidence": 0.9
+    },
+    {
+      "field": "offerings[cb-sharing-menu].price",
+      "documentId": "doc-offers",
+      "page": 1,
+      "quote": "Sharing menu · 28 € p.p. (min. 4) · V/VG/GF options",
+      "confidence": 0.95
+    },
+    {
+      "field": "offerings[cb-tasting-for-two].price",
+      "documentId": "doc-offers",
+      "page": 1,
+      "quote": "Tasting for two · 46 €",
+      "confidence": 0.95
+    },
+    {
+      "field": "offerings[cb-vermut-hour].conditions",
+      "documentId": "doc-offers",
+      "quote": "Vermut hour Tue–Thu 18–20h, terrace",
+      "confidence": 0.85
+    },
+    {
+      "field": "offerings[cb-private-room].conditions",
+      "documentId": "doc-offers",
+      "page": 1,
+      "quote": "Private room · from 35 € p.p. · 10–20 guests · 48h notice",
+      "confidence": 0.9
+    }
+  ],
+  "reviewNotes": []
 }

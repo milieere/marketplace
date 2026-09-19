@@ -57,7 +57,8 @@
         "pet-friendly"
       ],
       "appliesTo": [
-        "venue"
+        "venue",
+        "photo"
       ],
       "constraint": "hard"
     },
@@ -85,7 +86,8 @@
         "family"
       ],
       "appliesTo": [
-        "venue"
+        "venue",
+        "photo"
       ],
       "constraint": "soft"
     },
@@ -101,7 +103,8 @@
         "work"
       ],
       "appliesTo": [
-        "offering"
+        "offering",
+        "photo"
       ],
       "constraint": "soft"
     }
