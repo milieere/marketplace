@@ -6,7 +6,7 @@
 
 1. **Branch:** `feat/<nn>-<component>`, one component per branch.
 2. **Build** the component and its tests. No code for later components.
-3. **Test:** the component's own check (table below) passes, and so do `pnpm typecheck` and `pnpm test`.
+3. **Test:** the component's own check (table below) passes, and so do `npm run typecheck` and `npm test`.
 4. **Norma:** `live_check` on every changed source file; fix HIGH/CRITICAL findings.
 5. **Review:** a short PR description saying what to look at, plus the test output or a screenshot. You review, then merge.
 
@@ -16,7 +16,7 @@ Estimates are for the backend owner, with the AI pair doing the typing.
 
 | # | Component | Delivers | Test | Review focus | Est. |
 |---|---|---|---|---|---|
-| 01 | **Workspace scaffold** | pnpm workspace, `tsconfig.base`, vitest, `apps/api` Hono app with `/health`, `config.ts` (Zod env) | `pnpm typecheck`; `curl /health` → ok; a missing env var fails at startup | Folder structure matches [06-architecture.md](06-architecture.md) | 30 m |
+| 01 | **Workspace scaffold** | On top of the FE branch's npm workspace: `apps/api` (Hono, TS) with `/health` and `config.ts` (Zod env), `packages/contracts` skeleton, root scripts for both apps; remove `packages/ai`, `core`, `shared` and the empty Next API routes | `npm run typecheck`; `curl /health` → ok; a missing env var fails at startup | Folder structure matches [06-architecture.md](06-architecture.md) | 30 m |
 | 02 | **Contracts + mock mode** | `packages/contracts` (requests, `AgentEvent`, artifact summary); recorded event fixtures; `MOCK=1` streams for `/v1/generate` and `/v1/brands/ingest` | Fixtures validate against the schemas; `curl -N` streams events | **Review together with the frontend dev**: event shapes and names | 45 m |
 | 03 | **Domain schemas** | Zod for `BrandRecord`, `Intent`, `Artifact`, `Vocabulary`; vocabulary validation | All files in `data/brands/` validate; unknown attribute values are rejected | Code matches [03-data-model.md](03-data-model.md) | 30 m |
 
@@ -38,7 +38,7 @@ Estimates are for the backend owner, with the AI pair doing the typing.
 | # | Component | Delivers | Test | Review focus | Est. |
 |---|---|---|---|---|---|
 | 08 | **LLM port + Nebius adapter** | `Llm.structured`: JSON schema → Zod validation → one retry with the error → fallback model; latency logging | Unit test with a fake client (retry and fallback); one live smoke test (skipped without a key) | Error handling, logs | 45 m |
-| 09 | **Understand** | Prompt + schema → `Intent` with `scope` and `needs`; `now` and `timezone` handling | `pnpm eval:intents`: coverage matrix Q1–Q12 → expected scope, needs and key fields, target ≥ 11/12 | The failed queries and the prompt | 1 h |
+| 09 | **Understand** | Prompt + schema → `Intent` with `scope` and `needs`; `now` and `timezone` handling | `npm run eval:intents`: coverage matrix Q1–Q12 → expected scope, needs and key fields, target ≥ 11/12 | The failed queries and the prompt | 1 h |
 | 10 | **Rank** | Survivors → top N brands with offers, photo and rationale | Fixture intents → expected brands (loose assertions) | The rationales make sense | 45 m |
 | 11 | **Create + revise** | Draft slots, tone, trace; the check → revise loop (max 3 rounds) | 3 demo queries: checks pass, prices copied exactly, tone in range; a fake failing draft triggers a revision | Copy quality per brand | 1.5 h |
 | 12 | **Creative Agent + `/v1/generate`** | Orchestration, parallel per brand, SSE events, artifacts in the blob store, NoMatch page with the house brand kit | `curl -N` with Q1–Q12: first artifact in under 20 s; Q10 and Q11 return a NoMatch page; one brand failing doesn't stop the others | **Live review with the frontend dev**, mock mode switched off | 1 h |
@@ -51,7 +51,7 @@ Estimates are for the backend owner, with the AI pair doing the typing.
 |---|---|---|---|---|---|
 | 13 | **Casa Brisa source pack** | HTML → PDF build script; 7-page guidelines, offers, venue fact sheet; `expected.json` = the current example brand | Every value in `expected.json` appears in the PDF text layer | Does the PDF look like a real brand book? | 1 h |
 | 14 | **PDF reader** | Text per page + page PNGs | Hex codes found on the right pages | — | 30 m |
-| 15 | **Route + extractors** | One extractor per topic, **added one at a time**: colours → typography → voice → style/logos → offers → venue → photo tags | `pnpm eval:extraction` shows the score per topic against `expected.json` | Score and misses per topic | 2 h |
+| 15 | **Route + extractors** | One extractor per topic, **added one at a time**: colours → typography → voice → style/logos → offers → venue → photo tags | `npm run eval:extraction` shows the score per topic against `expected.json` | Score and misses per topic | 2 h |
 | 16 | **Normalize + Verify** | Colour maths, vocabulary mapping, conflict re-check loop | The CMYK-only colour comes out correct; the eval score doesn't drop | What gets flagged in `reviewNotes` | 45 m |
 | 17 | **Brand Agent + ingest/verify endpoints** | Orchestration, `finding` events, save draft, verify | Ingest → draft saved → verify → the brand appears in `/v1/generate` results | Live review of the event stream | 45 m |
 
