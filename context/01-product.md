@@ -49,7 +49,7 @@ guidelines PDF / Frontify / website / menus     voice memo / text / image / docu
                                               Banner / card / landing + Reserve link
 ```
 
-Details: [03-system.md](03-system.md).
+Details: [04-agents.md](04-agents.md), data: [03-data-model.md](03-data-model.md).
 
 ## Customers
 

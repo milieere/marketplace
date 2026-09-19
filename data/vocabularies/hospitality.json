@@ -1,0 +1,109 @@
+{
+  "industry": "hospitality",
+  "offeringKinds": [
+    "menu",
+    "experience",
+    "package",
+    "room",
+    "event",
+    "promotion"
+  ],
+  "attributes": [
+    {
+      "key": "dietary",
+      "description": "Dietary suitability of a dish or menu",
+      "values": [
+        "vegan",
+        "vegetarian",
+        "gluten-free",
+        "lactose-free",
+        "halal"
+      ],
+      "appliesTo": [
+        "offering"
+      ],
+      "constraint": "hard"
+    },
+    {
+      "key": "cuisine",
+      "description": "Style of food served",
+      "values": [
+        "tapas",
+        "mediterranean",
+        "seafood",
+        "japanese",
+        "italian",
+        "brunch",
+        "cafe",
+        "cocktails"
+      ],
+      "appliesTo": [
+        "venue",
+        "offering"
+      ],
+      "constraint": "soft"
+    },
+    {
+      "key": "amenities",
+      "description": "Physical facilities available at the venue",
+      "values": [
+        "terrace",
+        "wifi",
+        "power-outlets",
+        "private-room",
+        "tv-sports",
+        "spa",
+        "parking",
+        "pet-friendly"
+      ],
+      "appliesTo": [
+        "venue"
+      ],
+      "constraint": "hard"
+    },
+    {
+      "key": "accessibility",
+      "description": "Accessibility features of the venue",
+      "values": [
+        "wheelchair",
+        "step-free",
+        "accessible-wc"
+      ],
+      "appliesTo": [
+        "venue"
+      ],
+      "constraint": "hard"
+    },
+    {
+      "key": "ambience",
+      "description": "Atmosphere of the venue",
+      "values": [
+        "romantic",
+        "lively",
+        "quiet",
+        "cosy",
+        "family"
+      ],
+      "appliesTo": [
+        "venue"
+      ],
+      "constraint": "soft"
+    },
+    {
+      "key": "occasion",
+      "description": "Occasions an offering is designed for",
+      "values": [
+        "date-night",
+        "celebration",
+        "business",
+        "group",
+        "family",
+        "work"
+      ],
+      "appliesTo": [
+        "offering"
+      ],
+      "constraint": "soft"
+    }
+  ]
+}

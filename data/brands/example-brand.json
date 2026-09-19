@@ -1,0 +1,454 @@
+{
+  "brand": {
+    "id": "casa-brisa",
+    "name": "Casa Brisa",
+    "industry": "hospitality",
+    "website": "https://casabrisa.example",
+    "summary": "Mediterranean tapas bar in Barcelona built around sharing plates and long terrace evenings.",
+    "status": "verified",
+    "evidence": [
+      {
+        "field": "summary",
+        "documentId": "doc-guidelines",
+        "page": 2,
+        "quote": "We are the table you share with the people you love.",
+        "confidence": 0.9
+      }
+    ]
+  },
+  "brandKit": {
+    "brandId": "casa-brisa",
+    "colors": [
+      {
+        "id": "terracotta",
+        "hex": "#C8553D",
+        "role": "primary",
+        "pairsWith": [
+          "sand",
+          "ink"
+        ]
+      },
+      {
+        "id": "olive",
+        "hex": "#5B6B3A",
+        "role": "secondary",
+        "pairsWith": [
+          "sand"
+        ]
+      },
+      {
+        "id": "saffron",
+        "hex": "#F2A541",
+        "role": "accent",
+        "pairsWith": [
+          "ink"
+        ]
+      },
+      {
+        "id": "sand",
+        "hex": "#F6EFE6",
+        "role": "background",
+        "pairsWith": [
+          "ink",
+          "terracotta",
+          "olive"
+        ]
+      },
+      {
+        "id": "ink",
+        "hex": "#2B2118",
+        "role": "text",
+        "pairsWith": [
+          "sand",
+          "saffron"
+        ]
+      }
+    ],
+    "typography": [
+      {
+        "role": "display",
+        "family": "Fraunces",
+        "weights": [
+          600,
+          800
+        ],
+        "fallback": "Georgia, serif"
+      },
+      {
+        "role": "body",
+        "family": "Inter",
+        "weights": [
+          400,
+          600
+        ],
+        "fallback": "system-ui, sans-serif"
+      }
+    ],
+    "logos": [
+      {
+        "variant": "primary",
+        "url": "/brands/casa-brisa/logo.svg",
+        "onBackgrounds": [
+          "sand"
+        ]
+      },
+      {
+        "variant": "mono",
+        "url": "/brands/casa-brisa/logo-mono.svg",
+        "onBackgrounds": [
+          "terracotta",
+          "olive",
+          "ink"
+        ]
+      }
+    ],
+    "shape": {
+      "radius": 16,
+      "spacing": "airy"
+    },
+    "voice": {
+      "summary": "Warm, generous, Mediterranean. Talks like a host, never like an ad.",
+      "toneRange": {
+        "formality": [
+          0.2,
+          0.6
+        ],
+        "energy": [
+          0.3,
+          0.8
+        ]
+      },
+      "doSay": [
+        "share",
+        "table",
+        "together",
+        "slow evenings"
+      ],
+      "dontSay": [
+        "cheap",
+        "deal",
+        "hurry",
+        "limited time"
+      ],
+      "samples": [
+        "Pull up a chair. The terrace is yours tonight.",
+        "Small plates, big conversations.",
+        "Made to share, meant to linger."
+      ]
+    },
+    "imagery": {
+      "style": "Warm golden-hour light, overhead shots of shared tables, natural textures, candid people",
+      "avoid": [
+        "flash photography",
+        "empty rooms",
+        "close-ups of hands eating"
+      ],
+      "generation": "scene-only"
+    },
+    "rules": [
+      {
+        "id": "headline-length",
+        "text": "Headlines are at most 60 characters.",
+        "check": {
+          "kind": "max-length",
+          "params": {
+            "slot": "headline",
+            "max": 60
+          }
+        },
+        "severity": "block"
+      },
+      {
+        "id": "no-discount-talk",
+        "text": "Never frame offers as cheap or discounted.",
+        "check": {
+          "kind": "forbidden-term",
+          "params": {
+            "terms": [
+              "cheap",
+              "discount",
+              "deal"
+            ]
+          }
+        },
+        "severity": "block"
+      },
+      {
+        "id": "logo-background",
+        "text": "Primary logo only on sand; use the mono logo on dark colours.",
+        "severity": "block"
+      }
+    ],
+    "status": "verified",
+    "evidence": [
+      {
+        "field": "colors",
+        "documentId": "doc-guidelines",
+        "page": 5,
+        "confidence": 0.95
+      },
+      {
+        "field": "voice.samples",
+        "documentId": "doc-guidelines",
+        "page": 8,
+        "confidence": 0.85
+      }
+    ]
+  },
+  "venues": [
+    {
+      "id": "casa-brisa-born",
+      "brandId": "casa-brisa",
+      "name": "Casa Brisa El Born",
+      "address": "Carrer de l'Argenteria 12, 08003 Barcelona",
+      "geo": {
+        "lat": 41.3839,
+        "lng": 2.1817
+      },
+      "openingHours": {
+        "tue": [
+          {
+            "from": "18:00",
+            "to": "00:00"
+          }
+        ],
+        "wed": [
+          {
+            "from": "18:00",
+            "to": "00:00"
+          }
+        ],
+        "thu": [
+          {
+            "from": "18:00",
+            "to": "00:00"
+          }
+        ],
+        "fri": [
+          {
+            "from": "13:00",
+            "to": "01:00"
+          }
+        ],
+        "sat": [
+          {
+            "from": "13:00",
+            "to": "01:00"
+          }
+        ],
+        "sun": [
+          {
+            "from": "13:00",
+            "to": "17:00"
+          }
+        ]
+      },
+      "attributes": {
+        "cuisine": [
+          "tapas",
+          "mediterranean"
+        ],
+        "amenities": [
+          "terrace",
+          "private-room"
+        ],
+        "accessibility": [
+          "wheelchair",
+          "step-free"
+        ],
+        "ambience": [
+          "lively",
+          "romantic"
+        ]
+      },
+      "priceLevel": 2,
+      "reserveUrl": "https://casabrisa.example/reserve?venue=born",
+      "status": "verified",
+      "evidence": [
+        {
+          "field": "openingHours",
+          "documentId": "doc-website",
+          "confidence": 0.9
+        }
+      ]
+    }
+  ],
+  "offerings": [
+    {
+      "id": "cb-sharing-menu",
+      "brandId": "casa-brisa",
+      "kind": "menu",
+      "name": "Menú para compartir",
+      "description": "Eight seasonal tapas for the table with bread and house vermouth. Vegan and gluten-free versions on request.",
+      "price": {
+        "amount": 28,
+        "currency": "EUR",
+        "unit": "person"
+      },
+      "attributes": {
+        "occasion": [
+          "group",
+          "celebration"
+        ],
+        "dietary": [
+          "vegetarian",
+          "vegan",
+          "gluten-free"
+        ],
+        "cuisine": [
+          "tapas"
+        ]
+      },
+      "partySize": {
+        "min": 4
+      },
+      "status": "verified",
+      "evidence": [
+        {
+          "field": "price",
+          "documentId": "doc-offers",
+          "page": 1,
+          "quote": "Sharing menu · 28 € p.p. (min. 4) · V/VG/GF options",
+          "confidence": 0.95
+        }
+      ]
+    },
+    {
+      "id": "cb-tasting-for-two",
+      "brandId": "casa-brisa",
+      "kind": "menu",
+      "name": "Tasting for two",
+      "description": "Six-course chef's selection with a glass of cava each.",
+      "price": {
+        "amount": 46,
+        "currency": "EUR",
+        "unit": "group"
+      },
+      "attributes": {
+        "occasion": [
+          "date-night"
+        ]
+      },
+      "partySize": {
+        "min": 2,
+        "max": 2
+      },
+      "availability": {
+        "days": [
+          "tue",
+          "wed",
+          "thu",
+          "fri",
+          "sat"
+        ],
+        "from": "19:30"
+      },
+      "status": "verified",
+      "evidence": [
+        {
+          "field": "price",
+          "documentId": "doc-offers",
+          "page": 1,
+          "quote": "Tasting for two · 46 €",
+          "confidence": 0.95
+        }
+      ]
+    },
+    {
+      "id": "cb-vermut-hour",
+      "brandId": "casa-brisa",
+      "kind": "promotion",
+      "name": "Vermut hour",
+      "description": "House vermouth with olives and chips.",
+      "price": {
+        "amount": 5,
+        "currency": "EUR",
+        "unit": "person"
+      },
+      "attributes": {
+        "occasion": [
+          "group",
+          "work"
+        ]
+      },
+      "availability": {
+        "days": [
+          "tue",
+          "wed",
+          "thu"
+        ],
+        "from": "18:00",
+        "to": "20:00"
+      },
+      "conditions": "Tuesday to Thursday, 18:00–20:00, terrace only.",
+      "status": "verified",
+      "evidence": [
+        {
+          "field": "conditions",
+          "documentId": "doc-offers",
+          "quote": "Vermut hour Tue–Thu 18–20h, terrace",
+          "confidence": 0.85
+        }
+      ]
+    },
+    {
+      "id": "cb-private-room",
+      "brandId": "casa-brisa",
+      "venueId": "casa-brisa-born",
+      "kind": "event",
+      "name": "Private room celebration",
+      "description": "Our back room for 10–20 guests with a set tapas menu and a dedicated host.",
+      "price": {
+        "amount": 35,
+        "currency": "EUR",
+        "unit": "person",
+        "from": true
+      },
+      "attributes": {
+        "occasion": [
+          "celebration",
+          "business",
+          "group"
+        ]
+      },
+      "partySize": {
+        "min": 10,
+        "max": 20
+      },
+      "conditions": "10–20 guests. Book at least 48 hours ahead.",
+      "status": "verified",
+      "evidence": [
+        {
+          "field": "conditions",
+          "documentId": "doc-offers",
+          "page": 1,
+          "quote": "Private room · from 35 € p.p. · 10–20 guests · 48h notice",
+          "confidence": 0.9
+        }
+      ]
+    }
+  ],
+  "documents": [
+    {
+      "id": "doc-guidelines",
+      "brandId": "casa-brisa",
+      "kind": "pdf",
+      "uri": "data/sources/casa-brisa/brand-guidelines.pdf",
+      "addedAt": "2026-09-19T10:00:00Z"
+    },
+    {
+      "id": "doc-offers",
+      "brandId": "casa-brisa",
+      "kind": "pdf",
+      "uri": "data/sources/casa-brisa/offers.pdf",
+      "addedAt": "2026-09-19T10:00:00Z"
+    },
+    {
+      "id": "doc-website",
+      "brandId": "casa-brisa",
+      "kind": "url",
+      "uri": "https://casabrisa.example",
+      "addedAt": "2026-09-19T10:00:00Z"
+    }
+  ]
+}
