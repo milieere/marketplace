@@ -22,6 +22,7 @@ export async function createContainer(config: Config): Promise<AppDeps> {
     visionModels: [config.MODEL_VISION],
   });
   const brands = await createJsonBrandRepository(DATA_DIR);
-  const brandAgent = createBrandAgent({ llm, brands, sources: createFsSourcePacks(`${DATA_DIR}/sources`), reader: createPdfReader() });
-  return { agent: createCreativeAgent({ llm, brands, artifacts }), brandAgent, artifacts, brands };
+  const sources = createFsSourcePacks(`${DATA_DIR}/sources`);
+  const brandAgent = createBrandAgent({ llm, brands, sources, reader: createPdfReader() });
+  return { agent: createCreativeAgent({ llm, brands, artifacts }), brandAgent, artifacts, brands, sources };
 }
