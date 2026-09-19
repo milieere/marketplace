@@ -23,7 +23,12 @@ export async function extractRules(llm: Llm, pages: Page[]): Promise<RulesResult
     llm,
     "rules",
     Rules,
-    "List the brand rules for ads: every never/always/must/don't instruction, including those in captions and small print.",
+    [
+      "List the brand rules for ads: every never/always/must/don't instruction, including those in captions and small print.",
+      "Set `check` whenever the rule is mechanical: a character limit on headlines, sublines or body → max-length;",
+      "words or phrases that must not appear in copy → forbidden-term with those exact words;",
+      "a minimum contrast ratio → min-contrast; a phrase that must always appear → required-text.",
+    ].join(" "),
     pages,
   ).catch(failed("rules"));
   const ids = new Set<string>();

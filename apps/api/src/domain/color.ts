@@ -35,17 +35,39 @@ function mostReadableOn(kit: BrandKit, background: string): string {
   return kit.colors.map((c) => c.hex).sort((a, b) => contrast(b, background) - contrast(a, background))[0]!;
 }
 
-export type Palette = { background: string; text: string; primary: string; accent: string; cta: { background: string; text: string } };
+// The brand's declared pairings win; contrast only ranks among them
+function pairedOn(kit: BrandKit, background: string, minContrast: number): string {
+  const declared = (kit.colors.find((c) => c.hex === background)?.pairsWith ?? [])
+    .flatMap((id) => kit.colors.filter((c) => c.id === id))
+    .filter((c) => contrast(c.hex, background) >= minContrast)
+    .sort((a, b) => contrast(b.hex, background) - contrast(a.hex, background));
+  return declared[0]?.hex ?? mostReadableOn(kit, background);
+}
+
+export type Palette = {
+  background: string;
+  text: string;
+  primary: string;
+  secondary: string;
+  accent: string;
+  onPrimary: string;
+  onAccent: string;
+  deep: string;
+  onDeep: string;
+  cta: { background: string; text: string };
+};
 
 // Brand colours only; weak primary → CTA inverts text/background
 export function palette(kit: BrandKit, minContrast = 4.5): Palette {
   const background = (byRole(kit, "background") ?? kit.colors[0]!).hex;
   const textRole = byRole(kit, "text")?.hex;
-  const text = textRole && contrast(textRole, background) >= minContrast ? textRole : mostReadableOn(kit, background);
+  const text = textRole && contrast(textRole, background) >= minContrast ? textRole : pairedOn(kit, background, minContrast);
   const primary = (byRole(kit, "primary") ?? kit.colors[0]!).hex;
   const accent = (byRole(kit, "accent") ?? byRole(kit, "secondary") ?? byRole(kit, "primary") ?? kit.colors[0]!).hex;
-  const onPrimary = mostReadableOn(kit, primary);
+  const secondary = (byRole(kit, "secondary") ?? byRole(kit, "accent") ?? byRole(kit, "primary") ?? kit.colors[0]!).hex;
+  const onPrimary = pairedOn(kit, primary, minContrast);
   const cta =
     contrast(onPrimary, primary) >= minContrast ? { background: primary, text: onPrimary } : { background: text, text: background };
-  return { background, text, primary, accent, cta };
+  const deep = kit.colors.map((c) => c.hex).sort((a, b) => luminance(a) - luminance(b))[0]!;
+  return { background, text, primary, secondary, accent, onPrimary, onAccent: pairedOn(kit, accent, minContrast), deep, onDeep: pairedOn(kit, deep, minContrast), cta };
 }

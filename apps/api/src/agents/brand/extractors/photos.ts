@@ -10,8 +10,10 @@ import { failed } from "./ask";
 
 const SYSTEM = readFileSync(new URL("../../../prompts/brand-tag-photo.md", import.meta.url), "utf8");
 
+// `people` drives photo matching, and vision models skip it when it is one key among many
 const Tags = z.object({
   description: z.string(),
+  people: z.enum(["none", "solo", "couple", "group", "family"]),
   attributes: z.record(z.string(), z.array(z.string())),
   confidence: z.number().min(0).max(1),
 });
@@ -29,7 +31,7 @@ export async function tagPhoto(llm: Llm, photo: PackPhoto, vocabulary: Vocabular
       images: [{ data: photo.data, mediaType: photo.mediaType }],
     })
     .catch(failed(`photo ${photo.id}`));
-  const { attributes, leftovers } = mapAttributes(tags.attributes, "photo", vocabulary);
+  const { attributes, leftovers } = mapAttributes({ ...tags.attributes, people: [tags.people] }, "photo", vocabulary);
   const field = `brandKit.photos[${photo.id}].attributes`;
   return {
     photo: { id: photo.id, url: photo.url, description: tags.description, orientation: photo.orientation, attributes },

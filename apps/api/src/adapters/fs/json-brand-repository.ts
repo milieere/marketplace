@@ -1,4 +1,4 @@
-import { readdir, readFile } from "node:fs/promises";
+import { readdir, readFile, writeFile } from "node:fs/promises";
 import { extname, join, normalize } from "node:path";
 import { BrandRecord } from "@marketplace/contracts/brand-record";
 import { Vocabulary } from "@marketplace/contracts/vocabulary";
@@ -6,7 +6,7 @@ import { checkBrandRecord } from "../../domain/brand-integrity";
 import type { BrandRepository } from "../../ports/brand-repository";
 
 const HOUSE_ID = "_house";
-const IMAGE_TYPES: Record<string, string> = { ".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".png": "image/png", ".webp": "image/webp" };
+const ASSET_TYPES: Record<string, string> = { ".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".png": "image/png", ".webp": "image/webp", ".svg": "image/svg+xml" };
 
 async function readJson(path: string): Promise<unknown> {
   try {
@@ -57,14 +57,18 @@ export async function createJsonBrandRepository(dataDir: string): Promise<BrandR
   return {
     listVerified: async () => [...records.values()].filter((r) => r.brand.id !== HOUSE_ID && r.status === "verified"),
     get: async (id) => records.get(id),
+    save: async (record) => {
+      await writeFile(join(dataDir, "brands", `${record.brand.id}.json`), `${JSON.stringify(record, null, 2)}\n`);
+      records.set(record.brand.id, record);
+    },
     house: async () => house,
     vocabulary: async (industry) => {
       const vocabulary = vocabularies.get(industry);
       if (!vocabulary) throw new Error(`No vocabulary for industry "${industry}"`);
       return vocabulary;
     },
-    photo: async (url) => {
-      const type = IMAGE_TYPES[extname(url).toLowerCase()];
+    asset: async (url) => {
+      const type = ASSET_TYPES[extname(url).toLowerCase()];
       const relative = normalize(url.replace(/^\/assets\//, ""));
       if (!type || !url.startsWith("/assets/") || relative.startsWith("..")) return undefined;
       try {

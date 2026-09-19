@@ -59,6 +59,12 @@ export function grounded(pageText: string, quote: string): boolean {
   return q.length > 0 && comparable(pageText).includes(q);
 }
 
+// Models shorten venue names ("Bodega Pinyol" for "Bodega Pinyol Gràcia")
+export function sameVenue(venue: string, location: Pick<Location, "id" | "name">): boolean {
+  const [a, b] = [slug(venue), slug(location.name)];
+  return venue === location.id || a.startsWith(b) || b.startsWith(a);
+}
+
 export function pairsWith(colors: Omit<BrandKit["colors"][number], "pairsWith">[]): BrandKit["colors"] {
   return colors.map((c) => ({
     ...c,

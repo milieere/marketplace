@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { grounded, mapTerms, mergeColors, parseCsv, parseDays, parseOpeningHours } from "../../../src/agents/brand/normalize";
+import { grounded, mapTerms, mergeColors, parseCsv, parseDays, parseOpeningHours, sameVenue } from "../../../src/agents/brand/normalize";
 import { loadRepository } from "../../support";
 
 const vocabulary = await (await loadRepository()).vocabulary("hospitality");
@@ -78,5 +78,13 @@ describe("grounded", () => {
     expect(grounded("Reservations https://casabrisa.example/reserve?\nvenue=born", "https://casabrisa.example/reserve?venue=born")).toBe(true);
     expect(grounded("Tuesday–Thursday 18:00–00:00", "Tuesday-Thursday 18:00-00:00")).toBe(true);
     expect(grounded("HEX #C8553D", "#D2691E")).toBe(false);
+  });
+});
+
+describe("sameVenue", () => {
+  it("links a sheet venue to a location whose name the model shortened, but not to another venue", () => {
+    expect(sameVenue("Bodega Pinyol Gràcia", { id: "bodega-pinyol", name: "Bodega Pinyol" })).toBe(true);
+    expect(sameVenue("casa-brisa-el-born", { id: "casa-brisa-el-born", name: "El Born" })).toBe(true);
+    expect(sameVenue("Grupo Mar Gràcia", { id: "grupo-mar-barceloneta", name: "Grupo Mar Barceloneta" })).toBe(false);
   });
 });

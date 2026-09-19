@@ -19,8 +19,9 @@ export async function createContainer(config: Config): Promise<AppDeps> {
     apiKey: config.NEBIUS_API_KEY!,
     baseURL: config.NEBIUS_BASE_URL,
     models: [config.MODEL_TEXT, config.MODEL_TEXT_FALLBACK],
+    visionModels: [config.MODEL_VISION],
   });
   const brands = await createJsonBrandRepository(DATA_DIR);
   const brandAgent = createBrandAgent({ llm, brands, sources: createFsSourcePacks(`${DATA_DIR}/sources`), reader: createPdfReader() });
-  return { agent: createCreativeAgent({ llm, brands, artifacts }), brandAgent, artifacts };
+  return { agent: createCreativeAgent({ llm, brands, artifacts }), brandAgent, artifacts, brands };
 }
