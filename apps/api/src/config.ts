@@ -12,7 +12,7 @@ const ConfigSchema = z
     MOCK_SPEED: z.coerce.number().min(0).default(1),
     NEBIUS_API_KEY: z.string().optional(),
     NEBIUS_BASE_URL: z.url().default("https://api.tokenfactory.nebius.com/v1"),
-    MODEL_TEXT: z.string().default("deepseek-ai/DeepSeek-V4-Pro"),
+    MODEL_TEXT: z.string().default("deepseek-ai/DeepSeek-V4-Pro-0813"),
     MODEL_TEXT_FALLBACK: z.string().default("nvidia/nemotron-3-super-120b-a12b"),
     MODEL_VISION: z.string().default("google/gemma-3-27b-it"),
     SLNG_API_KEY: z.string().optional(),

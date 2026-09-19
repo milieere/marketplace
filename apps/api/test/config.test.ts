@@ -19,6 +19,6 @@ describe("loadConfig", () => {
     expect(config.PORT).toBe(8787);
     expect(config.MOCK).toBe(false);
     expect(config.NEBIUS_BASE_URL).toBe("https://api.tokenfactory.nebius.com/v1");
-    expect(config.MODEL_TEXT).toBe("deepseek-ai/DeepSeek-V4-Pro");
+    expect(config.MODEL_TEXT).toBe("deepseek-ai/DeepSeek-V4-Pro-0813");
   });
 });
