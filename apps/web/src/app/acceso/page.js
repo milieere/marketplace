@@ -1,8 +1,8 @@
 import Head from "next/head";
 import styles from "./page.module.css";
-import Hero from "../components/hero/hero";
 
-export default function Home() {
+
+export default function Acceso() {
   return (
     <>
       <Head>
@@ -46,8 +46,8 @@ export default function Home() {
         <meta property="og:type" content="website" />
         <link rel="canonical" href="https://quesadacoach.com" />
       </Head>
-      <main className={styles.main}>
-        <Hero />
+      <main>
+        <h1>Acceso Page</h1>
       </main>
     </>
   );
