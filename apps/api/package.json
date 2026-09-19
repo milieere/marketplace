@@ -9,7 +9,9 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "render:samples": "tsx scripts/render-samples.ts",
-    "e2e:live": "tsx scripts/e2e-generate.ts"
+    "e2e:live": "tsx scripts/e2e-generate.ts",
+    "build:sources": "tsx scripts/build-sources.ts",
+    "eval:extraction": "tsx --env-file-if-exists=../../.env scripts/eval-extraction.ts"
   },
   "dependencies": {
     "@ai-sdk/openai-compatible": "^3.0.53",
@@ -17,6 +19,7 @@
     "@marketplace/contracts": "^0.1.0",
     "ai": "^7.0.107",
     "hono": "^4.13.8",
+    "unpdf": "^1.8.1",
     "zod": "^4.6.5"
   },
   "devDependencies": {

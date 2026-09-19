@@ -1,11 +1,19 @@
 import { describe, expect, it } from "vitest";
-import { contrast, palette } from "../../src/domain/color";
+import { cmykToHex, contrast, palette, rgbToHex } from "../../src/domain/color";
 import { loadRepository } from "../support";
 
 describe("contrast", () => {
   it("follows WCAG", () => {
     expect(contrast("#000000", "#FFFFFF")).toBeCloseTo(21);
     expect(contrast("#777777", "#777777")).toBe(1);
+  });
+});
+
+describe("colour conversion", () => {
+  it("converts CMYK percentages and RGB to hex", () => {
+    expect(cmykToHex([15, 0, 46, 58])).toBe("#5B6B3A");
+    expect(cmykToHex([0, 0, 0, 100])).toBe("#000000");
+    expect(rgbToHex([200, 85, 61])).toBe("#C8553D");
   });
 });
 

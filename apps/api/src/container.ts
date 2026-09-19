@@ -1,7 +1,10 @@
 import { fileURLToPath } from "node:url";
 import { createJsonBrandRepository } from "./adapters/fs/json-brand-repository";
+import { createFsSourcePacks } from "./adapters/fs/source-packs";
 import { createMemoryArtifactStore } from "./adapters/memory/artifact-store";
 import { createAiSdkLlm } from "./adapters/nebius/ai-sdk-llm";
+import { createPdfReader } from "./adapters/pdf/unpdf-reader";
+import { createBrandAgent } from "./agents/brand/brand-agent";
 import { createCreativeAgent } from "./agents/creative/creative-agent";
 import type { Config } from "./config";
 import type { AppDeps } from "./http/app";
@@ -18,5 +21,6 @@ export async function createContainer(config: Config): Promise<AppDeps> {
     models: [config.MODEL_TEXT, config.MODEL_TEXT_FALLBACK],
   });
   const brands = await createJsonBrandRepository(DATA_DIR);
-  return { agent: createCreativeAgent({ llm, brands, artifacts }), artifacts };
+  const brandAgent = createBrandAgent({ llm, brands, sources: createFsSourcePacks(`${DATA_DIR}/sources`), reader: createPdfReader() });
+  return { agent: createCreativeAgent({ llm, brands, artifacts }), brandAgent, artifacts };
 }

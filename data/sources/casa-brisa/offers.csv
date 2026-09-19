@@ -1,0 +1,5 @@
+id,kind,name,description,price,currency,unit,from_price,min_party,max_party,days,time_from,time_to,venue,conditions,good_for,dietary,cuisine
+cb-sharing-menu,menu,Menú para compartir,Eight seasonal tapas for the table with bread and house vermouth. Vegan and gluten-free versions on request.,28,EUR,person,,4,,,,,,,"groups, celebrations",V/VG/GF,tapas
+cb-tasting-for-two,menu,Tasting for two,Six-course chef's selection with a glass of cava each.,46,EUR,group,,2,2,tue-sat,19:30,,,,date night,,
+cb-vermut-hour,promotion,Vermut hour,House vermouth with olives and chips.,5,EUR,person,,,,tue-thu,18:00,20:00,,"Tuesday to Thursday, 18:00–20:00, terrace only.","after-work, groups",,
+cb-private-room,event,Private room celebration,Our back room for 10–20 guests with a set tapas menu and a dedicated host.,35,EUR,person,yes,10,20,,,,Casa Brisa El Born,10–20 guests. Book at least 48 hours ahead.,"birthdays, business, groups",,
