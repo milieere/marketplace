@@ -1,5 +1,5 @@
-import { readdir, readFile } from "node:fs/promises";
-import { join, relative } from "node:path";
+import { mkdir, readdir, readFile, writeFile } from "node:fs/promises";
+import { dirname, join, relative, sep } from "node:path";
 import type { SourceFile, SourcePacks } from "../../ports/source-packs";
 
 // PDF authoring source and answer key aren't brand input
@@ -22,6 +22,21 @@ export function createFsSourcePacks(sourcesDir: string): SourcePacks {
         }
       }
       return files;
+    },
+
+    async save(brandId, files) {
+      if (!/^[a-z0-9-]+$/.test(brandId)) throw new Error(`Invalid brand id "${brandId}"`);
+      const root = join(sourcesDir, brandId);
+      for (const file of files) {
+        const target = join(root, file.path);
+        if (!target.startsWith(`${root}${sep}`)) throw new Error(`Refusing to write outside the pack: ${file.path}`);
+        try {
+          await mkdir(dirname(target), { recursive: true });
+          await writeFile(target, file.bytes);
+        } catch (err) {
+          throw new Error(`Cannot write source file ${target}`, { cause: err });
+        }
+      }
     },
   };
 }
