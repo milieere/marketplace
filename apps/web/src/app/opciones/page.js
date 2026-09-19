@@ -1,5 +1,6 @@
 import styles from "./page.module.css";
 import Head from "next/head";
+import { Suspense } from "react";
 import Header from "../../components/header/header";
 import Visualizer from "../../components/visualizer/visualizer";
 
@@ -50,7 +51,9 @@ export default function Opciones() {
       </Head>
       <main className={styles.main}>
         <Header />
-        <Visualizer />
+        <Suspense fallback={null}>
+          <Visualizer />
+        </Suspense>
       </main>
     </>
   );

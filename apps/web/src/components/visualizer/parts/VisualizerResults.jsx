@@ -1,0 +1,33 @@
+import CardView from "../../cardView/cardView";
+import styles from "../visualizer.module.css";
+
+export default function VisualizerResults({ query, state }) {
+  return (
+    <div className={styles.results}>
+      {state.noMatch && (
+        <CardView
+          title={state.noMatch.message}
+          subtitle={state.noMatch.reason}
+          html={state.noMatch.html}
+          suggestions={state.noMatch.suggestions}
+        />
+      )}
+
+      {state.artifacts.map(({ artifact, html }) => (
+        <CardView
+          key={artifact.id}
+          title={artifact.slots.headline}
+          subtitle={artifact.slots.subline || artifact.brandId}
+          artifact={artifact}
+          html={html}
+        />
+      ))}
+
+      {!query && <CardView title="Sin consulta" subtitle="Vuelve al inicio y genera una búsqueda para ver el stream." />}
+
+      {query && state.status === "loading" && state.artifacts.length === 0 && !state.noMatch && (
+        <CardView title="Generando opciones..." subtitle="Los artifacts aparecerán aquí cuando llegue el stream." />
+      )}
+    </div>
+  );
+}
