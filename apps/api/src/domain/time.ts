@@ -83,3 +83,28 @@ export function isAvailable(offering: Offering, when: When, timezone: string): b
   const intervals = DAYS.flatMap((d, i) => (!days || days.includes(d) ? [interval(i, from, to)] : []));
   return covers(intervals, weekMinute, weekMinute);
 }
+
+function offset(date: Date, timezone: string): string {
+  const name = new Intl.DateTimeFormat("en-US", { timeZone: timezone, timeZoneName: "longOffset" })
+    .formatToParts(date)
+    .find((p) => p.type === "timeZoneName")!.value;
+  return name === "GMT" ? "+00:00" : name.slice(3);
+}
+
+function hhmm(weekMinute: number): string {
+  const m = weekMinute % DAY;
+  return `${String(Math.floor(m / 60)).padStart(2, "0")}:${String(m % 60).padStart(2, "0")}`;
+}
+
+// Default when the user gives no time: tonight, or right now if already late.
+export function tonight(now: Date, timezone: string, at = "21:00"): string {
+  const { weekMinute, date } = localTime(now.toISOString(), timezone);
+  const time = weekMinute % DAY >= minutes(at) ? hhmm(weekMinute) : at;
+  return `${date}T${time}:00${offset(now, timezone)}`;
+}
+
+export function describeLocal(iso: string, timezone: string): string {
+  const { weekMinute } = localTime(iso, timezone);
+  const day = DAYS[Math.floor(weekMinute / DAY)]!;
+  return `${day[0]!.toUpperCase()}${day.slice(1)} ${hhmm(weekMinute)}`;
+}

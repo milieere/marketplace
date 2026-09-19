@@ -1,11 +1,12 @@
 import { readdir, readFile } from "node:fs/promises";
-import { join } from "node:path";
+import { extname, join, normalize } from "node:path";
 import { BrandRecord } from "@marketplace/contracts/brand-record";
 import { Vocabulary } from "@marketplace/contracts/vocabulary";
 import { checkBrandRecord } from "../../domain/brand-integrity";
 import type { BrandRepository } from "../../ports/brand-repository";
 
 const HOUSE_ID = "_house";
+const IMAGE_TYPES: Record<string, string> = { ".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".png": "image/png", ".webp": "image/webp" };
 
 async function readJson(path: string): Promise<unknown> {
   try {
@@ -61,6 +62,16 @@ export async function createJsonBrandRepository(dataDir: string): Promise<BrandR
       const vocabulary = vocabularies.get(industry);
       if (!vocabulary) throw new Error(`No vocabulary for industry "${industry}"`);
       return vocabulary;
+    },
+    photo: async (url) => {
+      const type = IMAGE_TYPES[extname(url).toLowerCase()];
+      const relative = normalize(url.replace(/^\/assets\//, ""));
+      if (!type || !url.startsWith("/assets/") || relative.startsWith("..")) return undefined;
+      try {
+        return `data:${type};base64,${(await readFile(join(dataDir, "sources", relative))).toString("base64")}`;
+      } catch {
+        return undefined;
+      }
     },
   };
 }
