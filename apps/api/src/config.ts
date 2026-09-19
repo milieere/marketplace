@@ -9,6 +9,7 @@ const ConfigSchema = z
   .object({
     PORT: z.coerce.number().int().positive().default(8787),
     MOCK: flag,
+    MOCK_SPEED: z.coerce.number().min(0).default(1),
     NEBIUS_API_KEY: z.string().optional(),
     NEBIUS_BASE_URL: z.url().default("https://api.tokenfactory.nebius.com/v1"),
     MODEL_TEXT: z.string().default("deepseek-ai/DeepSeek-V4-Pro"),

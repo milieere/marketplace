@@ -17,8 +17,8 @@ Estimates are for the backend owner, with the AI pair doing the typing.
 | # | Component | Delivers | Test | Review focus | Est. |
 |---|---|---|---|---|---|
 | 01 | **Workspace scaffold** | On top of the FE branch's npm workspace: `apps/api` (Hono, TS) with `/health` and `config.ts` (Zod env), `packages/contracts` skeleton, root scripts for both apps; remove `packages/ai`, `core`, `shared` and the empty Next API routes | `npm run typecheck`; `curl /health` → ok; a missing env var fails at startup | Folder structure matches [06-architecture.md](06-architecture.md) | 30 m |
-| 02 | **Contracts + mock mode** | `packages/contracts` (requests, `AgentEvent`, artifact summary); recorded event fixtures; `MOCK=1` streams for `/v1/generate` and `/v1/brands/ingest` | Fixtures validate against the schemas; `curl -N` streams events | **Review together with the frontend dev**: event shapes and names | 45 m |
-| 03 | **Domain schemas** | Zod for `BrandRecord`, `Intent`, `Artifact`, `Vocabulary`; vocabulary validation | All files in `data/brands/` validate; unknown attribute values are rejected | Code matches [03-data-model.md](03-data-model.md) | 30 m |
+| 02 | **Contracts + mock mode** | `packages/contracts`: the data-model schemas (`BrandRecord`, `Intent`, `Artifact`, `Vocabulary`), requests, `AgentEvent`; 4 recorded streams; `MOCK=1` replays them on `/v1/generate` and `/v1/brands/ingest` | Fixtures validate against the schemas; `curl -N` streams events | **Review together with the frontend dev**: event shapes and names | 45 m |
+| 03 | **Data validation** | Vocabulary checks on top of the contract schemas (attribute keys/values, `appliesTo`, evidence paths, colour references) | All files in `data/brands/` validate; unknown attribute values are rejected | Code matches [03-data-model.md](03-data-model.md) | 30 m |
 
 **Checkpoint A:** the frontend dev builds the UI against the mock stream from here on.
 

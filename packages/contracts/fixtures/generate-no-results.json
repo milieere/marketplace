@@ -1,0 +1,159 @@
+{
+  "scenario": "generate-no-results",
+  "description": "Q10: nothing fits even after relaxing; near-miss suggestions",
+  "match": "\\b(2[1-9]|[3-9]\\d)\\s*(people|personas|friends|amigos)",
+  "events": [
+    {
+      "delayMs": 0,
+      "event": {
+        "type": "step",
+        "agent": "creative",
+        "id": "understand",
+        "label": "Understanding your request",
+        "status": "started"
+      }
+    },
+    {
+      "delayMs": 800,
+      "event": {
+        "type": "step",
+        "agent": "creative",
+        "id": "understand",
+        "label": "Understanding your request",
+        "status": "done",
+        "detail": "25 people · €10 pp · vegan"
+      }
+    },
+    {
+      "delayMs": 50,
+      "event": {
+        "type": "intent",
+        "intent": {
+          "id": "int-q10",
+          "raw": {
+            "text": "Vegan dinner for 25 people under 10 euros each",
+            "inputs": [
+              {
+                "kind": "text"
+              }
+            ]
+          },
+          "scope": "in-domain",
+          "language": "en",
+          "party": {
+            "size": 25
+          },
+          "budget": {
+            "amount": 10,
+            "per": "person"
+          },
+          "phrases": [
+            "25 people",
+            "vegan"
+          ],
+          "needs": [
+            {
+              "id": "n1",
+              "label": "dinner",
+              "kinds": [
+                "menu"
+              ],
+              "required": {
+                "dietary": [
+                  "vegan"
+                ]
+              },
+              "preferred": {}
+            }
+          ],
+          "missing": []
+        }
+      }
+    },
+    {
+      "delayMs": 100,
+      "event": {
+        "type": "step",
+        "agent": "creative",
+        "id": "filter",
+        "label": "Checking 8 brands against your needs",
+        "status": "started"
+      }
+    },
+    {
+      "delayMs": 400,
+      "event": {
+        "type": "step",
+        "agent": "creative",
+        "id": "filter",
+        "label": "Checking 8 brands against your needs",
+        "status": "done",
+        "detail": "0 match"
+      }
+    },
+    {
+      "delayMs": 100,
+      "event": {
+        "type": "relaxed",
+        "relaxations": [
+          {
+            "needId": "n1",
+            "constraint": "budget",
+            "from": "€10 pp",
+            "to": "€12 pp"
+          }
+        ]
+      }
+    },
+    {
+      "delayMs": 400,
+      "event": {
+        "type": "step",
+        "agent": "creative",
+        "id": "filter",
+        "label": "Looking a little wider",
+        "status": "done",
+        "detail": "Still 0 match: vegan and group size are never relaxed"
+      }
+    },
+    {
+      "delayMs": 50,
+      "event": {
+        "type": "no-match",
+        "noMatch": {
+          "reason": "no-results",
+          "message": "Nothing fits a vegan dinner for 25 at €10 each. Vegan stays a must, so here's what comes closest.",
+          "suggestions": [
+            {
+              "label": "Groups up to 20 at €22 pp → Verde",
+              "patch": {
+                "needId": "n1",
+                "change": {
+                  "party.size": 20,
+                  "budget.amount": 22
+                }
+              }
+            },
+            {
+              "label": "Split into two tables (13 + 12) at €22 pp",
+              "patch": {
+                "needId": "n1",
+                "change": {
+                  "party.size": 13,
+                  "budget.amount": 22
+                }
+              }
+            }
+          ],
+          "html": "<!doctype html><html><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">\n<style>body{margin:0;font-family:system-ui,sans-serif;background:#0F0F14;color:#F4F4F6}.box{max-width:420px;margin:0 auto;padding:32px 24px}\nh1{font-size:24px;margin:0 0 10px}p{opacity:.8;line-height:1.5}.chip{display:block;width:100%;text-align:left;margin:8px 0;padding:12px 14px;border-radius:10px;border:1px solid #3A3A48;background:#1A1A22;color:inherit;font:inherit}</style>\n</head><body><div class=\"box\"><h1>Almost there</h1><p>Nothing fits a vegan dinner for 25 at €10 each. Vegan stays a must, so here's what comes closest.</p><button class=\"chip\">Groups up to 20 at €22 pp → Verde</button><button class=\"chip\">Split into two tables (13 + 12) at €22 pp</button></div></body></html>"
+        }
+      }
+    },
+    {
+      "delayMs": 50,
+      "event": {
+        "type": "done"
+      }
+    }
+  ]
+}

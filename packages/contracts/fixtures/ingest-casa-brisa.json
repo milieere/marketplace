@@ -1,0 +1,742 @@
+{
+  "scenario": "ingest-casa-brisa",
+  "description": "Brand Agent extracting Casa Brisa from its PDFs",
+  "match": ".*",
+  "events": [
+    {
+      "delayMs": 0,
+      "event": {
+        "type": "step",
+        "agent": "brand",
+        "id": "read",
+        "label": "Reading 3 documents",
+        "status": "started"
+      }
+    },
+    {
+      "delayMs": 900,
+      "event": {
+        "type": "step",
+        "agent": "brand",
+        "id": "read",
+        "label": "Reading 3 documents",
+        "status": "done",
+        "detail": "brand-guidelines.pdf (7 pages), offers.pdf, venue-factsheet.pdf"
+      }
+    },
+    {
+      "delayMs": 100,
+      "event": {
+        "type": "step",
+        "agent": "brand",
+        "id": "route",
+        "label": "Sorting pages by topic",
+        "status": "started"
+      }
+    },
+    {
+      "delayMs": 700,
+      "event": {
+        "type": "step",
+        "agent": "brand",
+        "id": "route",
+        "label": "Sorting pages by topic",
+        "status": "done"
+      }
+    },
+    {
+      "delayMs": 100,
+      "event": {
+        "type": "step",
+        "agent": "brand",
+        "id": "extract",
+        "label": "Extracting colours, type, voice, offers",
+        "status": "started"
+      }
+    },
+    {
+      "delayMs": 600,
+      "event": {
+        "type": "finding",
+        "field": "brandKit.colors[terracotta].hex",
+        "value": "#C8553D",
+        "evidence": {
+          "field": "brandKit.colors[terracotta].hex",
+          "documentId": "doc-guidelines",
+          "page": 5,
+          "quote": "TERRACOTTA (primary) HEX #C8553D",
+          "confidence": 0.95
+        }
+      }
+    },
+    {
+      "delayMs": 400,
+      "event": {
+        "type": "finding",
+        "field": "brandKit.typography",
+        "value": [
+          "Fraunces (display)",
+          "Inter (body)"
+        ],
+        "evidence": {
+          "field": "brandKit.typography",
+          "documentId": "doc-guidelines",
+          "page": 6,
+          "confidence": 0.9
+        }
+      }
+    },
+    {
+      "delayMs": 500,
+      "event": {
+        "type": "finding",
+        "field": "brandKit.voice.samples",
+        "value": [
+          "Pull up a chair. The terrace is yours tonight.",
+          "Small plates, big conversations.",
+          "Made to share, meant to linger."
+        ],
+        "evidence": {
+          "field": "brandKit.voice.samples",
+          "documentId": "doc-guidelines",
+          "page": 8,
+          "confidence": 0.85
+        }
+      }
+    },
+    {
+      "delayMs": 500,
+      "event": {
+        "type": "finding",
+        "field": "offerings[cb-sharing-menu].price",
+        "value": {
+          "amount": 28,
+          "currency": "EUR",
+          "unit": "person"
+        },
+        "evidence": {
+          "field": "offerings[cb-sharing-menu].price",
+          "documentId": "doc-offers",
+          "page": 1,
+          "quote": "Sharing menu · 28 € p.p. (min. 4) · V/VG/GF options",
+          "confidence": 0.95
+        }
+      }
+    },
+    {
+      "delayMs": 300,
+      "event": {
+        "type": "step",
+        "agent": "brand",
+        "id": "extract",
+        "label": "Extracting colours, type, voice, offers",
+        "status": "done",
+        "detail": "5 colours · 2 fonts · 4 offers · 1 venue"
+      }
+    },
+    {
+      "delayMs": 100,
+      "event": {
+        "type": "step",
+        "agent": "brand",
+        "id": "normalize",
+        "label": "Normalising values",
+        "status": "started"
+      }
+    },
+    {
+      "delayMs": 400,
+      "event": {
+        "type": "finding",
+        "field": "brandKit.colors[olive].hex",
+        "value": "#5B6B3A",
+        "evidence": {
+          "field": "brandKit.colors[olive].hex",
+          "documentId": "doc-guidelines",
+          "page": 5,
+          "quote": "OLIVE (secondary) CMYK 15 0 46 58",
+          "confidence": 0.8
+        }
+      }
+    },
+    {
+      "delayMs": 200,
+      "event": {
+        "type": "step",
+        "agent": "brand",
+        "id": "normalize",
+        "label": "Normalising values",
+        "status": "done",
+        "detail": "1 colour converted from CMYK"
+      }
+    },
+    {
+      "delayMs": 100,
+      "event": {
+        "type": "step",
+        "agent": "brand",
+        "id": "verify",
+        "label": "Double-checking uncertain fields",
+        "status": "started"
+      }
+    },
+    {
+      "delayMs": 900,
+      "event": {
+        "type": "step",
+        "agent": "brand",
+        "id": "verify",
+        "label": "Double-checking uncertain fields",
+        "status": "done",
+        "detail": "1 item flagged for review"
+      }
+    },
+    {
+      "delayMs": 100,
+      "event": {
+        "type": "record",
+        "record": {
+          "status": "draft",
+          "brand": {
+            "id": "casa-brisa",
+            "name": "Casa Brisa",
+            "industry": "hospitality",
+            "website": "https://casabrisa.example",
+            "summary": "Mediterranean tapas bar in Barcelona built around sharing plates and long terrace evenings.",
+            "languages": [
+              "es",
+              "ca",
+              "en"
+            ]
+          },
+          "brandKit": {
+            "colors": [
+              {
+                "id": "terracotta",
+                "hex": "#C8553D",
+                "role": "primary",
+                "pairsWith": [
+                  "sand",
+                  "ink"
+                ]
+              },
+              {
+                "id": "olive",
+                "hex": "#5B6B3A",
+                "role": "secondary",
+                "pairsWith": [
+                  "sand"
+                ]
+              },
+              {
+                "id": "saffron",
+                "hex": "#F2A541",
+                "role": "accent",
+                "pairsWith": [
+                  "ink"
+                ]
+              },
+              {
+                "id": "sand",
+                "hex": "#F6EFE6",
+                "role": "background",
+                "pairsWith": [
+                  "ink",
+                  "terracotta",
+                  "olive"
+                ]
+              },
+              {
+                "id": "ink",
+                "hex": "#2B2118",
+                "role": "text",
+                "pairsWith": [
+                  "sand",
+                  "saffron"
+                ]
+              }
+            ],
+            "typography": [
+              {
+                "role": "display",
+                "family": "Fraunces",
+                "weights": [
+                  600,
+                  800
+                ],
+                "fallback": "Georgia, serif"
+              },
+              {
+                "role": "body",
+                "family": "Inter",
+                "weights": [
+                  400,
+                  600
+                ],
+                "fallback": "system-ui, sans-serif"
+              }
+            ],
+            "logos": [
+              {
+                "variant": "primary",
+                "url": "/brands/casa-brisa/logo.svg",
+                "onBackgrounds": [
+                  "sand"
+                ]
+              },
+              {
+                "variant": "mono",
+                "url": "/brands/casa-brisa/logo-mono.svg",
+                "onBackgrounds": [
+                  "terracotta",
+                  "olive",
+                  "ink"
+                ]
+              }
+            ],
+            "style": {
+              "radius": 16,
+              "density": "airy",
+              "headlineCase": "sentence",
+              "imageTreatment": "full-bleed",
+              "composition": "text-over-image",
+              "ornament": "rule"
+            },
+            "voice": {
+              "summary": "Warm, generous, Mediterranean. Talks like a host, never like an ad.",
+              "toneRange": {
+                "formality": [
+                  0.2,
+                  0.6
+                ],
+                "energy": [
+                  0.3,
+                  0.8
+                ]
+              },
+              "doSay": [
+                "share",
+                "table",
+                "together",
+                "slow evenings"
+              ],
+              "dontSay": [
+                "cheap",
+                "deal",
+                "hurry",
+                "limited time"
+              ],
+              "samples": [
+                "Pull up a chair. The terrace is yours tonight.",
+                "Small plates, big conversations.",
+                "Made to share, meant to linger."
+              ]
+            },
+            "imagery": {
+              "style": "Warm golden-hour light, overhead shots of shared tables, natural textures, candid people",
+              "avoid": [
+                "flash photography",
+                "empty rooms",
+                "close-ups of hands eating"
+              ]
+            },
+            "photos": [
+              {
+                "id": "terrace-group",
+                "url": "/assets/casa-brisa/photos/terrace-group.jpg",
+                "description": "Group of friends sharing tapas on a sunny terrace",
+                "people": "group",
+                "orientation": "landscape",
+                "attributes": {
+                  "amenities": [
+                    "terrace"
+                  ],
+                  "ambience": [
+                    "lively"
+                  ],
+                  "occasion": [
+                    "group",
+                    "celebration"
+                  ]
+                }
+              },
+              {
+                "id": "candle-couple",
+                "url": "/assets/casa-brisa/photos/candle-couple.jpg",
+                "description": "Couple at a candle-lit corner table with cava glasses",
+                "people": "couple",
+                "orientation": "portrait",
+                "attributes": {
+                  "ambience": [
+                    "romantic",
+                    "cosy"
+                  ],
+                  "occasion": [
+                    "date-night"
+                  ]
+                }
+              },
+              {
+                "id": "table-overhead",
+                "url": "/assets/casa-brisa/photos/table-overhead.jpg",
+                "description": "Overhead shot of a table covered in small plates",
+                "people": "none",
+                "orientation": "square",
+                "attributes": {
+                  "occasion": [
+                    "group"
+                  ]
+                }
+              },
+              {
+                "id": "vermut-bar",
+                "url": "/assets/casa-brisa/photos/vermut-bar.jpg",
+                "description": "Vermouth glasses and olives on the bar at golden hour",
+                "people": "none",
+                "orientation": "landscape",
+                "attributes": {
+                  "occasion": [
+                    "work",
+                    "group"
+                  ]
+                }
+              },
+              {
+                "id": "private-room",
+                "url": "/assets/casa-brisa/photos/private-room.jpg",
+                "description": "Long table set for a celebration in a warm private room",
+                "people": "none",
+                "orientation": "landscape",
+                "attributes": {
+                  "amenities": [
+                    "private-room"
+                  ],
+                  "occasion": [
+                    "celebration",
+                    "business"
+                  ]
+                }
+              }
+            ],
+            "rules": [
+              {
+                "id": "headline-length",
+                "text": "Headlines are at most 60 characters.",
+                "check": {
+                  "kind": "max-length",
+                  "slot": "headline",
+                  "max": 60
+                },
+                "severity": "block"
+              },
+              {
+                "id": "no-discount-talk",
+                "text": "Never frame offers as cheap or discounted.",
+                "check": {
+                  "kind": "forbidden-term",
+                  "terms": [
+                    "cheap",
+                    "discount",
+                    "deal"
+                  ]
+                },
+                "severity": "block"
+              },
+              {
+                "id": "text-contrast",
+                "text": "Text must stay readable: at least 4.5:1 contrast against its background.",
+                "check": {
+                  "kind": "min-contrast",
+                  "ratio": 4.5
+                },
+                "severity": "block"
+              },
+              {
+                "id": "logo-background",
+                "text": "Primary logo only on sand; use the mono logo on dark colours.",
+                "severity": "block"
+              }
+            ]
+          },
+          "venues": [
+            {
+              "id": "casa-brisa-born",
+              "name": "Casa Brisa El Born",
+              "address": "Carrer de l'Argenteria 12, 08003 Barcelona",
+              "timezone": "Europe/Madrid",
+              "geo": {
+                "lat": 41.3839,
+                "lng": 2.1817
+              },
+              "openingHours": {
+                "tue": [
+                  {
+                    "from": "18:00",
+                    "to": "00:00"
+                  }
+                ],
+                "wed": [
+                  {
+                    "from": "18:00",
+                    "to": "00:00"
+                  }
+                ],
+                "thu": [
+                  {
+                    "from": "18:00",
+                    "to": "00:00"
+                  }
+                ],
+                "fri": [
+                  {
+                    "from": "13:00",
+                    "to": "01:00"
+                  }
+                ],
+                "sat": [
+                  {
+                    "from": "13:00",
+                    "to": "01:00"
+                  }
+                ],
+                "sun": [
+                  {
+                    "from": "13:00",
+                    "to": "17:00"
+                  }
+                ]
+              },
+              "attributes": {
+                "cuisine": [
+                  "tapas",
+                  "mediterranean"
+                ],
+                "amenities": [
+                  "terrace",
+                  "private-room"
+                ],
+                "accessibility": [
+                  "wheelchair",
+                  "step-free"
+                ],
+                "ambience": [
+                  "lively",
+                  "romantic"
+                ]
+              },
+              "priceLevel": 2,
+              "reserveUrl": "https://casabrisa.example/reserve?venue=born"
+            }
+          ],
+          "offerings": [
+            {
+              "id": "cb-sharing-menu",
+              "kind": "menu",
+              "name": "Menú para compartir",
+              "description": "Eight seasonal tapas for the table with bread and house vermouth. Vegan and gluten-free versions on request.",
+              "price": {
+                "amount": 28,
+                "currency": "EUR",
+                "unit": "person"
+              },
+              "attributes": {
+                "occasion": [
+                  "group",
+                  "celebration"
+                ],
+                "dietary": [
+                  "vegetarian",
+                  "vegan",
+                  "gluten-free"
+                ],
+                "cuisine": [
+                  "tapas"
+                ]
+              },
+              "partySize": {
+                "min": 4
+              }
+            },
+            {
+              "id": "cb-tasting-for-two",
+              "kind": "menu",
+              "name": "Tasting for two",
+              "description": "Six-course chef's selection with a glass of cava each.",
+              "price": {
+                "amount": 46,
+                "currency": "EUR",
+                "unit": "group"
+              },
+              "attributes": {
+                "occasion": [
+                  "date-night"
+                ]
+              },
+              "partySize": {
+                "min": 2,
+                "max": 2
+              },
+              "availability": {
+                "days": [
+                  "tue",
+                  "wed",
+                  "thu",
+                  "fri",
+                  "sat"
+                ],
+                "from": "19:30"
+              }
+            },
+            {
+              "id": "cb-vermut-hour",
+              "kind": "promotion",
+              "name": "Vermut hour",
+              "description": "House vermouth with olives and chips.",
+              "price": {
+                "amount": 5,
+                "currency": "EUR",
+                "unit": "person"
+              },
+              "attributes": {
+                "occasion": [
+                  "group",
+                  "work"
+                ]
+              },
+              "availability": {
+                "days": [
+                  "tue",
+                  "wed",
+                  "thu"
+                ],
+                "from": "18:00",
+                "to": "20:00"
+              },
+              "conditions": "Tuesday to Thursday, 18:00–20:00, terrace only."
+            },
+            {
+              "id": "cb-private-room",
+              "kind": "event",
+              "name": "Private room celebration",
+              "description": "Our back room for 10–20 guests with a set tapas menu and a dedicated host.",
+              "price": {
+                "amount": 35,
+                "currency": "EUR",
+                "unit": "person",
+                "from": true
+              },
+              "attributes": {
+                "occasion": [
+                  "celebration",
+                  "business",
+                  "group"
+                ]
+              },
+              "partySize": {
+                "min": 10,
+                "max": 20
+              },
+              "conditions": "10–20 guests. Book at least 48 hours ahead.",
+              "venueIds": [
+                "casa-brisa-born"
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "id": "doc-guidelines",
+              "kind": "pdf",
+              "uri": "data/sources/casa-brisa/brand-guidelines.pdf",
+              "addedAt": "2026-09-19T10:00:00Z"
+            },
+            {
+              "id": "doc-offers",
+              "kind": "pdf",
+              "uri": "data/sources/casa-brisa/offers.pdf",
+              "addedAt": "2026-09-19T10:00:00Z"
+            },
+            {
+              "id": "doc-photos",
+              "kind": "image",
+              "uri": "data/sources/casa-brisa/photos/",
+              "addedAt": "2026-09-19T10:00:00Z"
+            },
+            {
+              "id": "doc-website",
+              "kind": "url",
+              "uri": "https://casabrisa.example",
+              "addedAt": "2026-09-19T10:00:00Z"
+            }
+          ],
+          "evidence": [
+            {
+              "field": "brand.summary",
+              "documentId": "doc-guidelines",
+              "page": 2,
+              "quote": "We are the table you share with the people you love.",
+              "confidence": 0.9
+            },
+            {
+              "field": "brandKit.colors[terracotta].hex",
+              "documentId": "doc-guidelines",
+              "page": 5,
+              "confidence": 0.95
+            },
+            {
+              "field": "brandKit.voice.samples",
+              "documentId": "doc-guidelines",
+              "page": 8,
+              "confidence": 0.85
+            },
+            {
+              "field": "brandKit.photos[terrace-group].attributes",
+              "documentId": "doc-photos",
+              "confidence": 0.85
+            },
+            {
+              "field": "venues[casa-brisa-born].openingHours",
+              "documentId": "doc-website",
+              "confidence": 0.9
+            },
+            {
+              "field": "offerings[cb-sharing-menu].price",
+              "documentId": "doc-offers",
+              "page": 1,
+              "quote": "Sharing menu · 28 € p.p. (min. 4) · V/VG/GF options",
+              "confidence": 0.95
+            },
+            {
+              "field": "offerings[cb-tasting-for-two].price",
+              "documentId": "doc-offers",
+              "page": 1,
+              "quote": "Tasting for two · 46 €",
+              "confidence": 0.95
+            },
+            {
+              "field": "offerings[cb-vermut-hour].conditions",
+              "documentId": "doc-offers",
+              "quote": "Vermut hour Tue–Thu 18–20h, terrace",
+              "confidence": 0.85
+            },
+            {
+              "field": "offerings[cb-private-room].conditions",
+              "documentId": "doc-offers",
+              "page": 1,
+              "quote": "Private room · from 35 € p.p. · 10–20 guests · 48h notice",
+              "confidence": 0.9
+            }
+          ],
+          "reviewNotes": [
+            "Colour 'Olive' was only given in CMYK (15 0 46 58); converted to #5B6B3A. Please confirm."
+          ]
+        }
+      }
+    },
+    {
+      "delayMs": 50,
+      "event": {
+        "type": "done"
+      }
+    }
+  ]
+}

@@ -4,13 +4,23 @@
   "private": true,
   "type": "module",
   "exports": {
-    "./health": "./src/health.ts"
+    "./artifact": "./src/artifact.ts",
+    "./brand-record": "./src/brand-record.ts",
+    "./events": "./src/events.ts",
+    "./health": "./src/health.ts",
+    "./intent": "./src/intent.ts",
+    "./requests": "./src/requests.ts",
+    "./vocabulary": "./src/vocabulary.ts",
+    "./fixtures/*": "./fixtures/*.json"
   },
   "scripts": {
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
   },
   "devDependencies": {
-    "typescript": "^7.0.2"
+    "@types/node": "^26.6.2",
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.1"
   },
   "dependencies": {
     "zod": "^4.6.5"

@@ -13,8 +13,8 @@ apps/
   web/                    Next.js, JavaScript                                   (FE owner)
   api/                    Hono, TypeScript: both agents, HTTP + SSE             (BE owner)
 packages/
-  contracts/              TypeScript + Zod, shared by web and api: request schemas, AgentEvent,
-                          artifact/brand summaries, recorded mock event streams
+  contracts/              TypeScript + Zod, shared by web and api: the data model (BrandRecord, Intent,
+                          Artifact, …), request schemas, AgentEvent, recorded mock event streams
 data/
   vocabularies/           per-industry attribute vocabularies (hospitality.json)
   brands/                 BrandRecord JSON, one per brand (the demo "database")
@@ -47,11 +47,8 @@ context/                  product and design docs (this folder)
 Ports and adapters. The dependency direction always points inward: `http → agents → ports ← adapters`, with `domain` at the centre.
 
 ```
-domain/             pure types (Zod) and pure functions, no I/O
-  brand-record.ts   Brand, BrandKit, Venue, Offering, Photo, Evidence
-  intent.ts
-  artifact.ts
-  vocabulary.ts     load + validate attributes against a vocabulary
+domain/             pure functions over the contract types, no I/O
+  vocabulary.ts     validate attributes against a vocabulary
   filter.ts         hard-constraint matching (budget, hours, party, attributes)
   relax.ts          relaxation ladder + near-miss suggestions
   combine.ts        multi-need combinations within the overall budget
@@ -73,6 +70,7 @@ adapters/           one folder per external system, implements ports
 agents/
   brand/            read.ts, route.ts, extractors/<topic>.ts, normalize.ts, verify.ts, brand-agent.ts
   creative/         understand.ts, rank.ts, create.ts, render.ts, creative-agent.ts
+mock/               recorded-streams.ts, replay.ts: MOCK=1 replays packages/contracts/fixtures
 templates/          banner.ts, card.ts: (spec, brandKit) → HTML string, pure
 prompts/            one .md per LLM step (understand, rank, create, extract-<topic>, verify, tag-photo)
 http/
@@ -86,6 +84,7 @@ index.ts            node server entry (dev); Vercel entry exports the app
 **Rules:**
 - **Agents depend on ports, never on adapters.** `container.ts` is the only file that imports concrete adapters.
 - **Constructor injection, no DI framework.** Each agent step is a small class or function that receives only the ports it needs.
+- **Types come from `packages/contracts`.** The data model travels inside the events (intents, artifacts, brand records), so its Zod schemas are the API contract. `apps/api` imports them; it never redefines them.
 - **Domain is pure.** Filter, checks, colour maths and templates are deterministic and unit-tested. The LLM steps are thin: a prompt, a schema, and one call through `Llm`.
 - **Extension points:**
   - new source type → new `DocumentReader`
@@ -102,7 +101,7 @@ Defined in `packages/contracts`, served by `apps/api`.
 | Method | Path | Returns |
 |---|---|---|
 | `POST` | `/v1/generate` `{ text, now?, timezone?, format? }` | SSE stream of `AgentEvent`: `step`, `intent`, `matches`, `relaxed`, `revision`, `artifact` or `no-match`, `error`, `done` |
-| `POST` | `/v1/brands/ingest` (multipart source files) | SSE stream of `AgentEvent`: `step`, `finding`, then the draft `BrandRecord` |
+| `POST` | `/v1/brands/ingest` (multipart source files) | SSE stream of `AgentEvent`: `step`, `finding`, `record` (the draft `BrandRecord`), `done` |
 | `GET` | `/v1/brands` | brand summaries (id, name, logo, status) |
 | `GET` | `/v1/brands/:id` | full `BrandRecord` (for the review screen) |
 | `POST` | `/v1/brands/:id/verify` | marks the record `verified` |
@@ -122,14 +121,14 @@ NEBIUS_API_KEY, NEBIUS_BASE_URL=https://api.tokenfactory.nebius.com/v1
 MODEL_TEXT=deepseek-ai/DeepSeek-V4-Pro, MODEL_TEXT_FALLBACK=nvidia/nemotron-3-super-120b-a12b, MODEL_VISION=google/gemma-3-27b-it
 SLNG_API_KEY, SLNG_STT_MODEL=deepgram/nova:3
 BLOB_READ_WRITE_TOKEN   (prod only; local blob store otherwise)
-MOCK=0
+MOCK=0, MOCK_SPEED=1
 ```
 
 ## Testing
 
 | Level | What | How |
 |---|---|---|
-| Unit | `domain/*`, templates | vitest, no network |
+| Unit | `domain/*`, templates | vitest, no network; in `apps/api/test/`, mirroring `src/` |
 | Extraction eval | Brand Agent on `data/sources/casa-brisa/` vs. `expected.json` | `npm run eval:extraction`: field-by-field score |
 | Intent eval | ~10 golden queries → expected `Intent` fields | `npm run eval:intents`: pass/fail per query |
 | End to end | `curl -N /v1/generate` with the demo queries | manual, before the demo |

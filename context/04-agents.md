@@ -81,6 +81,7 @@ interface AgentEvents { emit(e: AgentEvent): void }
 type AgentEvent =
   | { type: "step"; agent: "brand" | "creative"; id: string; label: string; status: "started" | "done" | "failed"; detail?: string }
   | { type: "finding"; field: string; value: unknown; evidence?: Evidence }   // brand agent: "Primary colour #C8553D (p.5)"
+  | { type: "record"; record: BrandRecord }                                   // brand agent finished: the draft record
   | { type: "intent"; intent: Intent }
   | { type: "matches"; brands: { id: string; name: string; needIds: string[]; rationale: string }[] }
   | { type: "relaxed"; relaxations: Relaxation[] }                             // "No terrace tonight, looking wider…"

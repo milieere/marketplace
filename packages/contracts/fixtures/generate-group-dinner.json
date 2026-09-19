@@ -1,0 +1,379 @@
+{
+  "scenario": "generate-group-dinner",
+  "description": "Q1: group dinner with dietary needs and a terrace, two matching brands, one self-correction",
+  "match": ".*",
+  "events": [
+    {
+      "delayMs": 0,
+      "event": {
+        "type": "step",
+        "agent": "creative",
+        "id": "understand",
+        "label": "Understanding your request",
+        "status": "started"
+      }
+    },
+    {
+      "delayMs": 900,
+      "event": {
+        "type": "step",
+        "agent": "creative",
+        "id": "understand",
+        "label": "Understanding your request",
+        "status": "done",
+        "detail": "8 people · Friday 21:00 · €30 pp · vegan + gluten-free · terrace"
+      }
+    },
+    {
+      "delayMs": 50,
+      "event": {
+        "type": "intent",
+        "intent": {
+          "id": "int-q1",
+          "raw": {
+            "text": "Friday, 8 friends, two vegans, one celiac, terrace, around 30 euros each",
+            "inputs": [
+              {
+                "kind": "text"
+              }
+            ]
+          },
+          "scope": "in-domain",
+          "language": "en",
+          "party": {
+            "size": 8,
+            "relation": "friends"
+          },
+          "budget": {
+            "amount": 30,
+            "per": "person"
+          },
+          "phrases": [
+            "8 friends",
+            "terrace",
+            "two vegans",
+            "one celiac"
+          ],
+          "needs": [
+            {
+              "id": "n1",
+              "label": "dinner",
+              "kinds": [
+                "menu"
+              ],
+              "when": {
+                "start": "2026-09-25T21:00:00+02:00"
+              },
+              "required": {
+                "dietary": [
+                  "vegan",
+                  "gluten-free"
+                ],
+                "amenities": [
+                  "terrace"
+                ]
+              },
+              "preferred": {
+                "occasion": [
+                  "group"
+                ]
+              }
+            }
+          ],
+          "missing": []
+        }
+      }
+    },
+    {
+      "delayMs": 100,
+      "event": {
+        "type": "step",
+        "agent": "creative",
+        "id": "filter",
+        "label": "Checking 8 brands against your needs",
+        "status": "started"
+      }
+    },
+    {
+      "delayMs": 400,
+      "event": {
+        "type": "step",
+        "agent": "creative",
+        "id": "filter",
+        "label": "Checking 8 brands against your needs",
+        "status": "done",
+        "detail": "2 match · 6 excluded (no terrace, no vegan menu)"
+      }
+    },
+    {
+      "delayMs": 100,
+      "event": {
+        "type": "step",
+        "agent": "creative",
+        "id": "rank",
+        "label": "Picking the best fit",
+        "status": "started"
+      }
+    },
+    {
+      "delayMs": 1200,
+      "event": {
+        "type": "step",
+        "agent": "creative",
+        "id": "rank",
+        "label": "Picking the best fit",
+        "status": "done"
+      }
+    },
+    {
+      "delayMs": 50,
+      "event": {
+        "type": "matches",
+        "brands": [
+          {
+            "id": "casa-brisa",
+            "name": "Casa Brisa",
+            "needIds": [
+              "n1"
+            ],
+            "rationale": "Terrace + sharing menu with vegan and gluten-free versions, €28 pp"
+          },
+          {
+            "id": "verde",
+            "name": "Verde",
+            "needIds": [
+              "n1"
+            ],
+            "rationale": "Fully vegan and gluten-free group menu on a terrace, €22 pp"
+          }
+        ]
+      }
+    },
+    {
+      "delayMs": 100,
+      "event": {
+        "type": "step",
+        "agent": "creative",
+        "id": "create-casa-brisa",
+        "label": "Writing for Casa Brisa",
+        "status": "started"
+      }
+    },
+    {
+      "delayMs": 100,
+      "event": {
+        "type": "step",
+        "agent": "creative",
+        "id": "create-verde",
+        "label": "Writing for Verde",
+        "status": "started"
+      }
+    },
+    {
+      "delayMs": 1800,
+      "event": {
+        "type": "revision",
+        "brandId": "verde",
+        "issues": [
+          "headline-length: headline is 74 characters, max 48"
+        ]
+      }
+    },
+    {
+      "delayMs": 700,
+      "event": {
+        "type": "step",
+        "agent": "creative",
+        "id": "create-casa-brisa",
+        "label": "Writing for Casa Brisa",
+        "status": "done",
+        "detail": "Brand check passed"
+      }
+    },
+    {
+      "delayMs": 300,
+      "event": {
+        "type": "artifact",
+        "artifact": {
+          "id": "art-q1-casa-brisa",
+          "intentId": "int-q1",
+          "needIds": [
+            "n1"
+          ],
+          "brandId": "casa-brisa",
+          "venueId": "casa-brisa-born",
+          "offeringIds": [
+            "cb-sharing-menu"
+          ],
+          "language": "en",
+          "format": "card",
+          "tone": {
+            "formality": 0.3,
+            "energy": 0.7
+          },
+          "slots": {
+            "headline": "Friday on the terrace, all 8 of you covered",
+            "subline": "Sharing menu · El Born",
+            "body": "Eight seasonal tapas for the table, with vegan and gluten-free versions for everyone who needs them. Pull up a chair.",
+            "badges": [
+              "🌱 Vegan",
+              "Gluten-free",
+              "Terrace",
+              "€28 pp"
+            ],
+            "cta": {
+              "label": "Reserve for 8 · Fri 21:00",
+              "url": "https://casabrisa.example/reserve?venue=born&party=8"
+            }
+          },
+          "priceLines": [
+            {
+              "offeringId": "cb-sharing-menu",
+              "label": "Sharing menu (min. 4)",
+              "amount": 28,
+              "unit": "person",
+              "from": false
+            }
+          ],
+          "photoId": "terrace-group",
+          "trace": [
+            {
+              "element": "headline",
+              "drivenBy": [
+                "intent.needs[n1].required.amenities",
+                "intent.party.size"
+              ],
+              "brandFacts": [
+                "brandKit.voice.samples"
+              ]
+            },
+            {
+              "element": "badges",
+              "drivenBy": [
+                "intent.needs[n1].required.dietary",
+                "intent.needs[n1].required.amenities"
+              ],
+              "brandFacts": [
+                "offerings[cb-sharing-menu].attributes.dietary",
+                "venues[casa-brisa-born].attributes.amenities"
+              ]
+            },
+            {
+              "element": "photo",
+              "drivenBy": [
+                "intent.party.size",
+                "intent.needs[n1].required.amenities"
+              ],
+              "brandFacts": [
+                "brandKit.photos[terrace-group].attributes"
+              ]
+            }
+          ],
+          "check": {
+            "passed": true,
+            "issues": []
+          },
+          "relaxed": [],
+          "htmlUrl": "/v1/artifacts/art-q1-casa-brisa",
+          "createdAt": "2026-09-25T18:40:00+02:00"
+        },
+        "html": "<!doctype html><html><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">\n<link href=\"https://fonts.googleapis.com/css2?family=Fraunces:wght@600;800&family=Inter:wght@400;600&display=swap\" rel=\"stylesheet\">\n<style>\nbody{margin:0;font-family:Inter,system-ui,sans-serif;background:#F6EFE6;color:#2B2118}\n.card{max-width:420px;margin:0 auto;border-radius:16px;overflow:hidden;background:#F6EFE6}\n.hero{height:180px;background:linear-gradient(135deg,#C8553D,#2B2118);}\n.content{padding:20px 22px 24px}\n.brand{font-size:12px;letter-spacing:.14em;text-transform:uppercase;opacity:.75}\nh1{font-family:'Fraunces',Georgia,serif;font-size:28px;line-height:1.15;margin:8px 0 6px;text-transform:none}\n.sub{margin:0 0 12px;font-weight:600}\np{margin:0 0 14px;line-height:1.5}\n.badge{display:inline-block;border:1px solid #2B2118;border-radius:999px;padding:3px 10px;font-size:12px;margin:0 6px 6px 0}\nul{list-style:none;padding:0;margin:10px 0 16px}li{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #2B211833}\na.cta{display:block;text-align:center;background:#C8553D;color:#F6EFE6;text-decoration:none;font-weight:600;padding:12px;border-radius:10px}\nh1:after{content:'';display:block;width:48px;height:3px;background:#C8553D;margin-top:10px}\n</style></head><body><div class=\"card\"><div class=\"hero\"></div><div class=\"content\">\n<div class=\"brand\">Casa Brisa</div><h1>Friday on the terrace, all 8 of you covered</h1><div class=\"sub\">Sharing menu · El Born</div><p>Eight seasonal tapas for the table, with vegan and gluten-free versions for everyone who needs them. Pull up a chair.</p>\n<div><span class=\"badge\">🌱 Vegan</span><span class=\"badge\">Gluten-free</span><span class=\"badge\">Terrace</span><span class=\"badge\">€28 pp</span></div><ul><li><span>Sharing menu (min. 4)</span><strong>€28 pp</strong></li></ul><a class=\"cta\" href=\"https://casabrisa.example/reserve?venue=born&party=8\">Reserve for 8 · Fri 21:00</a></div></div></body></html>"
+      }
+    },
+    {
+      "delayMs": 900,
+      "event": {
+        "type": "step",
+        "agent": "creative",
+        "id": "create-verde",
+        "label": "Writing for Verde",
+        "status": "done",
+        "detail": "Brand check passed after 1 revision"
+      }
+    },
+    {
+      "delayMs": 300,
+      "event": {
+        "type": "artifact",
+        "artifact": {
+          "id": "art-q1-verde",
+          "intentId": "int-q1",
+          "needIds": [
+            "n1"
+          ],
+          "brandId": "verde",
+          "venueId": "verde-gracia",
+          "offeringIds": [
+            "vd-group-menu"
+          ],
+          "language": "en",
+          "format": "card",
+          "tone": {
+            "formality": 0.3,
+            "energy": 0.7
+          },
+          "slots": {
+            "headline": "Eight at the table, all plant-based",
+            "subline": "Group menu · Gràcia",
+            "body": "Every dish is vegan and gluten-free, so nobody has to ask. Long table on the terrace, Friday night.",
+            "badges": [
+              "🌱 Vegan",
+              "Gluten-free",
+              "Terrace",
+              "€22 pp"
+            ],
+            "cta": {
+              "label": "Reserve for 8 · Fri 21:00",
+              "url": "https://verde.example/reserve?party=8"
+            }
+          },
+          "priceLines": [
+            {
+              "offeringId": "vd-group-menu",
+              "label": "Group menu (6–20)",
+              "amount": 22,
+              "unit": "person",
+              "from": false
+            }
+          ],
+          "photoId": "long-table",
+          "trace": [
+            {
+              "element": "headline",
+              "drivenBy": [
+                "intent.party.size",
+                "intent.needs[n1].required.dietary"
+              ],
+              "brandFacts": [
+                "brandKit.voice.samples"
+              ]
+            },
+            {
+              "element": "badges",
+              "drivenBy": [
+                "intent.needs[n1].required.dietary"
+              ],
+              "brandFacts": [
+                "offerings[vd-group-menu].attributes.dietary"
+              ]
+            }
+          ],
+          "check": {
+            "passed": true,
+            "issues": []
+          },
+          "relaxed": [],
+          "htmlUrl": "/v1/artifacts/art-q1-verde",
+          "createdAt": "2026-09-25T18:40:00+02:00"
+        },
+        "html": "<!doctype html><html><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">\n<link href=\"https://fonts.googleapis.com/css2?family=Nunito:wght@700;800&family=Inter:wght@400;600&display=swap\" rel=\"stylesheet\">\n<style>\nbody{margin:0;font-family:Inter,system-ui,sans-serif;background:#F7F3E8;color:#1F3D1C}\n.card{max-width:420px;margin:0 auto;border-radius:16px;overflow:hidden;background:#F7F3E8}\n.hero{height:180px;background:linear-gradient(135deg,#3F7D3A,#1F3D1C);}\n.content{padding:20px 22px 24px}\n.brand{font-size:12px;letter-spacing:.14em;text-transform:uppercase;opacity:.75}\nh1{font-family:'Nunito',Georgia,serif;font-size:28px;line-height:1.15;margin:8px 0 6px;text-transform:none}\n.sub{margin:0 0 12px;font-weight:600}\np{margin:0 0 14px;line-height:1.5}\n.badge{display:inline-block;border:1px solid #1F3D1C;border-radius:999px;padding:3px 10px;font-size:12px;margin:0 6px 6px 0}\nul{list-style:none;padding:0;margin:10px 0 16px}li{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #1F3D1C33}\na.cta{display:block;text-align:center;background:#3F7D3A;color:#F7F3E8;text-decoration:none;font-weight:600;padding:12px;border-radius:10px}\n\n</style></head><body><div class=\"card\"><div class=\"hero\"></div><div class=\"content\">\n<div class=\"brand\">Verde</div><h1>Eight at the table, all plant-based</h1><div class=\"sub\">Group menu · Gràcia</div><p>Every dish is vegan and gluten-free, so nobody has to ask. Long table on the terrace, Friday night.</p>\n<div><span class=\"badge\">🌱 Vegan</span><span class=\"badge\">Gluten-free</span><span class=\"badge\">Terrace</span><span class=\"badge\">€22 pp</span></div><ul><li><span>Group menu (6–20)</span><strong>€22 pp</strong></li></ul><a class=\"cta\" href=\"https://verde.example/reserve?party=8\">Reserve for 8 · Fri 21:00</a></div></div></body></html>"
+      }
+    },
+    {
+      "delayMs": 50,
+      "event": {
+        "type": "done"
+      }
+    }
+  ]
+}
