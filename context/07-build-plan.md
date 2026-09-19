@@ -9,7 +9,8 @@
 | Merged | #2 monorepo scaffold (npm workspaces, `apps/web` JS, `apps/api` TS, `packages/contracts`); #3 API contract + mock mode (`MOCK=1` replays recorded event streams; the frontend builds against it) |
 | In flight | **PR 2** `feat/04-creative-agent`: the whole Creative Agent offline (Understand, Match, Pick, Create with check + one rewrite, Render), `GET /v1/artifacts/:id`, container, 21 stand-in Unsplash photos in `data/sources/` (credits in `CREDITS.md`), photo chosen in code from tags, `npm run render:samples` |
 | Merged | #4 Match (`domain/time.ts`, `cost.ts`, `match.ts`) |
-| Next | **PR 3**: Nebius adapter behind `ports/llm.ts` (optional `images` already in the port for the Brand Agent), `eval:intents`, `e2e:live`. Until then `MOCK=0` answers 501 |
+| In flight (2) | **PR 3** `feat/05-live-llm` (stacked on PR 2): Nebius adapter (`adapters/nebius/ai-sdk-llm.ts`: validate → retry once → fallback model), `MODEL_TEXT=deepseek-ai/DeepSeek-V4-Pro-0813`, `npm run e2e:live` → **12/12 coverage queries pass live** (1–23 s each), cards in `out/e2e/index.html`. Use the **global** endpoint `https://api.tokenfactory.nebius.com/v1`: the us-north1 endpoint serves only 4 models |
+| Next | `eval:intents` (not built yet; `e2e:live` covers the matrix end to end), frontend run with `MOCK=0`, Brand Agent in worktree `feat/06-brand-agent` |
 | Frontend | the colleague owns `apps/web` and builds against `MOCK=1`. Don't edit `apps/web` beyond wiring. |
 
 ## Decisions (don't reopen)
