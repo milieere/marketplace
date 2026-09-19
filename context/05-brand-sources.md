@@ -11,7 +11,7 @@ What a hospitality brand realistically hands over, and what the Brand Agent extr
 | `logo.svg`, `logo-mono.svg` | Asset | The logo files | `BrandKit.logos` |
 | `photos/*.jpg` (6–10) | Asset | The brand's own photography: terrace, tables, people, interior | `BrandKit.photos`, tagged by the vision model |
 | `offers.pdf` or `offers.csv` | Semi-structured, 1–2 pages | Current promotable offers: name, price, conditions, occasion | `Offering[]` |
-| `venue-factsheet.pdf` or website URL | Semi-structured | Address, hours, amenities, accessibility | `Venue[]` |
+| `location-factsheet.pdf` or website URL | Semi-structured | Address, hours, amenities, accessibility | `Location[]` |
 
 The pack deliberately mixes **designed PDF**, **structured JSON/CSV** and **plain facts**, so the demo shows the agent handling all three.
 
@@ -61,7 +61,7 @@ For a hotel, the same sheet holds packages (romantic weekend, spa day). The shap
 | **Café Lumen** | Brunch café | wifi, power-outlets, wheelchair, step-free, accessible-wc · quiet, family | Family brunch €18 pp · Work day pass €12 pp (Mon–Fri 8–13) · Kids' menu €8 | Pastel yellow, geometric sans, friendly |
 | **El Marcador** | Sports bar | tv-sports · lively | Match night (beer bucket + tapas) €15 pp · Group tapas €20 pp (min 6) | Blaugrana-adjacent navy and red, sporty italic sans, dense |
 | **Terrat** | Rooftop cocktail bar | rooftop, terrace · *not step-free* · romantic, lively · 18–02 | Cocktails for two €36 · Sunset session €12 pp | Black and coral, art-deco display, duotone images |
-| **Grupo Mar** | Seafood group, **2 venues** | Barceloneta: terrace, private-room · Gràcia: wheelchair, *no private room* | Celebration menu €45 pp (8–16, Barceloneta) · Paella for two €38 · Weekday lunch €20 pp | Sea blue and white, clean serif, stamp ornament |
+| **Grupo Mar** | Seafood group, **2 locations** | Barceloneta: terrace, private-room · Gràcia: wheelchair, *no private room* | Celebration menu €45 pp (8–16, Barceloneta) · Paella for two €38 · Weekday lunch €20 pp | Sea blue and white, clean serif, stamp ornament |
 
 Plus **`_house.json`**: INTENT's own brand kit, used only for the no-match fallback page and never matched.
 
@@ -78,7 +78,7 @@ Expected results are what the Filter/Combine steps must produce. Rank then choos
 | Q5 | "Sunday brunch, two adults, two kids, grandma uses a wheelchair" | accessibility (never relaxed), time | Café Lumen (family brunch), Hotel Albada (Sunday brunch) | Terrat (not step-free, closed), Casa Brisa (opens 13:00 Sunday) |
 | Q6 | "Watch the Barça game tonight, 6 friends, beer and tapas" | single strong match | El Marcador (match night) | Everyone else (no tv-sports) |
 | Q7 | "Quiet café with wifi and plugs, tomorrow morning, 3 hours" | amenities + weekday time | Café Lumen (work day pass) | — |
-| Q8 | "Mum's 60th, 12 people, she loves seafood, private room, Saturday lunch" | venue choice, party size, soft cuisine | Grupo Mar **Barceloneta** (celebration menu), Casa Brisa (private room, ranked lower: not seafood) | Grupo Mar Gràcia (no private room) |
+| Q8 | "Mum's 60th, 12 people, she loves seafood, private room, Saturday lunch" | location choice, party size, soft cuisine | Grupo Mar **Barceloneta** (celebration menu), Casa Brisa (private room, ranked lower: not seafood) | Grupo Mar Gràcia (no private room) |
 | Q9 | "Ramen for two tonight, on a terrace" | **relaxation** | Nami Ramen night, with `relaxed: amenities:terrace` → copy says "no terrace, but…" | — |
 | Q10 | "Vegan dinner for 25 people under €10 each" | **no results** → near-miss suggestions | `NoMatch`: "Groups up to 20 at €22 pp → Verde", "Split into two tables" | Vegan is never relaxed |
 | Q11 | "My car is making a weird noise" | **out of domain** | `NoMatch` out-of-domain with example queries | — |

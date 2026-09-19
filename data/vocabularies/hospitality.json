@@ -39,15 +39,15 @@
         "cocktails"
       ],
       "appliesTo": [
-        "venue",
+        "location",
         "offering"
       ],
-      "constraint": "soft",
+      "constraint": "either",
       "relaxable": true
     },
     {
       "key": "amenities",
-      "description": "Physical facilities available at the venue",
+      "description": "Physical facilities available at the location",
       "values": [
         "terrace",
         "rooftop",
@@ -60,7 +60,7 @@
         "pet-friendly"
       ],
       "appliesTo": [
-        "venue",
+        "location",
         "photo"
       ],
       "constraint": "hard",
@@ -68,21 +68,21 @@
     },
     {
       "key": "accessibility",
-      "description": "Accessibility features of the venue",
+      "description": "Accessibility features of the location",
       "values": [
         "wheelchair",
         "step-free",
         "accessible-wc"
       ],
       "appliesTo": [
-        "venue"
+        "location"
       ],
       "constraint": "hard",
       "relaxable": false
     },
     {
       "key": "ambience",
-      "description": "Atmosphere of the venue",
+      "description": "Atmosphere of the location",
       "values": [
         "romantic",
         "lively",
@@ -91,7 +91,7 @@
         "family"
       ],
       "appliesTo": [
-        "venue",
+        "location",
         "photo"
       ],
       "constraint": "soft",
@@ -110,6 +110,22 @@
       ],
       "appliesTo": [
         "offering",
+        "photo"
+      ],
+      "constraint": "soft",
+      "relaxable": true
+    },
+    {
+      "key": "people",
+      "description": "Who is pictured in a photo; matched against the party in the intent",
+      "values": [
+        "none",
+        "solo",
+        "couple",
+        "group",
+        "family"
+      ],
+      "appliesTo": [
         "photo"
       ],
       "constraint": "soft",

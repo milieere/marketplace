@@ -1,0 +1,351 @@
+{
+  "status": "verified",
+  "brand": {
+    "id": "nami-ramen",
+    "name": "Nami Ramen",
+    "industry": "hospitality",
+    "website": "https://namiramen.example",
+    "summary": "Loud, fast, late-night ramen bar in the Raval.",
+    "languages": [
+      "es",
+      "en"
+    ]
+  },
+  "brandKit": {
+    "colors": [
+      {
+        "id": "red",
+        "hex": "#D7263D",
+        "role": "primary",
+        "pairsWith": [
+          "black",
+          "white"
+        ]
+      },
+      {
+        "id": "black",
+        "hex": "#111111",
+        "role": "background",
+        "pairsWith": [
+          "white",
+          "yellow",
+          "red"
+        ]
+      },
+      {
+        "id": "white",
+        "hex": "#FFFFFF",
+        "role": "text",
+        "pairsWith": [
+          "black",
+          "red"
+        ]
+      },
+      {
+        "id": "yellow",
+        "hex": "#F5C518",
+        "role": "accent",
+        "pairsWith": [
+          "black"
+        ]
+      }
+    ],
+    "typography": [
+      {
+        "role": "display",
+        "family": "Bebas Neue",
+        "weights": [
+          400
+        ],
+        "fallback": "Impact, sans-serif"
+      },
+      {
+        "role": "body",
+        "family": "Inter",
+        "weights": [
+          400,
+          700
+        ],
+        "fallback": "system-ui, sans-serif"
+      }
+    ],
+    "logos": [],
+    "style": {
+      "radius": 0,
+      "density": "dense",
+      "headlineCase": "upper",
+      "imageTreatment": "full-bleed",
+      "composition": "text-over-image",
+      "ornament": "pattern"
+    },
+    "voice": {
+      "summary": "Punchy, playful, a bit cheeky. Short sentences. Slurping encouraged.",
+      "toneRange": {
+        "formality": [
+          0.0,
+          0.3
+        ],
+        "energy": [
+          0.7,
+          1.0
+        ]
+      },
+      "doSay": [
+        "slurp",
+        "steam",
+        "late"
+      ],
+      "dontSay": [
+        "authentic",
+        "fusion",
+        "gourmet"
+      ],
+      "samples": [
+        "SLURP NOW. THINK LATER.",
+        "Broth for 18 hours. Gone in 8 minutes.",
+        "Late? Good. We're still steaming."
+      ]
+    },
+    "imagery": {
+      "style": "High-contrast night shots, steam, neon reflections",
+      "avoid": [
+        "daylight",
+        "empty bowls"
+      ]
+    },
+    "photos": [
+      {
+        "id": "steam-bowl",
+        "url": "/assets/nami-ramen/photos/steam-bowl.jpg",
+        "description": "Steaming bowl of ramen under neon light",
+        "orientation": "portrait",
+        "attributes": {
+          "people": [
+            "none"
+          ],
+          "ambience": [
+            "lively"
+          ]
+        }
+      },
+      {
+        "id": "counter-pair",
+        "url": "/assets/nami-ramen/photos/counter-pair.jpg",
+        "description": "Two friends at the counter, chopsticks up",
+        "orientation": "landscape",
+        "attributes": {
+          "people": [
+            "couple"
+          ],
+          "ambience": [
+            "lively"
+          ],
+          "occasion": [
+            "date-night"
+          ]
+        }
+      }
+    ],
+    "rules": [
+      {
+        "id": "headline-length",
+        "text": "Headlines are at most 32 characters.",
+        "check": {
+          "kind": "max-length",
+          "slot": "headline",
+          "max": 32
+        },
+        "severity": "block"
+      },
+      {
+        "id": "forbidden-terms",
+        "text": "No foodie clichés.",
+        "check": {
+          "kind": "forbidden-term",
+          "terms": [
+            "authentic",
+            "gourmet"
+          ]
+        },
+        "severity": "block"
+      },
+      {
+        "id": "text-contrast",
+        "text": "Text must stay readable: at least 4.5:1 contrast against its background.",
+        "check": {
+          "kind": "min-contrast",
+          "ratio": 4.5
+        },
+        "severity": "block"
+      }
+    ]
+  },
+  "locations": [
+    {
+      "id": "nami-raval",
+      "name": "Nami Ramen Raval",
+      "address": "Carrer de la Riera Baixa 7, 08001 Barcelona",
+      "timezone": "Europe/Madrid",
+      "geo": {
+        "lat": 41.3794,
+        "lng": 2.1665
+      },
+      "openingHours": {
+        "mon": [
+          {
+            "from": "13:00",
+            "to": "16:00"
+          },
+          {
+            "from": "19:30",
+            "to": "23:30"
+          }
+        ],
+        "tue": [
+          {
+            "from": "13:00",
+            "to": "16:00"
+          },
+          {
+            "from": "19:30",
+            "to": "23:30"
+          }
+        ],
+        "wed": [
+          {
+            "from": "13:00",
+            "to": "16:00"
+          },
+          {
+            "from": "19:30",
+            "to": "23:30"
+          }
+        ],
+        "thu": [
+          {
+            "from": "13:00",
+            "to": "16:00"
+          },
+          {
+            "from": "19:30",
+            "to": "23:30"
+          }
+        ],
+        "fri": [
+          {
+            "from": "13:00",
+            "to": "16:00"
+          },
+          {
+            "from": "19:30",
+            "to": "23:30"
+          }
+        ],
+        "sat": [
+          {
+            "from": "13:00",
+            "to": "16:00"
+          },
+          {
+            "from": "19:30",
+            "to": "23:30"
+          }
+        ],
+        "sun": [
+          {
+            "from": "13:00",
+            "to": "16:00"
+          },
+          {
+            "from": "19:30",
+            "to": "23:30"
+          }
+        ]
+      },
+      "attributes": {
+        "cuisine": [
+          "japanese"
+        ],
+        "ambience": [
+          "lively"
+        ]
+      },
+      "priceLevel": 1,
+      "reserveUrl": "https://namiramen.example/book"
+    }
+  ],
+  "offerings": [
+    {
+      "id": "nr-ramen-gyoza",
+      "kind": "menu",
+      "name": "Ramen + gyoza",
+      "description": "Any ramen with five gyoza.",
+      "price": {
+        "amount": 15,
+        "currency": "EUR",
+        "unit": "person"
+      },
+      "attributes": {
+        "cuisine": [
+          "japanese"
+        ],
+        "occasion": [
+          "group"
+        ]
+      }
+    },
+    {
+      "id": "nr-ramen-night",
+      "kind": "menu",
+      "name": "Ramen night for two",
+      "description": "Two ramens, gyoza to share and two beers.",
+      "price": {
+        "amount": 30,
+        "currency": "EUR",
+        "unit": "group"
+      },
+      "attributes": {
+        "cuisine": [
+          "japanese"
+        ],
+        "occasion": [
+          "date-night"
+        ]
+      },
+      "partySize": {
+        "min": 2,
+        "max": 2
+      }
+    },
+    {
+      "id": "nr-vegan-ramen",
+      "kind": "menu",
+      "name": "Vegan ramen",
+      "description": "Miso and shiitake broth, fully vegan.",
+      "price": {
+        "amount": 14,
+        "currency": "EUR",
+        "unit": "person"
+      },
+      "attributes": {
+        "cuisine": [
+          "japanese"
+        ],
+        "dietary": [
+          "vegan",
+          "vegetarian"
+        ]
+      }
+    }
+  ],
+  "documents": [
+    {
+      "id": "doc-manual",
+      "kind": "text",
+      "uri": "hand-authored seed data",
+      "addedAt": "2026-09-19T12:00:00+02:00"
+    }
+  ],
+  "evidence": [],
+  "reviewNotes": []
+}

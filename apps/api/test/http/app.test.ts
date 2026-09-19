@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { HealthResponse } from "@marketplace/contracts/health";
-import { loadConfig } from "../config";
-import { createApp } from "./app";
+import { loadConfig } from "../../src/config";
+import { createApp } from "../../src/http/app";
 
 describe("GET /health", () => {
   it("returns ok and the mock flag, matching the contract", async () => {

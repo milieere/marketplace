@@ -1,71 +1,71 @@
-# Build plan
+# Build plan: where we are, what's next
 
-**Status:** Draft. Components are built one at a time, each tested and reviewed on its own before the next one starts.
+**This is the entry point for building.** Start here in a new session, then read only the docs linked for the piece you're working on. Update the Status section and tick the table after every PR.
 
-## How each component is delivered
+## Status (2026-09-19, ~5 h to demo)
 
-1. **Branch:** `feat/<nn>-<component>`, one component per branch.
-2. **Build** the component and its tests. No code for later components.
-3. **Test:** the component's own check (table below) passes, and so do `npm run typecheck` and `npm test`.
-4. **Norma:** `live_check` on every changed source file; fix HIGH/CRITICAL findings.
-5. **Review:** a short PR description saying what to look at, plus the test output or a screenshot. You review, then merge.
+| | |
+|---|---|
+| Merged | #2 monorepo scaffold (npm workspaces, `apps/web` JS, `apps/api` TS, `packages/contracts`); #3 API contract + mock mode (`MOCK=1` replays recorded event streams; the frontend builds against it) |
+| In flight | **PR 2** `feat/04-creative-agent`: the whole Creative Agent offline (Understand, Match, Pick, Create with check + one rewrite, Render), `GET /v1/artifacts/:id`, container, 21 stand-in Unsplash photos in `data/sources/` (credits in `CREDITS.md`), photo chosen in code from tags, `npm run render:samples` |
+| Merged | #4 Match (`domain/time.ts`, `cost.ts`, `match.ts`) |
+| In flight (2) | **PR 3** `feat/05-live-llm` (stacked on PR 2): Nebius adapter (`adapters/nebius/ai-sdk-llm.ts`: validate → retry once → fallback model), `MODEL_TEXT=deepseek-ai/DeepSeek-V4-Pro-0813`, `npm run e2e:live` → **12/12 coverage queries pass live** (1–23 s each), cards in `out/e2e/index.html`. Use the **global** endpoint `https://api.tokenfactory.nebius.com/v1`: the us-north1 endpoint serves only 4 models |
+| Next | `eval:intents` (not built yet; `e2e:live` covers the matrix end to end), frontend run with `MOCK=0`, Brand Agent in worktree `feat/06-brand-agent` |
+| Frontend | the colleague owns `apps/web` and builds against `MOCK=1`. Don't edit `apps/web` beyond wiring. |
 
-Estimates are for the backend owner, with the AI pair doing the typing.
+## Decisions (don't reopen)
 
-## Phase A — Foundation (unblocks the frontend)
+- **Creative Agent is the simple 4-step design below.** The full 6-step design in [04-agents.md](04-agents.md) (4-step relaxation ladder, near-miss suggestions, Combine, separate Rank, 3 rewrites) is **later**.
+- **Vercel AI SDK** (`ai` + `@ai-sdk/openai-compatible` → Nebius Token Factory) for LLM calls, wrapped behind an `Llm` port. Models: `MODEL_TEXT` (DeepSeek-V4-Pro), fallback `MODEL_TEXT_FALLBACK` (Nemotron-super). See the model comparison in [04-agents.md](04-agents.md).
+- **Evals are deterministic only:** ~12 intent cases scored correct / missed / **invented**, plus automatic checks on generated ads. No LLM judge, no Langfuse.
+- **Brand Agent stays mocked** (a recorded stream); a real one only if time is left.
+- **The contract stays stable.** New fields are optional with defaults; the agent emits the same `AgentEvent`s as the recordings, so the frontend only flips `MOCK=0`.
 
-| # | Component | Delivers | Test | Review focus | Est. |
+## The Creative Agent (simple design)
+
+```
+"Friday, 8 friends, two vegans, terrace, €30 each"
+1 UNDERSTAND (AI)    sentence → Intent (party, when, budget, required/preferred/avoid per need, phrases);
+                     vocabulary injected; invalid values dropped; defaults applied in code → `assumed`
+2 MATCH      (code)  every offer × location: brandIds, kinds, required (offer ∪ location attrs), avoid,
+                     party size, budget (cost per PriceUnit), opening hours + availability in the location's
+                     timezone (incl. past midnight) → matches + one reason per excluded brand.
+                     None? One "closest match" pass: drop location-only attributes (terrace, ambience;
+                     "where" before "what") + budget +20 %; never dietary, accessibility or party size.
+                     Top 3 brands by a simple score (preferred attributes hit, price fit).
+3 CREATE     (AI)    per brand in parallel: pick which of ITS offers + photo (ids as enums) and write
+                     headline/body/badges/CTA in the brand voice → CHECK (code): rule checks, no € amounts
+                     in the copy → one rewrite if a block rule fails (`revision` event)
+4 RENDER     (code)  card template from colours/fonts/style/photo; prices copied from data → `artifact`.
+                     Off-topic or nothing matches → house-brand fallback page (`no-match`) with example queries.
+```
+
+Multi-part queries ("dinner then drinks") are matched per need, with no cross-need budget maths.
+
+## Build table
+
+| # | PR | Files (apps/api/src) | Test / review | Est. | Done |
 |---|---|---|---|---|---|
-| 01 | **Workspace scaffold** | On top of the FE branch's npm workspace: `apps/api` (Hono, TS) with `/health` and `config.ts` (Zod env), `packages/contracts` skeleton, root scripts for both apps; remove `packages/ai`, `core`, `shared` and the empty Next API routes | `npm run typecheck`; `curl /health` → ok; a missing env var fails at startup | Folder structure matches [06-architecture.md](06-architecture.md) | 30 m |
-| 02 | **Contracts + mock mode** | `packages/contracts` (requests, `AgentEvent`, artifact summary); recorded event fixtures; `MOCK=1` streams for `/v1/generate` and `/v1/brands/ingest` | Fixtures validate against the schemas; `curl -N` streams events | **Review together with the frontend dev**: event shapes and names | 45 m |
-| 03 | **Domain schemas** | Zod for `BrandRecord`, `Intent`, `Artifact`, `Vocabulary`; vocabulary validation | All files in `data/brands/` validate; unknown attribute values are rejected | Code matches [03-data-model.md](03-data-model.md) | 30 m |
+| 1 | **Match** (#4) | `domain/time.ts`, `cost.ts`, `match.ts` | unit tests from the coverage matrix (Q1, Q2, Q5–Q10) with hand-written intents | 45 m | ☑ |
+| 2 | **Agent pipeline + render + live route** (offline) | `domain/color.ts`, `domain/check.ts`, `templates/card.ts`, `templates/fallback.ts`, `ports/llm.ts`, `ports/artifact-store.ts`, `adapters/memory/artifact-store.ts`, `agents/creative/{understand,create,creative-agent}.ts`, `prompts/{understand,create}.md`, `container.ts`, routes `generate` (MOCK=0) + `GET /v1/artifacts/:id`, `npm run render:samples` | agent tests with a scripted `FakeLlm` through the HTTP app: event order as in the recordings; Q1 2 artifacts, Q9 relaxed, Q10/Q11 no-match; prices equal data; a "€" in copy → `revision`. **Visual review** of `out/samples/*.html` | 2 h | ☐ |
+| 3 | **Live LLM + eval** | `adapters/nebius/ai-sdk-llm.ts`, `data/evals/intents.json`, `scripts/eval-intents.ts`, `scripts/e2e-generate.ts` | `npm run eval:intents`: 0 invented, ≥ 10/12 correct. `npm run e2e:live` (Q1, Q2, Q5–Q12 against `MOCK=0`: done, no error, expected brands, prices equal data, < 30 s); frontend works unchanged | 1 h 15 m | ☐ |
+| 5 | **Buffer** | demo run-through, fixes; real Brand Agent only if time | 3 clean demo runs | 45 m | ☐ |
 
-**Checkpoint A:** the frontend dev builds the UI against the mock stream from here on.
+## Read before working on…
 
-## Phase B — Demo data and pure logic (no LLM)
+| Piece | Read |
+|---|---|
+| Any data or contract change | [03-data-model.md](03-data-model.md), [`packages/contracts/README.md`](../packages/contracts/README.md) |
+| Match (PR 1) | [05-brand-sources.md](05-brand-sources.md): the brand roster + **coverage matrix Q1–Q12** (expected matches and exclusions) |
+| Render (PR 2) | `BrandKit` in [03-data-model.md](03-data-model.md) (`style`, `colors.pairsWith`, `rules`) |
+| LLM steps (PR 3–4) | [04-agents.md](04-agents.md) (model comparison + "lessons for `Llm.structured`"), the recordings in `packages/contracts/fixtures/` (the event shapes to reproduce) |
+| Code layout | [06-architecture.md](06-architecture.md) (ports and adapters, composition root, API table) |
+| Why the product works this way | [01-product.md](01-product.md) |
 
-| # | Component | Delivers | Test | Review focus | Est. |
-|---|---|---|---|---|---|
-| 04 | **Seed brands** | The 7 JSON brands + `_house.json` from [05-brand-sources.md](05-brand-sources.md), logos, 3–5 photos each | Test 03 validates all of them; each brand's facts match the coverage matrix | Brands are visibly different in colour, type, `style` and tone | 1.5 h |
-| 05 | **Filter, relax, combine** (`domain/filter.ts`, `relax.ts`, `combine.ts`) | Per-need filter (budget arithmetic, hours past midnight in the venue's timezone, party size, attributes); relaxation ladder; near-miss suggestions; multi-need combinations | **Coverage matrix Q1–Q10 as fixtures** (hand-written intents → expected matches, exclusions, relaxations, NoMatch) | The fixtures: do they match how we think matching should behave? | 1.5 h |
-| 06 | **Colour + checks** (`domain/color.ts`, `domain/check.ts`) | CMYK/RGB → hex, WCAG contrast, the 4 rule-check kinds, grounding checks | Unit tests (CMYK `15 0 46 58` → `#5B6B3A`) | Rule semantics | 30 m |
-| 07 | **Templates** (`banner`, `card`) | `(spec, brandKit) → HTML`, driven by `style` (composition, case, treatment, ornament) | Render 3 brands × 2 formats with fixed slots into `out/*.html`, then open and screenshot | **Visual review**: does each brand look like itself? | 1.5 h |
+## Conventions
 
-**Checkpoint B:** hand-written slots render as convincing branded artifacts. This is the visual core of the demo, proven before any LLM is involved.
-
-## Phase C — Creative Agent (LLM steps, one at a time)
-
-| # | Component | Delivers | Test | Review focus | Est. |
-|---|---|---|---|---|---|
-| 08 | **LLM port + Nebius adapter** | `Llm.structured`: JSON schema → Zod validation → one retry with the error → fallback model; latency logging | Unit test with a fake client (retry and fallback); one live smoke test (skipped without a key) | Error handling, logs | 45 m |
-| 09 | **Understand** | Prompt + schema → `Intent` with `scope` and `needs`; `now` and `timezone` handling | `npm run eval:intents`: coverage matrix Q1–Q12 → expected scope, needs and key fields, target ≥ 11/12 | The failed queries and the prompt | 1 h |
-| 10 | **Rank** | Survivors → top N brands with offers, photo and rationale | Fixture intents → expected brands (loose assertions) | The rationales make sense | 45 m |
-| 11 | **Create + revise** | Draft slots, tone, trace; the check → revise loop (max 3 rounds) | 3 demo queries: checks pass, prices copied exactly, tone in range; a fake failing draft triggers a revision | Copy quality per brand | 1.5 h |
-| 12 | **Creative Agent + `/v1/generate`** | Orchestration, parallel per brand, SSE events, artifacts in the blob store, NoMatch page with the house brand kit | `curl -N` with Q1–Q12: first artifact in under 20 s; Q10 and Q11 return a NoMatch page; one brand failing doesn't stop the others | **Live review with the frontend dev**, mock mode switched off | 1 h |
-
-**Checkpoint C:** the full user flow works end to end with seeded brands.
-
-## Phase D — Brand Agent
-
-| # | Component | Delivers | Test | Review focus | Est. |
-|---|---|---|---|---|---|
-| 13 | **Casa Brisa source pack** | HTML → PDF build script; 7-page guidelines, offers, venue fact sheet; `expected.json` = the current example brand | Every value in `expected.json` appears in the PDF text layer | Does the PDF look like a real brand book? | 1 h |
-| 14 | **PDF reader** | Text per page + page PNGs | Hex codes found on the right pages | — | 30 m |
-| 15 | **Route + extractors** | One extractor per topic, **added one at a time**: colours → typography → voice → style/logos → offers → venue → photo tags | `npm run eval:extraction` shows the score per topic against `expected.json` | Score and misses per topic | 2 h |
-| 16 | **Normalize + Verify** | Colour maths, vocabulary mapping, conflict re-check loop | The CMYK-only colour comes out correct; the eval score doesn't drop | What gets flagged in `reviewNotes` | 45 m |
-| 17 | **Brand Agent + ingest/verify endpoints** | Orchestration, `finding` events, save draft, verify | Ingest → draft saved → verify → the brand appears in `/v1/generate` results | Live review of the event stream | 45 m |
-
-**Checkpoint D:** a PDF goes in, a brand is extracted, and it immediately produces artifacts.
-
-## Phase E — Voice, deploy, demo
-
-| # | Component | Delivers | Test | Est. |
-|---|---|---|---|---|
-| 18 | **Transcribe (SLNG)** | `/v1/transcribe` adapter | `curl` with a Spanish sample `.wav` | 30 m |
-| 19 | **Deploy** | Vercel ×2, Blob, env vars | Demo queries on the production URL | 45 m |
-| 20 | **Demo hardening** | Demo script, mock-mode fallback, recorded backup video | 3 clean runs in a row | 45 m |
-
-## Critical path and cut order
-
-- **Critical path:** 01 → 02 → 03 → 04 → 05 → 07 → 08 → 09 → 11 → 12 (about 10 h). This alone is a working demo.
-- **If time runs short, cut from the end of each phase:** 16 (Verify) → 18 (voice: use browser speech instead) → 10 (Rank: pick brands by filter score) → seed brands down to 5 (keep those Q1, Q3, Q9 and Q10 need) → 13–15 reduced to colours + voice only.
+- **One branch and one PR per row** (`feat/<nn>-<name>`), concise PR body. Tick the row and update Status when merged.
+- **Tests** go in `apps/api/test/`, mirroring `src/`. `npm run typecheck` and `npm test` must be green.
+- **Norma `live_check`** on every changed source file; fix HIGH/CRITICAL findings. `register_applied_actions` fails until the repo is imported in the Quality Clouds portal (known).
+- **Code rules:** agents depend on ports, not adapters; only `container.ts` wires adapters. No barrel files. Types come from `@marketplace/contracts`. The LLM never supplies prices, hours or conditions.
+- **Data notes:** `cuisine` is `either` (a user can require "ramen"). Terrat has a late "Rooftop round" offer for Q4. Photo files don't exist yet; templates fall back to a gradient in brand colours.
