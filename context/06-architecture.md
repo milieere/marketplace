@@ -33,6 +33,8 @@ domain/             pure types (Zod) and pure functions, no I/O
   artifact.ts
   vocabulary.ts     load + validate attributes against a vocabulary
   filter.ts         hard-constraint matching (budget, hours, party, attributes)
+  relax.ts          relaxation ladder + near-miss suggestions
+  combine.ts        multi-need combinations within the overall budget
   check.ts          brand-rule checks on a draft/rendered artifact
   color.ts          CMYK/RGB → hex, WCAG contrast
 ports/              interfaces only
@@ -79,7 +81,7 @@ Defined in `packages/contracts`, served by `apps/api`.
 
 | Method | Path | Returns |
 |---|---|---|
-| `POST` | `/v1/generate` `{ text, now?, timezone?, format? }` | SSE stream of `AgentEvent`: `step`, `intent`, `matches`, `revision`, `artifact`, `error`, `done` |
+| `POST` | `/v1/generate` `{ text, now?, timezone?, format? }` | SSE stream of `AgentEvent`: `step`, `intent`, `matches`, `relaxed`, `revision`, `artifact` or `no-match`, `error`, `done` |
 | `POST` | `/v1/brands/ingest` (multipart source files) | SSE stream of `AgentEvent`: `step`, `finding`, then the draft `BrandRecord` |
 | `GET` | `/v1/brands` | brand summaries (id, name, logo, status) |
 | `GET` | `/v1/brands/:id` | full `BrandRecord` (for the review screen) |

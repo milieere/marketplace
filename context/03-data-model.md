@@ -43,6 +43,7 @@ type AttributeDef = {
   values: string[];                               // closed set
   appliesTo: ("venue" | "offering" | "photo")[];
   constraint: "hard" | "soft" | "either";         // can a user require it, or only prefer it?
+  relaxable: boolean;                             // may the matcher drop it when nothing fits? false for safety needs (dietary, accessibility)
 };
 type Attributes = Record<string, string[]>;       // vocabulary key → values
 
@@ -153,24 +154,36 @@ type Offering = {
 };
 
 // ---- User side
+// One query can hold several needs ("dinner and then drinks"). Shared context sits on Intent; each Need can override it.
 type Intent = {
   id: string;
   raw: { text: string; inputs: { kind: "voice" | "text" | "image" | "document"; ref?: string }[] };
+  scope: "in-domain" | "out-of-domain" | "unclear";
   language: string;                               // language of the query → language of the copy
   party?: { size: number; kids?: number; relation?: string };
-  when?: { start: string; end?: string };         // ISO 8601 with offset, resolved from `now` + timezone
-  budget?: { amount: number; per: "total" | "person" };
   location?: { geo?: { lat: number; lng: number }; area?: string };
-  required: Attributes;                           // hard
-  preferred: Attributes;                          // soft (includes occasion, ambience)
+  budget?: { amount: number; per: "total" | "person" };   // overall, across all needs
   phrases: string[];                              // user's own words worth echoing
+  needs: Need[];                                  // 1–3, in the order the user wants them
   missing: string[];
+};
+
+type Need = {
+  id: string;
+  label: string;                                  // "dinner", "drinks after", "hotel"
+  kinds?: string[];                               // Vocabulary.offeringKinds hint, e.g. ["room", "package"]
+  when?: { start: string; end?: string };         // ISO 8601 with offset, resolved from `now` + timezone
+  party?: { size: number; kids?: number };        // overrides Intent.party, e.g. "brunch for 10"
+  budget?: { amount: number; per: "total" | "person" };   // this need only
+  required: Attributes;                           // hard
+  preferred: Attributes;                          // soft (occasion, ambience, cuisine)
 };
 
 // ---- Output
 type Artifact = {
   id: string;
   intentId: string;
+  needIds: string[];                              // one brand can answer several needs in one artifact
   brandId: string;
   venueId?: string;
   offeringIds: string[];
@@ -182,8 +195,19 @@ type Artifact = {
   photoId?: string;
   trace: { element: string; drivenBy: string[]; brandFacts: string[] }[];   // paths into Intent / BrandRecord
   check: { passed: boolean; issues: { ruleId: string; message: string; severity: "block" | "warn" }[] };
+  relaxed: Relaxation[];                          // constraints that were loosened to find this match; must be stated in the copy
   htmlUrl: string;
   createdAt: string;
+};
+
+type Relaxation = { needId: string; constraint: string; from: string; to: string };   // e.g. amenities:terrace → dropped
+
+// Returned instead of artifacts when nothing can be shown
+type NoMatch = {
+  reason: "out-of-domain" | "no-results";
+  message: string;                                // short, in the user's language
+  suggestions: { label: string; patch: { needId?: string; change: Record<string, unknown> } }[];   // tap to re-run
+  html: string;                                   // fallback page rendered with the house brand kit
 };
 ```
 
@@ -200,15 +224,17 @@ offerings[cb-sharing-menu].price
 venues[casa-brisa-born].openingHours
 ```
 
-Trace paths into the intent use the same form: `intent.required.dietary`, `intent.party.size`.
+Trace paths into the intent use the same form: `intent.needs[n1].required.dietary`, `intent.party.size`.
 
 ## Matching rules
 
-**Filter (code, all hard):**
+Matching runs **per need**, then combines the results.
 
-1. **Attributes:** every `intent.required` value is present in the offering's attributes or the venue's attributes.
-2. **Party size:** `party.size` is within `offering.partySize` (if set).
-3. **Time:** `when.start` (and `when.end`, if given) falls within the venue's `openingHours` in the venue's `timezone`, and within `offering.availability`.
+**1. Filter (code, all hard), per need.** The need's own `party`, `budget` and `when` override the intent's.
+
+1. **Attributes:** every `required` value is present in the offering's or the venue's attributes. If `kinds` is set, the offering's kind is in it.
+2. **Party size:** within `offering.partySize` (if set).
+3. **Time:** `when.start` (and `end`) falls within the venue's `openingHours` in the venue's `timezone`, and within `offering.availability`.
 4. **Budget:** first work out the cost for the party:
 
    | `price.unit` | Cost for the party |
@@ -217,14 +243,31 @@ Trace paths into the intent use the same form: `intent.required.dietary`, `inten
    | `group` | `amount` (only valid if the party fits `partySize`) |
    | `night` | `amount × nights` (1 if unknown) |
 
-   - Then compare: `budget.per = "total"` → cost ≤ amount. `budget.per = "person"` → cost ÷ party.size ≤ amount.
-   - `from: true` prices count at their minimum and are labelled "from" in `priceLines`.
-   - Each featured offering must fit the budget on its own; offers are not combined.
+   - Then compare: `per = "total"` → cost ≤ amount. `per = "person"` → cost ÷ party.size ≤ amount.
+   - `from: true` prices count at their minimum and are labelled "from".
 5. **Missing values** (no budget, no time) don't filter anything.
 
-**Rank (LLM):** the survivors plus `preferred` and `phrases` → top N brands, each with the offerings to feature, the best-matching photo and a one-line rationale. The rationale goes into the trace.
+**2. Combine (code), only when there are several needs.**
+- Take the top 3 candidates per need and enumerate the combinations (at most 27).
+- Keep the combinations whose total cost fits `Intent.budget`.
+- A **single brand covering several needs** (hotel room + its restaurant) becomes one candidate that answers all of them.
+
+**3. Rank (LLM).** Candidates or combinations plus `preferred` and `phrases` → top N. Each comes with the offerings to feature, the best-matching photo and a one-line rationale. The ranker prefers single-brand combinations, and the rationale goes into the trace.
 
 **Out of scope for the demo:** distance from `location`. All brands are in one city.
+
+## When nothing matches
+
+| Situation | Detected by | Response |
+|---|---|---|
+| Off-topic ("my car makes a noise") | Understand: `scope = "out-of-domain"` | `NoMatch` with `reason: "out-of-domain"`: a friendly page with 3 example queries |
+| Too vague ("something fun") | Understand: `scope = "unclear"` | Proceed with defaults (tonight, local area), rank for variety, and say so in the trace |
+| Too specific (nothing survives the filter) | Filter returns zero for a need | **Relax** in this order, one step at a time, re-filtering each time: drop `preferred` → drop `relaxable` required attributes → budget +20 % → time ±60 min. `dietary`, `accessibility` and party size are **never** relaxed. Each step is recorded in `Artifact.relaxed`, and the copy states it ("No terrace tonight, but…") |
+| Still nothing | Relaxation exhausted | `NoMatch` with `reason: "no-results"`. `suggestions` come from a **near-miss analysis** (code): for each blocking constraint, how many results appear without it, and at what price ("Raise budget to €22 pp → 2 options", "Smaller group (max 12) → 3 options"). Tapping a suggestion re-runs the query with that change. |
+
+**Rules:**
+- An artifact never shows a badge for a constraint it doesn't satisfy (a grounding check).
+- The fallback page is rendered with the **house brand kit** (`data/brands/_house.json`, which is not used in matching), so embedding surfaces also get valid HTML.
 
 ## What drives generation
 
@@ -232,14 +275,15 @@ Trace paths into the intent use the same form: `intent.required.dietary`, `inten
 |---|---|
 | `colors`, `typography`, `logos`, `style` | Template rendering (code). `style` is what makes brands look different, not just recoloured. |
 | `voice.samples`, `doSay`, `dontSay` | Copy style (few-shot) |
-| `voice.toneRange` + `intent.preferred.occasion` | `Artifact.tone`, i.e. how formal or energetic the copy is |
-| `photos[].attributes`, `people` + `intent.party`, `required`, `preferred` | Photo selection |
+| `voice.toneRange` + `need.preferred.occasion` | `Artifact.tone`, i.e. how formal or energetic the copy is |
+| `photos[].attributes`, `people` + `intent.party`, `need.required`, `need.preferred` | Photo selection |
 | `rules` | Checks after generation; `block` failures trigger a rewrite |
-| `intent.required` ∩ offering/venue `attributes` | Badges ("🌱 vegan", "terrace") |
+| `need.required` ∩ offering/venue `attributes` | Badges ("🌱 vegan", "terrace"), only for satisfied constraints |
+| `artifact.relaxed` | An honest line in the copy about what couldn't be met |
 | `intent.phrases` | Headline wording |
 | `intent.language` | Copy language. Offering names stay as the brand wrote them. |
 | `offering.price`, `conditions` | `priceLines` and small print (copied as-is) |
-| `venue.reserveUrl` + `intent.party`, `when` | CTA ("Reserve for 8, Fri 21:00") |
+| `venue.reserveUrl` + `intent.party`, `need.when` | CTA ("Reserve for 8, Fri 21:00") |
 
 ## Storage (demo)
 

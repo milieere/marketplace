@@ -12,6 +12,7 @@
 | [context/04-agents.md](context/04-agents.md) | How the Brand Agent and Creative Agent work, step by step |
 | [context/05-brand-sources.md](context/05-brand-sources.md) | Raw brand materials (PDFs, tokens, offers) the Brand Agent reads |
 | [context/06-architecture.md](context/06-architecture.md) | Repo structure, backend layout, API, config, testing, deploy |
+| [context/07-build-plan.md](context/07-build-plan.md) | Component-by-component build order, each tested and reviewed separately |
 
 ## Setup
 

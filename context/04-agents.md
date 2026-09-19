@@ -7,12 +7,13 @@ Both agents are **workflows with agentic loops where judgment is needed**. Fixed
 ```
             BRAND AGENT                                      CREATIVE AGENT
  brand source pack (PDFs, tokens, CSV, URL)          user query (voice → text)
-   1 Read        documents → pages                     1 Understand  text → Intent            LLM
-   2 Route       pages → topics              LLM       2 Filter      hard constraints        code
-   3 Extract     topic → partial record      LLM ×N    3 Rank        top brands + offers      LLM
-   4 Normalize   hex, fonts, vocabulary      code      4 Create      per brand: draft → check  LLM loop
-   5 Verify      conflicts, low confidence   LLM loop                 → revise
-   6 Save        BrandRecord (draft)         code      5 Render      template + tokens → HTML  code
+   1 Read        documents → pages                     1 Understand  text → Intent (needs)    LLM
+   2 Route       pages → topics              LLM       2 Filter      per need, + relaxation   code
+   3 Extract     topic → partial record      LLM ×N    3 Combine     needs × budget           code
+   4 Normalize   hex, fonts, vocabulary      code      4 Rank        top brands + offers      LLM
+   5 Verify      conflicts, low confidence   LLM loop  5 Create      draft → check → revise   LLM loop
+   6 Save        BrandRecord (draft)         code      6 Render      template + tokens → HTML code
+                                                       (no match → NoMatch fallback page)
                         │                                          ▲
                         └──────── verified BrandRecord ───────────┘
 ```
@@ -34,15 +35,23 @@ Both agents are **workflows with agentic loops where judgment is needed**. Fixed
 
 ## Creative Agent
 
-**Goal:** a query in; 2–3 personalized, on-brand HTML artifacts out, each with a trace and a check result.
+**Goal:** a query in; 2–3 personalized, on-brand HTML artifacts out, each with a trace and a check result. **If nothing fits, a `NoMatch` fallback page instead, never an empty screen.**
 
 | Step | How | LLM? |
 |---|---|---|
-| **1 Understand** | Query text + vocabulary + current date/time → `Intent` (Zod). Hard needs go to `required`, nice-to-haves to `preferred`, and the user's own words to `phrases`. | Yes |
-| **2 Filter** | Over verified records: required attributes present, price within budget, open during `when`, party size fits. It is pure and unit-tested; if nothing survives, retry once with `preferred` only and say so in the trace. | No |
-| **3 Rank** | Survivors + intent → top N brands. For each one: which offers to feature, which venue, the best-matching photo (from its tags and description), and a one-line rationale. | Yes |
-| **4 Create** *(agentic, per brand, in parallel)* | The LLM gets the intent, the brand kit (voice, samples, rules, tone range) and the chosen offers. It returns an `ArtifactDraft`: format, tone, slots, badges, trace, and offer ids (never prices). `checkArtifact()` runs the brand rules plus grounding checks (offer ids exist, tone within range). If a `block` issue is found, the issues are fed back and the LLM revises, up to 3 rounds. The check result is always attached. | Yes, loop |
-| **5 Render** | Copy `priceLines` from the offers. Fill a template (`banner` / `card`) with brand tokens, `style`, logo, fonts, the selected photo and the slots, producing self-contained HTML. Run the contrast check on the rendered colours. Store it and emit an `artifact` event. | No |
+| **1 Understand** | Query text + vocabulary + current date/time → `Intent` (Zod). Classifies `scope`. Splits sequences ("dinner *and then* drinks") into up to 3 `needs`; alternatives ("dinner *or* drinks") stay one need. Hard needs go to `required`, nice-to-haves to `preferred`, the user's own words to `phrases`. `out-of-domain` → skip to the NoMatch page. | Yes |
+| **2 Filter** | Per need, over verified records: required attributes, kinds, price within budget, open during `when`, party size fits. If a need has zero survivors, **relax** step by step (drop preferred → drop relaxable required → budget +20 % → time ±60 min; never dietary, accessibility or party size) and record each `Relaxation`. Pure and unit-tested. | No |
+| **3 Combine** | Only when there are several needs: top 3 per need → combinations within the overall budget; a brand covering several needs becomes one candidate. Pure and unit-tested. | No |
+| **4 Rank** | Candidates + intent → top N. For each one: which offers to feature, which venue, the best-matching photo (from its tags and description), and a one-line rationale. Prefers single-brand combinations. | Yes |
+| **5 Create** *(agentic, per brand, in parallel)* | The LLM gets the intent, the needs this brand answers, any relaxations (which must be stated honestly), the brand kit (voice, samples, rules, tone range) and the chosen offers. It returns an `ArtifactDraft`: format, tone, slots, badges, trace, and offer ids (never prices). `checkArtifact()` runs the brand rules plus grounding checks (offer ids exist, tone within range). If a `block` issue is found, the issues are fed back and the LLM revises, up to 3 rounds. The check result is always attached. | Yes, loop |
+| **6 Render** | Copy `priceLines` from the offers. Fill a template (`banner` / `card`) with brand tokens, `style`, logo, fonts, the selected photo and the slots, producing self-contained HTML. Run the contrast check on the rendered colours. Store it and emit an `artifact` event. | No |
+
+### When nothing matches
+
+- **Out of domain** (Understand) or **still nothing after relaxing** (Filter): build a `NoMatch`.
+- **Suggestions come from a near-miss analysis in code.** For each blocking constraint, re-run the filter without it and report how many results appear and at what price ("Raise budget to €22 pp → 2 options").
+- **The fallback page** is rendered with the house brand kit (`data/brands/_house.json`). Suggestions are tappable and re-run the query with that change applied.
+- It is emitted as a `no-match` event, and the stream then ends with `done`.
 
 ## Shared building blocks
 
@@ -73,7 +82,9 @@ type AgentEvent =
   | { type: "step"; agent: "brand" | "creative"; id: string; label: string; status: "started" | "done" | "failed"; detail?: string }
   | { type: "finding"; field: string; value: unknown; evidence?: Evidence }   // brand agent: "Primary colour #C8553D (p.5)"
   | { type: "intent"; intent: Intent }
-  | { type: "matches"; brands: { id: string; name: string; rationale: string }[] }
+  | { type: "matches"; brands: { id: string; name: string; needIds: string[]; rationale: string }[] }
+  | { type: "relaxed"; relaxations: Relaxation[] }                             // "No terrace tonight, looking wider…"
+  | { type: "no-match"; noMatch: NoMatch }
   | { type: "revision"; brandId: string; issues: string[] }                   // creative agent self-correction, visible
   | { type: "artifact"; artifact: Artifact; html: string }
   | { type: "error"; message: string }

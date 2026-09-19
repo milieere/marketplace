@@ -22,7 +22,8 @@
       "appliesTo": [
         "offering"
       ],
-      "constraint": "hard"
+      "constraint": "hard",
+      "relaxable": false
     },
     {
       "key": "cuisine",
@@ -41,13 +42,15 @@
         "venue",
         "offering"
       ],
-      "constraint": "soft"
+      "constraint": "soft",
+      "relaxable": true
     },
     {
       "key": "amenities",
       "description": "Physical facilities available at the venue",
       "values": [
         "terrace",
+        "rooftop",
         "wifi",
         "power-outlets",
         "private-room",
@@ -60,7 +63,8 @@
         "venue",
         "photo"
       ],
-      "constraint": "hard"
+      "constraint": "hard",
+      "relaxable": true
     },
     {
       "key": "accessibility",
@@ -73,7 +77,8 @@
       "appliesTo": [
         "venue"
       ],
-      "constraint": "hard"
+      "constraint": "hard",
+      "relaxable": false
     },
     {
       "key": "ambience",
@@ -89,7 +94,8 @@
         "venue",
         "photo"
       ],
-      "constraint": "soft"
+      "constraint": "soft",
+      "relaxable": true
     },
     {
       "key": "occasion",
@@ -106,7 +112,8 @@
         "offering",
         "photo"
       ],
-      "constraint": "soft"
+      "constraint": "soft",
+      "relaxable": true
     }
   ]
 }
