@@ -8,8 +8,8 @@
 |---|---|
 | Merged | #2 monorepo scaffold (npm workspaces, `apps/web` JS, `apps/api` TS, `packages/contracts`); #3 API contract + mock mode (`MOCK=1` replays recorded event streams; the frontend builds against it) |
 | In flight | branch **`feat/03-data-matching`**, committed locally, **not pushed, no PR yet** |
-| Done on that branch | contract v2 fields (`Need.avoid/wishes/priceLevel/brandIds`, `Intent.assumed/dropped`, `GenerateRequest.previousIntent/profile`); 8 seed brands + `_house.json` in `data/brands/`; `domain/brand-integrity.ts` (vocabulary + reference checks); `JsonBrandRepository` (loads and validates all brands at startup); tests green |
-| Next | finish PR 1 on that branch: `domain/time.ts`, `cost.ts`, `match.ts` + tests; then push and open the PR |
+| Done on that branch | contract v2 fields (`Need.avoid/wishes/priceLevel/brandIds`, `Intent.assumed/dropped`, `GenerateRequest.previousIntent/profile`); 8 seed brands + `_house.json` in `data/brands/`; `domain/brand-integrity.ts` (vocabulary + reference checks); `JsonBrandRepository` (loads and validates all brands at startup); `domain/time.ts`, `cost.ts`, `match.ts` with tests for Q1, Q2, Q5–Q10 and a second industry (bike rental); multi-day visits only need arrival and departure within opening hours; tests green |
+| Next | PR 1 is open for review. Then **PR 2** (whole agent offline, fake LLM) and **PR 3** (Nebius + eval + live run), which replace rows 2–4 below. `matchNeed` returns all matches ranked; the agent takes the top 3 |
 | Frontend | the colleague owns `apps/web` and builds against `MOCK=1`. Don't edit `apps/web` beyond wiring. |
 
 ## Decisions (don't reopen)
@@ -46,9 +46,8 @@ Multi-part queries ("dinner then drinks") are matched per need, with no cross-ne
 | # | PR | Files (apps/api/src) | Test / review | Est. | Done |
 |---|---|---|---|---|---|
 | 1 | **Match** | `domain/time.ts`, `cost.ts`, `match.ts` | unit tests from the coverage matrix (Q1, Q2, Q5–Q10) with hand-written intents | 45 m | ☐ |
-| 2 | **Render** | `domain/color.ts`, `domain/check.ts`, `templates/card.ts`, `templates/fallback.ts` | `npm run render:samples` → `out/*.html` for the 8 brands; **visual review**: each looks like itself | 1 h | ☐ |
-| 3 | **LLM + Understand + eval** | `ports/llm.ts`, `adapters/nebius/ai-sdk-llm.ts`, `agents/creative/understand.ts`, `prompts/understand.md`, `data/evals/intents.json`, `scripts/eval-intents.ts` | `npm run eval:intents`: 0 invented, ≥ 10/12 correct | 1 h | ☐ |
-| 4 | **Create + agent + live route** | `agents/creative/create.ts`, `prompts/create.md`, `agents/creative/creative-agent.ts`, `ports/artifact-store.ts`, `adapters/memory/artifact-store.ts`, `container.ts`, `GET /v1/artifacts/:id` | `MOCK=0` + `curl -N` for Q1 (2+ artifacts), Q9 ("closest match"), Q11 (fallback); the frontend works unchanged | 1 h 15 m | ☐ |
+| 2 | **Agent pipeline + render + live route** (offline) | `domain/color.ts`, `domain/check.ts`, `templates/card.ts`, `templates/fallback.ts`, `ports/llm.ts`, `ports/artifact-store.ts`, `adapters/memory/artifact-store.ts`, `agents/creative/{understand,create,creative-agent}.ts`, `prompts/{understand,create}.md`, `container.ts`, routes `generate` (MOCK=0) + `GET /v1/artifacts/:id`, `npm run render:samples` | agent tests with a scripted `FakeLlm` through the HTTP app: event order as in the recordings; Q1 2 artifacts, Q9 relaxed, Q10/Q11 no-match; prices equal data; a "€" in copy → `revision`. **Visual review** of `out/samples/*.html` | 2 h | ☐ |
+| 3 | **Live LLM + eval** | `adapters/nebius/ai-sdk-llm.ts`, `data/evals/intents.json`, `scripts/eval-intents.ts`, `scripts/e2e-generate.ts` | `npm run eval:intents`: 0 invented, ≥ 10/12 correct. `npm run e2e:live` (Q1, Q2, Q5–Q12 against `MOCK=0`: done, no error, expected brands, prices equal data, < 30 s); frontend works unchanged | 1 h 15 m | ☐ |
 | 5 | **Buffer** | demo run-through, fixes; real Brand Agent only if time | 3 clean demo runs | 45 m | ☐ |
 
 ## Read before working on…
