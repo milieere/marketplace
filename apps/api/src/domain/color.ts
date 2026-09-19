@@ -12,6 +12,16 @@ function luminance(hex: string): number {
   return 0.2126 * channel((n >> 16) & 255) + 0.7152 * channel((n >> 8) & 255) + 0.0722 * channel(n & 255);
 }
 
+export function rgbToHex([r, g, b]: [number, number, number]): string {
+  return `#${[r, g, b].map((v) => Math.round(Math.min(255, Math.max(0, v))).toString(16).padStart(2, "0")).join("")}`.toUpperCase();
+}
+
+// Profile-free approximation (CMYK in %); flagged for human review
+export function cmykToHex([c, m, y, k]: [number, number, number, number]): string {
+  const ink = (v: number) => 255 * (1 - v / 100) * (1 - k / 100);
+  return rgbToHex([ink(c), ink(m), ink(y)]);
+}
+
 export function contrast(a: string, b: string): number {
   const [hi, lo] = [luminance(a), luminance(b)].sort((x, y) => y - x) as [number, number];
   return (hi + 0.05) / (lo + 0.05);

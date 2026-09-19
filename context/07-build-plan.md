@@ -7,10 +7,9 @@
 | | |
 |---|---|
 | Merged | #2 monorepo scaffold (npm workspaces, `apps/web` JS, `apps/api` TS, `packages/contracts`); #3 API contract + mock mode (`MOCK=1` replays recorded event streams; the frontend builds against it) |
-| In flight | **PR 2** `feat/04-creative-agent`: the whole Creative Agent offline (Understand, Match, Pick, Create with check + one rewrite, Render), `GET /v1/artifacts/:id`, container, 21 stand-in Unsplash photos in `data/sources/` (credits in `CREDITS.md`), photo chosen in code from tags, `npm run render:samples` |
-| Merged | #4 Match (`domain/time.ts`, `cost.ts`, `match.ts`) |
-| In flight (2) | **PR 3** `feat/05-live-llm` (stacked on PR 2): Nebius adapter (`adapters/nebius/ai-sdk-llm.ts`: validate → retry once → fallback model), `MODEL_TEXT=deepseek-ai/DeepSeek-V4-Pro-0813`, `npm run e2e:live` → **12/12 coverage queries pass live** (1–23 s each), cards in `out/e2e/index.html`. Use the **global** endpoint `https://api.tokenfactory.nebius.com/v1`: the us-north1 endpoint serves only 4 models |
-| Next | `eval:intents` (not built yet; `e2e:live` covers the matrix end to end), frontend run with `MOCK=0`, Brand Agent in worktree `feat/06-brand-agent` |
+| Merged | #4 Match (`domain/time.ts`, `cost.ts`, `match.ts`); #5 Creative Agent pipeline + card render + `GET /v1/artifacts/:id` + stand-in photos; #6 Nebius adapter (`MODEL_TEXT=deepseek-ai/DeepSeek-V4-Pro-0813`, global endpoint `https://api.tokenfactory.nebius.com/v1`; us-north1 serves only 4 models) and `npm run e2e:live`: **12/12 coverage queries pass live** |
+| In flight | **Brand Agent** #7 `feat/06-brand-agent`: Casa Brisa source pack (`npm run build:sources`), `agents/brand/*`, live `POST /v1/brands/ingest`, `npm run eval:extraction` |
+| Next | Frontend on top of the live API (handoff message sent), `eval:intents` (optional; `e2e:live` already covers Q1–Q12 end to end) |
 | Frontend | the colleague owns `apps/web` and builds against `MOCK=1`. Don't edit `apps/web` beyond wiring. |
 
 ## Decisions (don't reopen)

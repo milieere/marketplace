@@ -1,0 +1,13 @@
+{
+  "exportedFrom": "Frontify",
+  "exportedAt": "2026-06-02",
+  "color": {
+    "terracotta": { "$type": "color", "$value": "#C8553D", "role": "primary" },
+    "sand": { "$type": "color", "$value": "#F6EFE6", "role": "background" },
+    "ink": { "$type": "color", "$value": "#2B2118", "role": "text" }
+  },
+  "typography": {
+    "display": { "fontFamily": "Fraunces", "fontWeights": [600, 800], "category": "serif" },
+    "body": { "fontFamily": "Inter", "fontWeights": [400, 600], "category": "sans-serif" }
+  }
+}
