@@ -17,7 +17,7 @@ describe("mock mode", () => {
   beforeAll(async () => {
     recorded = await loadRecordedStreams();
   });
-  const mockApp = () => createApp(loadConfig({ MOCK: "1", MOCK_SPEED: "0" }), recorded);
+  const mockApp = () => createApp(loadConfig({ MOCK: "1", MOCK_SPEED: "0" }), { recorded });
   const generate = (text: unknown) =>
     mockApp().request("/v1/generate", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ text }) });
 

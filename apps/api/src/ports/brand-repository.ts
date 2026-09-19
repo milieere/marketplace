@@ -8,4 +8,6 @@ export interface BrandRepository {
   /** INTENT's own brand kit, used for fallback pages. */
   house(): Promise<BrandRecord>;
   vocabulary(industry: string): Promise<Vocabulary>;
+  /** A brand photo as a data URI, or undefined when the file is missing. */
+  photo(url: string): Promise<string | undefined>;
 }
