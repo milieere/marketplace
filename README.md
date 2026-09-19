@@ -16,4 +16,12 @@
 
 ## Setup
 
-Copy `.env.example` to `.env` and add your Nebius Token Factory credentials. See `context/06-architecture.md` for the variables.
+```bash
+npm install
+cp .env.example .env          # add NEBIUS_API_KEY (or set MOCK=1)
+npm run dev:api               # http://localhost:8787/health
+npm run dev:web               # http://localhost:3000
+npm test
+```
+
+See [AGENTS.md](AGENTS.md) for conventions and [context/06-architecture.md](context/06-architecture.md) for the layout.

@@ -4,23 +4,43 @@
 
 ## Repo structure
 
-pnpm monorepo, TypeScript everywhere.
+npm workspaces monorepo. **Frontend in JavaScript, backend in TypeScript.**
 
 ```
+package.json              workspaces + scripts only (dev:web, dev:api, test, typecheck); no app dependencies
+package-lock.json         the single lockfile (npm only; no pnpm/yarn lockfiles)
 apps/
-  api/                Hono backend: both agents, HTTP + SSE        (BE owner)
-  web/                Next.js frontend                             (FE owner)
+  web/                    Next.js, JavaScript                                   (FE owner)
+  api/                    Hono, TypeScript: both agents, HTTP + SSE             (BE owner)
 packages/
-  contracts/          Zod schemas shared by api and web: requests, AgentEvent, Artifact summary
+  contracts/              TypeScript + Zod, shared by web and api: request schemas, AgentEvent,
+                          artifact/brand summaries, recorded mock event streams
 data/
-  vocabularies/       per-industry attribute vocabularies (hospitality.json)
-  brands/             BrandRecord JSON, one per brand (the demo "database")
-  sources/<brand>/    brand source packs: PDFs, logos, photos, expected.json (extraction answer key)
-scripts/              build-sources (HTML → PDF), eval-extraction, eval-intents
-context/              product and design docs (this folder)
+  vocabularies/           per-industry attribute vocabularies (hospitality.json)
+  brands/                 BrandRecord JSON, one per brand (the demo "database")
+  sources/<brand>/        brand source packs: PDFs, logos, photos, expected.json (extraction answer key)
+scripts/                  build-sources (HTML → PDF), eval-extraction, eval-intents
+context/                  product and design docs (this folder)
 ```
 
-**Only `packages/contracts` is shared.** `web` never imports from `api`, and `api` never imports from `web`.
+### Dependencies
+
+**Each app declares its own dependencies in its own `package.json`.** `npm install` at the root installs everything, deduplicates shared packages into the root `node_modules`, and writes one `package-lock.json`.
+
+| `package.json` | Dependencies |
+|---|---|
+| root | none (only `workspaces` and scripts) |
+| `apps/web` | `next`, `react`, `react-dom`, `@marketplace/contracts` (+ eslint) |
+| `apps/api` | `hono`, `@hono/node-server`, `zod`, `openai` (for Nebius), `@marketplace/contracts`, … (+ `typescript`, `tsx`, `vitest`) |
+| `packages/contracts` | `zod` only |
+
+### Boundaries
+
+- **`packages/` is only for code shared between apps.** Today that is only `contracts`. Agent logic, domain code, prompts and adapters live inside `apps/api`; UI code lives inside `apps/web`.
+- **The backend is not in Next.js route handlers.** `apps/web` has no `app/api/*` routes; it calls the Hono API at `NEXT_PUBLIC_API_URL`. The agents stream for 10–30 s, are tested on their own, and deploy separately.
+- **A JavaScript frontend consuming a TypeScript contract:** `apps/web/next.config.mjs` sets `transpilePackages: ["@marketplace/contracts"]`, so Next compiles the TS source itself with no build step. The frontend uses the Zod schemas at runtime (for example to validate events) and the recorded mock streams for local development. Editors still show the types in `.js` files.
+- **`web` never imports from `api`, and `api` never imports from `web`.** Both import only from `packages/contracts`.
+- **No barrel files.** Packages expose individual files through an `exports` map in `package.json`, not an `index` that re-exports everything.
 
 ## Backend layout (`apps/api/src`)
 
@@ -110,8 +130,8 @@ MOCK=0
 | Level | What | How |
 |---|---|---|
 | Unit | `domain/*`, templates | vitest, no network |
-| Extraction eval | Brand Agent on `data/sources/casa-brisa/` vs. `expected.json` | `pnpm eval:extraction`: field-by-field score |
-| Intent eval | ~10 golden queries → expected `Intent` fields | `pnpm eval:intents`: pass/fail per query |
+| Extraction eval | Brand Agent on `data/sources/casa-brisa/` vs. `expected.json` | `npm run eval:extraction`: field-by-field score |
+| Intent eval | ~10 golden queries → expected `Intent` fields | `npm run eval:intents`: pass/fail per query |
 | End to end | `curl -N /v1/generate` with the demo queries | manual, before the demo |
 
 ## Deployment
