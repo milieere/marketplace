@@ -10,6 +10,6 @@ export interface BrandRepository {
   vocabulary(industry: string): Promise<Vocabulary>;
   /** Stores a reviewed record and makes it matchable without a restart. */
   save(record: BrandRecord): Promise<void>;
-  /** A brand photo as a data URI, or undefined when the file is missing. */
-  photo(url: string): Promise<string | undefined>;
+  /** A brand photo or logo as a data URI, or undefined when the file is missing. */
+  asset(url: string): Promise<string | undefined>;
 }

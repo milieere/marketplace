@@ -5,7 +5,7 @@ describe("JSON brand repository over data/", () => {
   it("loads every seed brand without integrity issues", async () => {
     const repo = await loadRepository();
     const ids = (await repo.listVerified()).map((r) => r.brand.id).sort();
-    expect(ids).toEqual(["cafe-lumen", "casa-brisa", "el-marcador", "grupo-mar", "hotel-albada", "nami-ramen", "terrat", "verde"]);
+    expect(ids).toEqual(["bodega-pinyol", "cafe-lumen", "casa-brisa", "el-marcador", "grupo-mar", "hotel-albada", "nami-ramen", "terrat", "verde"]);
   });
 
   it("keeps the house brand out of matching", async () => {

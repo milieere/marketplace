@@ -15,11 +15,13 @@ function contradicts(photo: Photo, location?: Location): boolean {
 }
 
 // Zero score still ranks: any usable photo beats the gradient
-export function rankPhotos(photos: Photo[], party: Intent["party"], needs: Need[], location?: Location): Photo[] {
+// `prefer` is the orientation the layout crops best
+export function rankPhotos(photos: Photo[], party: Intent["party"], needs: Need[], location?: Location, prefer?: Photo["orientation"]): Photo[] {
   const who = people(party);
   const wanted = needs.flatMap((n) => [n.required, n.preferred]);
   const score = (photo: Photo) =>
     (who && photo.attributes.people?.includes(who) ? 2 : 0) +
+    (prefer && photo.orientation === prefer ? 1 : 0) +
     wanted.reduce((sum, attrs) => sum + Object.entries(attrs).filter(([k, vs]) => vs.some((v) => photo.attributes[k]?.includes(v))).length, 0);
   return photos
     .filter((p) => !contradicts(p, location))

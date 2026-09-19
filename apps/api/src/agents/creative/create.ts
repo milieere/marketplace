@@ -5,17 +5,18 @@ import type { BrandRecord, Location, Offering } from "@marketplace/contracts/bra
 import type { AgentEvent } from "@marketplace/contracts/events";
 import type { Intent } from "@marketplace/contracts/intent";
 import { checkCopy, type Issue } from "../../domain/check";
+import { palette } from "../../domain/color";
 import type { Candidate } from "../../domain/match";
 import { rankPhotos } from "../../domain/photo";
 import { describeLocal } from "../../domain/time";
 import type { ArtifactStore } from "../../ports/artifact-store";
 import type { Llm } from "../../ports/llm";
-import { renderCard } from "../../templates/card";
+import { pickLogo, preferredOrientation, renderCard } from "../../templates/card";
 
 const SYSTEM = readFileSync(new URL("../../prompts/create.md", import.meta.url), "utf8");
 
 export type Pick = { record: BrandRecord; location?: Location; needIds: string[]; candidates: Candidate[] };
-export type CreateContext = { intent: Intent; timezone: string; now: Date; llm: Llm; artifacts: ArtifactStore; loadPhoto: (url: string) => Promise<string | undefined> };
+export type CreateContext = { intent: Intent; timezone: string; now: Date; llm: Llm; artifacts: ArtifactStore; loadAsset: (url: string) => Promise<string | undefined> };
 
 function copySchema(offeringIds: string[]) {
   return z.object({
@@ -103,6 +104,24 @@ function prompt(ctx: CreateContext, pick: Pick, relaxed: Relaxation[], feedback?
   return `Input:\n${JSON.stringify(input)}${revision}`;
 }
 
+// Nothing in the intent drives the look: it is the brand kit end to end
+function designTrace(kit: BrandRecord["brandKit"]): Artifact["trace"][number] {
+  const p = palette(kit);
+  const family = (role: "display" | "body") => kit.typography.find((t) => t.role === role)?.family;
+  return {
+    element: "design",
+    drivenBy: [],
+    brandFacts: [
+      `brandKit.typography.display=${family("display") ?? kit.typography[0]!.family}`,
+      `brandKit.typography.body=${family("body") ?? kit.typography[0]!.family}`,
+      `brandKit.colors.primary=${p.primary}`,
+      `brandKit.colors.accent=${p.accent}`,
+      `brandKit.colors.background=${p.background}`,
+      ...Object.entries(kit.style).map(([k, v]) => `brandKit.style.${k}=${v}`),
+    ],
+  };
+}
+
 export async function* createArtifact(ctx: CreateContext, pick: Pick): AsyncGenerator<AgentEvent> {
   const { intent, llm } = ctx;
   const { record } = pick;
@@ -117,13 +136,17 @@ export async function* createArtifact(ctx: CreateContext, pick: Pick): AsyncGene
   const party = needs[0]?.party ?? intent.party;
 
   let photo: { id: string; src: string; alt: string } | undefined;
-  for (const candidate of rankPhotos(kit.photos, party, needs, pick.location)) {
-    const src = await ctx.loadPhoto(candidate.url).catch(() => undefined);
+  for (const candidate of rankPhotos(kit.photos, party, needs, pick.location, preferredOrientation(kit))) {
+    const src = await ctx.loadAsset(candidate.url).catch(() => undefined);
     if (src) {
       photo = { id: candidate.id, src, alt: candidate.description };
       break;
     }
   }
+
+  const declared = pickLogo(kit);
+  const logoSrc = declared && (await ctx.loadAsset(declared.url).catch(() => undefined));
+  const logo = logoSrc ? { src: logoSrc } : undefined;
 
   const build = (copy: Copy) => {
     const chosen = pick.candidates.filter((c) => copy.offeringIds.includes(c.offering.id));
@@ -137,7 +160,7 @@ export async function* createArtifact(ctx: CreateContext, pick: Pick): AsyncGene
       cta: { label: copy.ctaLabel, url: ctaUrl(pick, party?.size) },
     };
     const priceLines = offerings.map((o) => ({ offeringId: o.id, label: o.name, amount: o.price.amount, unit: o.price.unit, from: o.price.from ?? false }));
-    const { html, colorPairs } = renderCard({ record, language: intent.language, slots, priceLines, currency: offerings[0]!.price.currency, photo });
+    const { html, colorPairs } = renderCard({ record, language: intent.language, slots, priceLines, currency: offerings[0]!.price.currency, photo, logo, location: pick.location });
     const relaxed = [...new Map(chosen.flatMap((c) => c.relaxed).map((r) => [`${r.needId}:${r.constraint}`, r])).values()];
     return { chosen, offerings, slots, priceLines, html, relaxed, badgeTrace, issues: checkCopy(kit, slots, colorPairs) };
   };
@@ -174,6 +197,7 @@ export async function* createArtifact(ctx: CreateContext, pick: Pick): AsyncGene
     photoId,
     trace: [
       { element: "headline", drivenBy: ["intent.phrases"], brandFacts: ["brandKit.voice.samples"] },
+      designTrace(kit),
       result.badgeTrace,
       { element: "priceLines", drivenBy: pick.needIds.map((n) => `intent.needs[${n}]`), brandFacts: result.offerings.map((o) => `offerings[${o.id}].price`) },
       ...(photoId ? [{ element: "photo", drivenBy: ["intent.party", ...pick.needIds.map((n) => `intent.needs[${n}]`)], brandFacts: [`brandKit.photos[${photoId}].attributes`] }] : []),

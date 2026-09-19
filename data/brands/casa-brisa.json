@@ -82,14 +82,14 @@
     "logos": [
       {
         "variant": "primary",
-        "url": "/brands/casa-brisa/logo.svg",
+        "url": "/assets/casa-brisa/logo.svg",
         "onBackgrounds": [
           "sand"
         ]
       },
       {
         "variant": "mono",
-        "url": "/brands/casa-brisa/logo-mono.svg",
+        "url": "/assets/casa-brisa/logo-mono.svg",
         "onBackgrounds": [
           "terracotta",
           "olive",

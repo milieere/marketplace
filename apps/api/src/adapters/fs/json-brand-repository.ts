@@ -6,7 +6,7 @@ import { checkBrandRecord } from "../../domain/brand-integrity";
 import type { BrandRepository } from "../../ports/brand-repository";
 
 const HOUSE_ID = "_house";
-const IMAGE_TYPES: Record<string, string> = { ".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".png": "image/png", ".webp": "image/webp" };
+const ASSET_TYPES: Record<string, string> = { ".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".png": "image/png", ".webp": "image/webp", ".svg": "image/svg+xml" };
 
 async function readJson(path: string): Promise<unknown> {
   try {
@@ -67,8 +67,8 @@ export async function createJsonBrandRepository(dataDir: string): Promise<BrandR
       if (!vocabulary) throw new Error(`No vocabulary for industry "${industry}"`);
       return vocabulary;
     },
-    photo: async (url) => {
-      const type = IMAGE_TYPES[extname(url).toLowerCase()];
+    asset: async (url) => {
+      const type = ASSET_TYPES[extname(url).toLowerCase()];
       const relative = normalize(url.replace(/^\/assets\//, ""));
       if (!type || !url.startsWith("/assets/") || relative.startsWith("..")) return undefined;
       try {
