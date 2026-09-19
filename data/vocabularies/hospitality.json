@@ -1,0 +1,119 @@
+{
+  "industry": "hospitality",
+  "offeringKinds": [
+    "menu",
+    "experience",
+    "package",
+    "room",
+    "event",
+    "promotion"
+  ],
+  "attributes": [
+    {
+      "key": "dietary",
+      "description": "Dietary suitability of a dish or menu",
+      "values": [
+        "vegan",
+        "vegetarian",
+        "gluten-free",
+        "lactose-free",
+        "halal"
+      ],
+      "appliesTo": [
+        "offering"
+      ],
+      "constraint": "hard",
+      "relaxable": false
+    },
+    {
+      "key": "cuisine",
+      "description": "Style of food served",
+      "values": [
+        "tapas",
+        "mediterranean",
+        "seafood",
+        "japanese",
+        "italian",
+        "brunch",
+        "cafe",
+        "cocktails"
+      ],
+      "appliesTo": [
+        "venue",
+        "offering"
+      ],
+      "constraint": "soft",
+      "relaxable": true
+    },
+    {
+      "key": "amenities",
+      "description": "Physical facilities available at the venue",
+      "values": [
+        "terrace",
+        "rooftop",
+        "wifi",
+        "power-outlets",
+        "private-room",
+        "tv-sports",
+        "spa",
+        "parking",
+        "pet-friendly"
+      ],
+      "appliesTo": [
+        "venue",
+        "photo"
+      ],
+      "constraint": "hard",
+      "relaxable": true
+    },
+    {
+      "key": "accessibility",
+      "description": "Accessibility features of the venue",
+      "values": [
+        "wheelchair",
+        "step-free",
+        "accessible-wc"
+      ],
+      "appliesTo": [
+        "venue"
+      ],
+      "constraint": "hard",
+      "relaxable": false
+    },
+    {
+      "key": "ambience",
+      "description": "Atmosphere of the venue",
+      "values": [
+        "romantic",
+        "lively",
+        "quiet",
+        "cosy",
+        "family"
+      ],
+      "appliesTo": [
+        "venue",
+        "photo"
+      ],
+      "constraint": "soft",
+      "relaxable": true
+    },
+    {
+      "key": "occasion",
+      "description": "Occasions an offering is designed for",
+      "values": [
+        "date-night",
+        "celebration",
+        "business",
+        "group",
+        "family",
+        "work"
+      ],
+      "appliesTo": [
+        "offering",
+        "photo"
+      ],
+      "constraint": "soft",
+      "relaxable": true
+    }
+  ]
+}
