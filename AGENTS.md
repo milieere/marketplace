@@ -1,6 +1,6 @@
 # INTENT — agent guide
 
-Hackathon project. Read [context/01-product.md](context/01-product.md) before any non-trivial change, and [context/04-agents.md](context/04-agents.md) + [context/03-data-model.md](context/03-data-model.md) before touching agents or data. Repo layout and boundaries: [context/06-architecture.md](context/06-architecture.md).
+Hackathon project. **Current work and next step: [context/07-build-plan.md](context/07-build-plan.md)** (start there in a new session). Read [context/01-product.md](context/01-product.md) before any non-trivial change, and [context/04-agents.md](context/04-agents.md) + [context/03-data-model.md](context/03-data-model.md) before touching agents or data. Repo layout and boundaries: [context/06-architecture.md](context/06-architecture.md).
 
 ## Commands (from the repo root)
 

@@ -4,7 +4,7 @@ import { describe, expect, it } from "vitest";
 import { BrandRecord, Offering } from "../src/brand-record";
 
 const example = BrandRecord.parse(
-  JSON.parse(readFileSync(join(import.meta.dirname, "..", "..", "..", "data/brands/example-brand.json"), "utf8")),
+  JSON.parse(readFileSync(join(import.meta.dirname, "..", "..", "..", "data/brands/casa-brisa.json"), "utf8")),
 );
 
 const offering = (price: object) =>

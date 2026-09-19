@@ -299,6 +299,6 @@ No schema, agent or template changes are needed. `Location` is optional (online 
 
 ## Storage (demo)
 
-- One JSON file per brand: `data/brands/<brand-id>.json` (a `BrandRecord`). See [example-brand.json](../data/brands/example-brand.json).
+- One JSON file per brand: `data/brands/<brand-id>.json` (a `BrandRecord`). See [casa-brisa.json](../data/brands/casa-brisa.json).
 - Source packs, including photos and logos: `data/sources/<brand-id>/`, served as static assets.
 - Artifacts: the blob store.

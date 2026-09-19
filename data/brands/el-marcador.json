@@ -1,0 +1,283 @@
+{
+  "status": "verified",
+  "brand": {
+    "id": "el-marcador",
+    "name": "El Marcador",
+    "industry": "hospitality",
+    "website": "https://elmarcador.example",
+    "summary": "Sports bar near Camp Nou: big screens, cold beer, tapas for the whole team.",
+    "languages": [
+      "es",
+      "ca",
+      "en"
+    ]
+  },
+  "brandKit": {
+    "colors": [
+      {
+        "id": "navy",
+        "hex": "#0E1E4A",
+        "role": "background",
+        "pairsWith": [
+          "white",
+          "red"
+        ]
+      },
+      {
+        "id": "red",
+        "hex": "#C8102E",
+        "role": "primary",
+        "pairsWith": [
+          "white"
+        ]
+      },
+      {
+        "id": "white",
+        "hex": "#FFFFFF",
+        "role": "text",
+        "pairsWith": [
+          "navy",
+          "red"
+        ]
+      },
+      {
+        "id": "gold",
+        "hex": "#EDBB00",
+        "role": "accent",
+        "pairsWith": [
+          "navy"
+        ]
+      }
+    ],
+    "typography": [
+      {
+        "role": "display",
+        "family": "Oswald",
+        "weights": [
+          600,
+          700
+        ],
+        "fallback": "Impact, sans-serif"
+      },
+      {
+        "role": "body",
+        "family": "Roboto",
+        "weights": [
+          400,
+          700
+        ],
+        "fallback": "system-ui, sans-serif"
+      }
+    ],
+    "logos": [],
+    "style": {
+      "radius": 6,
+      "density": "dense",
+      "headlineCase": "upper",
+      "imageTreatment": "full-bleed",
+      "composition": "text-over-image",
+      "ornament": "stamp"
+    },
+    "voice": {
+      "summary": "Loud, matey, match-day energy. Short and punchy.",
+      "toneRange": {
+        "formality": [
+          0.0,
+          0.2
+        ],
+        "energy": [
+          0.8,
+          1.0
+        ]
+      },
+      "doSay": [
+        "kick-off",
+        "the whole team",
+        "cold"
+      ],
+      "dontSay": [
+        "elegant",
+        "refined"
+      ],
+      "samples": [
+        "KICK-OFF AT NINE. BEERS AT EIGHT.",
+        "The whole team, one table.",
+        "Every goal tastes better cold."
+      ]
+    },
+    "imagery": {
+      "style": "Crowded bar, screens, raised glasses",
+      "avoid": [
+        "empty bar"
+      ]
+    },
+    "photos": [
+      {
+        "id": "match-night",
+        "url": "/assets/el-marcador/photos/match-night.jpg",
+        "description": "Friends cheering in front of a big screen",
+        "orientation": "landscape",
+        "attributes": {
+          "people": [
+            "group"
+          ],
+          "amenities": [
+            "tv-sports"
+          ],
+          "ambience": [
+            "lively"
+          ],
+          "occasion": [
+            "group"
+          ]
+        }
+      }
+    ],
+    "rules": [
+      {
+        "id": "headline-length",
+        "text": "Headlines are at most 40 characters.",
+        "check": {
+          "kind": "max-length",
+          "slot": "headline",
+          "max": 40
+        },
+        "severity": "block"
+      },
+      {
+        "id": "text-contrast",
+        "text": "Text must stay readable: at least 4.5:1 contrast against its background.",
+        "check": {
+          "kind": "min-contrast",
+          "ratio": 4.5
+        },
+        "severity": "block"
+      }
+    ]
+  },
+  "locations": [
+    {
+      "id": "marcador-les-corts",
+      "name": "El Marcador Les Corts",
+      "address": "Travessera de les Corts 150, 08028 Barcelona",
+      "timezone": "Europe/Madrid",
+      "geo": {
+        "lat": 41.383,
+        "lng": 2.125
+      },
+      "openingHours": {
+        "mon": [
+          {
+            "from": "12:00",
+            "to": "01:00"
+          }
+        ],
+        "tue": [
+          {
+            "from": "12:00",
+            "to": "01:00"
+          }
+        ],
+        "wed": [
+          {
+            "from": "12:00",
+            "to": "01:00"
+          }
+        ],
+        "thu": [
+          {
+            "from": "12:00",
+            "to": "01:00"
+          }
+        ],
+        "fri": [
+          {
+            "from": "12:00",
+            "to": "01:00"
+          }
+        ],
+        "sat": [
+          {
+            "from": "12:00",
+            "to": "01:00"
+          }
+        ],
+        "sun": [
+          {
+            "from": "12:00",
+            "to": "01:00"
+          }
+        ]
+      },
+      "attributes": {
+        "cuisine": [
+          "tapas"
+        ],
+        "amenities": [
+          "tv-sports",
+          "terrace"
+        ],
+        "ambience": [
+          "lively"
+        ]
+      },
+      "priceLevel": 1,
+      "reserveUrl": "https://elmarcador.example/reserva"
+    }
+  ],
+  "offerings": [
+    {
+      "id": "em-match-night",
+      "kind": "promotion",
+      "name": "Match night",
+      "description": "Bucket of five beers and three tapas, every match day.",
+      "price": {
+        "amount": 15,
+        "currency": "EUR",
+        "unit": "person"
+      },
+      "attributes": {
+        "cuisine": [
+          "tapas"
+        ],
+        "occasion": [
+          "group"
+        ]
+      },
+      "conditions": "Match days only."
+    },
+    {
+      "id": "em-group-tapas",
+      "kind": "menu",
+      "name": "Group tapas",
+      "description": "Eight tapas for the table.",
+      "price": {
+        "amount": 20,
+        "currency": "EUR",
+        "unit": "person"
+      },
+      "attributes": {
+        "cuisine": [
+          "tapas"
+        ],
+        "occasion": [
+          "group",
+          "celebration"
+        ]
+      },
+      "partySize": {
+        "min": 6
+      }
+    }
+  ],
+  "documents": [
+    {
+      "id": "doc-manual",
+      "kind": "text",
+      "uri": "hand-authored seed data",
+      "addedAt": "2026-09-19T12:00:00+02:00"
+    }
+  ],
+  "evidence": [],
+  "reviewNotes": []
+}

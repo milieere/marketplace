@@ -42,7 +42,7 @@
         "location",
         "offering"
       ],
-      "constraint": "soft",
+      "constraint": "either",
       "relaxable": true
     },
     {

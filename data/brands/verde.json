@@ -1,0 +1,388 @@
+{
+  "status": "verified",
+  "brand": {
+    "id": "verde",
+    "name": "Verde",
+    "industry": "hospitality",
+    "website": "https://verde.example",
+    "summary": "Fully plant-based restaurant in Gràcia: everything vegan, almost everything gluten-free.",
+    "languages": [
+      "es",
+      "ca",
+      "en"
+    ]
+  },
+  "brandKit": {
+    "colors": [
+      {
+        "id": "leaf",
+        "hex": "#3F7D3A",
+        "role": "primary",
+        "pairsWith": [
+          "cream"
+        ]
+      },
+      {
+        "id": "forest",
+        "hex": "#1F3D1C",
+        "role": "text",
+        "pairsWith": [
+          "cream",
+          "lime"
+        ]
+      },
+      {
+        "id": "lime",
+        "hex": "#B5D86A",
+        "role": "accent",
+        "pairsWith": [
+          "forest"
+        ]
+      },
+      {
+        "id": "cream",
+        "hex": "#F7F3E8",
+        "role": "background",
+        "pairsWith": [
+          "forest",
+          "leaf"
+        ]
+      }
+    ],
+    "typography": [
+      {
+        "role": "display",
+        "family": "Nunito",
+        "weights": [
+          700,
+          800
+        ],
+        "fallback": "system-ui, sans-serif"
+      },
+      {
+        "role": "body",
+        "family": "Nunito",
+        "weights": [
+          400,
+          600
+        ],
+        "fallback": "system-ui, sans-serif"
+      }
+    ],
+    "logos": [],
+    "style": {
+      "radius": 24,
+      "density": "airy",
+      "headlineCase": "sentence",
+      "imageTreatment": "framed",
+      "composition": "image-top",
+      "ornament": "none"
+    },
+    "voice": {
+      "summary": "Friendly, relaxed, quietly proud. Food first, never preachy about veganism.",
+      "toneRange": {
+        "formality": [
+          0.2,
+          0.5
+        ],
+        "energy": [
+          0.3,
+          0.7
+        ]
+      },
+      "doSay": [
+        "plant-based",
+        "seasonal",
+        "everyone at the table"
+      ],
+      "dontSay": [
+        "meat-free",
+        "substitute",
+        "healthy",
+        "guilt-free"
+      ],
+      "samples": [
+        "Everything on the table, for everyone at the table.",
+        "Seasonal, plant-based, and very generous.",
+        "Long lunches start here."
+      ]
+    },
+    "imagery": {
+      "style": "Soft daylight, green plants, colourful plates from above",
+      "avoid": [
+        "dark rooms",
+        "close-ups of raw vegetables"
+      ]
+    },
+    "photos": [
+      {
+        "id": "long-table",
+        "url": "/assets/verde/photos/long-table.jpg",
+        "description": "Long wooden table on the terrace with colourful plant-based dishes",
+        "orientation": "landscape",
+        "attributes": {
+          "people": [
+            "group"
+          ],
+          "amenities": [
+            "terrace"
+          ],
+          "occasion": [
+            "group",
+            "celebration"
+          ]
+        }
+      },
+      {
+        "id": "two-bowls",
+        "url": "/assets/verde/photos/two-bowls.jpg",
+        "description": "Two bowls and two glasses on a small table by the window",
+        "orientation": "square",
+        "attributes": {
+          "people": [
+            "couple"
+          ],
+          "ambience": [
+            "cosy"
+          ],
+          "occasion": [
+            "date-night"
+          ]
+        }
+      },
+      {
+        "id": "lunch-plate",
+        "url": "/assets/verde/photos/lunch-plate.jpg",
+        "description": "Colourful lunch plate from above",
+        "orientation": "square",
+        "attributes": {
+          "people": [
+            "none"
+          ],
+          "occasion": [
+            "work"
+          ]
+        }
+      }
+    ],
+    "rules": [
+      {
+        "id": "headline-length",
+        "text": "Headlines are at most 48 characters.",
+        "check": {
+          "kind": "max-length",
+          "slot": "headline",
+          "max": 48
+        },
+        "severity": "block"
+      },
+      {
+        "id": "forbidden-terms",
+        "text": "Never describe food by what it lacks.",
+        "check": {
+          "kind": "forbidden-term",
+          "terms": [
+            "meat-free",
+            "substitute",
+            "guilt-free"
+          ]
+        },
+        "severity": "block"
+      },
+      {
+        "id": "text-contrast",
+        "text": "Text must stay readable: at least 4.5:1 contrast against its background.",
+        "check": {
+          "kind": "min-contrast",
+          "ratio": 4.5
+        },
+        "severity": "block"
+      }
+    ]
+  },
+  "locations": [
+    {
+      "id": "verde-gracia",
+      "name": "Verde Gràcia",
+      "address": "Carrer de Verdi 34, 08012 Barcelona",
+      "timezone": "Europe/Madrid",
+      "geo": {
+        "lat": 41.4034,
+        "lng": 2.1566
+      },
+      "openingHours": {
+        "tue": [
+          {
+            "from": "13:00",
+            "to": "16:00"
+          },
+          {
+            "from": "20:00",
+            "to": "23:30"
+          }
+        ],
+        "wed": [
+          {
+            "from": "13:00",
+            "to": "16:00"
+          },
+          {
+            "from": "20:00",
+            "to": "23:30"
+          }
+        ],
+        "thu": [
+          {
+            "from": "13:00",
+            "to": "16:00"
+          },
+          {
+            "from": "20:00",
+            "to": "23:30"
+          }
+        ],
+        "fri": [
+          {
+            "from": "13:00",
+            "to": "16:00"
+          },
+          {
+            "from": "20:00",
+            "to": "23:30"
+          }
+        ],
+        "sat": [
+          {
+            "from": "13:00",
+            "to": "16:00"
+          },
+          {
+            "from": "20:00",
+            "to": "23:30"
+          }
+        ],
+        "sun": [
+          {
+            "from": "13:00",
+            "to": "16:00"
+          },
+          {
+            "from": "20:00",
+            "to": "23:30"
+          }
+        ]
+      },
+      "attributes": {
+        "cuisine": [
+          "mediterranean"
+        ],
+        "amenities": [
+          "terrace"
+        ],
+        "accessibility": [
+          "wheelchair"
+        ],
+        "ambience": [
+          "cosy"
+        ]
+      },
+      "priceLevel": 2,
+      "reserveUrl": "https://verde.example/reserve"
+    }
+  ],
+  "offerings": [
+    {
+      "id": "vd-group-menu",
+      "kind": "menu",
+      "name": "Group menu",
+      "description": "Seven plant-based dishes to share, all vegan and gluten-free.",
+      "price": {
+        "amount": 22,
+        "currency": "EUR",
+        "unit": "person"
+      },
+      "attributes": {
+        "dietary": [
+          "vegan",
+          "vegetarian",
+          "gluten-free"
+        ],
+        "occasion": [
+          "group",
+          "celebration"
+        ]
+      },
+      "partySize": {
+        "min": 6,
+        "max": 20
+      }
+    },
+    {
+      "id": "vd-lunch-menu",
+      "kind": "menu",
+      "name": "Lunch menu",
+      "description": "Starter, main and dessert on weekdays.",
+      "price": {
+        "amount": 14,
+        "currency": "EUR",
+        "unit": "person"
+      },
+      "attributes": {
+        "dietary": [
+          "vegan",
+          "vegetarian"
+        ],
+        "occasion": [
+          "work"
+        ]
+      },
+      "availability": {
+        "days": [
+          "tue",
+          "wed",
+          "thu",
+          "fri"
+        ],
+        "from": "13:00",
+        "to": "16:00"
+      }
+    },
+    {
+      "id": "vd-date-night",
+      "kind": "menu",
+      "name": "Date night for two",
+      "description": "Five courses to share and a bottle of natural wine.",
+      "price": {
+        "amount": 40,
+        "currency": "EUR",
+        "unit": "group"
+      },
+      "attributes": {
+        "dietary": [
+          "vegan",
+          "vegetarian"
+        ],
+        "occasion": [
+          "date-night"
+        ]
+      },
+      "partySize": {
+        "min": 2,
+        "max": 2
+      },
+      "availability": {
+        "from": "20:00"
+      }
+    }
+  ],
+  "documents": [
+    {
+      "id": "doc-manual",
+      "kind": "text",
+      "uri": "hand-authored seed data",
+      "addedAt": "2026-09-19T12:00:00+02:00"
+    }
+  ],
+  "evidence": [],
+  "reviewNotes": []
+}
