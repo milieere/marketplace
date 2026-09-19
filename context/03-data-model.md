@@ -8,7 +8,7 @@ The contract between the two agents. The **Brand Agent** writes it by extracting
 
 1. **Core entities are industry-agnostic.** Industry specifics live in `attributes`, whose keys and values come from a per-industry **Vocabulary** ([hospitality.json](../data/vocabularies/hospitality.json)). The extractor, the intent parser, the photo tagger and the matcher all load the same vocabulary, so a new industry means a new vocabulary file, not new code.
 2. **Every extracted fact carries evidence:** document, page, quote and confidence. This powers the brand review screen and explains every artifact.
-3. **Prices, hours and conditions are data.** The LLM never produces them; they are copied from `Offering`/`Venue`.
+3. **Prices, hours and conditions are data.** The LLM never produces them; they are copied from `Offering`/`Location`.
 4. **Brand identity is rendered, never generated.** Colours, fonts, logos and style come from `BrandKit` and are rendered into templates. Imagery is the brand's own tagged photos, selected per intent.
 5. **Artifacts carry a trace:** which intent signal and which brand fact produced each element.
 
@@ -16,8 +16,8 @@ The contract between the two agents. The **Brand Agent** writes it by extracting
 
 ```
 Vocabulary (per industry)
-SourceDocument ──evidence──▶ BrandRecord = Brand + BrandKit (+ photos) + Venue[] + Offering[]
-Intent ──(Creative Agent)──▶ Artifact ──▶ Brand, Venue?, Offering[], Photo?
+SourceDocument ──evidence──▶ BrandRecord = Brand + BrandKit (+ photos) + Location[] + Offering[]
+Intent ──(Creative Agent)──▶ Artifact ──▶ Brand, Location?, Offering[], Photo?
 ```
 
 | Entity | Written by | Read by |
@@ -41,7 +41,7 @@ type AttributeDef = {
   key: string;
   description: string;                            // injected into LLM prompts
   values: string[];                               // closed set
-  appliesTo: ("venue" | "offering" | "photo")[];
+  appliesTo: ("location" | "offering" | "photo")[];
   constraint: "hard" | "soft" | "either";         // can a user require it, or only prefer it?
   relaxable: boolean;                             // may the matcher drop it when nothing fits? false for safety needs (dietary, accessibility)
 };
@@ -62,7 +62,7 @@ type BrandRecord = {
   status: "draft" | "verified";
   brand: Brand;
   brandKit: BrandKit;
-  venues: Venue[];
+  locations: Location[];                          // empty for online-only brands
   offerings: Offering[];
   documents: SourceDocument[];
   evidence: Evidence[];
@@ -106,9 +106,8 @@ type Photo = {
   id: string;
   url: string;
   description: string;                            // vision-generated, e.g. "Group of friends sharing tapas on a sunny terrace"
-  people: "none" | "couple" | "group" | "family";
   orientation: "landscape" | "portrait" | "square";
-  attributes: Attributes;                         // vocabulary keys that apply to photos (amenities, ambience, occasion)
+  attributes: Attributes;                         // vocabulary keys that apply to photos (people, amenities, ambience, occasion)
 };
 
 type BrandRule = {
@@ -124,10 +123,11 @@ type RuleCheck =
   | { kind: "min-contrast"; ratio: number };      // WCAG ratio for text over background in the rendered artifact
 
 // ---- Catalogue
+type PriceUnit = "person" | "group" | "night" | "item" | "hour";   // fixed set: the budget arithmetic understands these
 type Weekday = "mon" | "tue" | "wed" | "thu" | "fri" | "sat" | "sun";
 type TimeRange = { from: string; to: string };    // "18:00"–"01:00"; `to` < `from` means past midnight
 
-type Venue = {
+type Location = {
   id: string;
   name: string;
   address: string;
@@ -142,11 +142,11 @@ type Venue = {
 // A promotable offer the brand wants to push (set menu, package, promotion), not the full catalogue.
 type Offering = {
   id: string;
-  venueIds?: string[];                            // omitted = all venues
+  locationIds?: string[];                            // omitted = all locations
   kind: string;                                   // one of Vocabulary.offeringKinds
   name: string;                                   // as the brand writes it; never translated in priceLines
   description: string;
-  price: { amount: number; currency: "EUR"; unit: "person" | "group" | "night"; from?: boolean };
+  price: { amount: number; currency: string; unit: PriceUnit; from?: boolean };   // currency: ISO 4217, e.g. "EUR"
   attributes: Attributes;
   availability?: { days?: Weekday[]; from?: string; to?: string; validUntil?: string };
   partySize?: { min?: number; max?: number };
@@ -185,13 +185,13 @@ type Artifact = {
   intentId: string;
   needIds: string[];                              // one brand can answer several needs in one artifact
   brandId: string;
-  venueId?: string;
+  locationId?: string;
   offeringIds: string[];
   language: string;
   format: "banner" | "card";
   tone: { formality: number; energy: number };    // must lie within BrandKit.voice.toneRange
   slots: { headline: string; subline?: string; body: string; badges: string[]; cta: { label: string; url: string } };
-  priceLines: { offeringId: string; label: string; amount: number; unit: string; from: boolean }[];   // copied from Offering
+  priceLines: { offeringId: string; label: string; amount: number; unit: PriceUnit; from: boolean }[];   // copied from Offering
   photoId?: string;
   trace: { element: string; drivenBy: string[]; brandFacts: string[] }[];   // paths into Intent / BrandRecord
   check: { passed: boolean; issues: { ruleId: string; message: string; severity: "block" | "warn" }[] };
@@ -221,7 +221,7 @@ brandKit.colors[terracotta].hex
 brandKit.voice.samples
 brandKit.photos[terrace-group].attributes.amenities
 offerings[cb-sharing-menu].price
-venues[casa-brisa-born].openingHours
+locations[casa-brisa-born].openingHours
 ```
 
 Trace paths into the intent use the same form: `intent.needs[n1].required.dietary`, `intent.party.size`.
@@ -232,9 +232,9 @@ Matching runs **per need**, then combines the results.
 
 **1. Filter (code, all hard), per need.** The need's own `party`, `budget` and `when` override the intent's.
 
-1. **Attributes:** every `required` value is present in the offering's or the venue's attributes. If `kinds` is set, the offering's kind is in it.
+1. **Attributes:** every `required` value is present in the offering's or the location's attributes. If `kinds` is set, the offering's kind is in it.
 2. **Party size:** within `offering.partySize` (if set).
-3. **Time:** `when.start` (and `end`) falls within the venue's `openingHours` in the venue's `timezone`, and within `offering.availability`.
+3. **Time:** `when.start` (and `end`) falls within the location's `openingHours` in the location's `timezone`, and within `offering.availability`.
 4. **Budget:** first work out the cost for the party:
 
    | `price.unit` | Cost for the party |
@@ -242,6 +242,8 @@ Matching runs **per need**, then combines the results.
    | `person` | `amount × party.size` |
    | `group` | `amount` (only valid if the party fits `partySize`) |
    | `night` | `amount × nights` (1 if unknown) |
+   | `item` | `amount` (one per need unless a quantity is given) |
+   | `hour` | `amount × hours` in `when` (1 if unknown) |
 
    - Then compare: `per = "total"` → cost ≤ amount. `per = "person"` → cost ÷ party.size ≤ amount.
    - `from: true` prices count at their minimum and are labelled "from".
@@ -276,14 +278,24 @@ Matching runs **per need**, then combines the results.
 | `colors`, `typography`, `logos`, `style` | Template rendering (code). `style` is what makes brands look different, not just recoloured. |
 | `voice.samples`, `doSay`, `dontSay` | Copy style (few-shot) |
 | `voice.toneRange` + `need.preferred.occasion` | `Artifact.tone`, i.e. how formal or energetic the copy is |
-| `photos[].attributes`, `people` + `intent.party`, `need.required`, `need.preferred` | Photo selection |
+| `photos[].attributes` (incl. `people`) + `intent.party`, `need.required`, `need.preferred` | Photo selection |
 | `rules` | Checks after generation; `block` failures trigger a rewrite |
-| `need.required` ∩ offering/venue `attributes` | Badges ("🌱 vegan", "terrace"), only for satisfied constraints |
+| `need.required` ∩ offering/location `attributes` | Badges ("🌱 vegan", "terrace"), only for satisfied constraints |
 | `artifact.relaxed` | An honest line in the copy about what couldn't be met |
 | `intent.phrases` | Headline wording |
 | `intent.language` | Copy language. Offering names stay as the brand wrote them. |
 | `offering.price`, `conditions` | `priceLines` and small print (copied as-is) |
-| `venue.reserveUrl` + `intent.party`, `need.when` | CTA ("Reserve for 8, Fri 21:00") |
+| `location.reserveUrl` + `intent.party`, `need.when` | CTA ("Reserve for 8, Fri 21:00") |
+
+## Adding an industry
+
+Everything industry-specific is data. To add, say, bike retail:
+
+1. **Write `data/vocabularies/<industry>.json`:** offering kinds (`product`, `rental`, `service`) and attributes (`category`, `size`, `services`), each with `appliesTo`, `constraint` and `relaxable`.
+2. **Set `brand.industry`** on that industry's brand records.
+3. **Use the existing price units** (`item`, `hour`, …). Units are code, because the budget arithmetic depends on them; add one only if no existing unit fits.
+
+No schema, agent or template changes are needed. `Location` is optional (online brands have none), and `Intent.party` is optional (not every purchase is for a group).
 
 ## Storage (demo)
 

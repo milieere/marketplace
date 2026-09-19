@@ -17,8 +17,8 @@ Estimates are for the backend owner, with the AI pair doing the typing.
 | # | Component | Delivers | Test | Review focus | Est. |
 |---|---|---|---|---|---|
 | 01 | **Workspace scaffold** | On top of the FE branch's npm workspace: `apps/api` (Hono, TS) with `/health` and `config.ts` (Zod env), `packages/contracts` skeleton, root scripts for both apps; remove `packages/ai`, `core`, `shared` and the empty Next API routes | `npm run typecheck`; `curl /health` → ok; a missing env var fails at startup | Folder structure matches [06-architecture.md](06-architecture.md) | 30 m |
-| 02 | **Contracts + mock mode** | `packages/contracts` (requests, `AgentEvent`, artifact summary); recorded event fixtures; `MOCK=1` streams for `/v1/generate` and `/v1/brands/ingest` | Fixtures validate against the schemas; `curl -N` streams events | **Review together with the frontend dev**: event shapes and names | 45 m |
-| 03 | **Domain schemas** | Zod for `BrandRecord`, `Intent`, `Artifact`, `Vocabulary`; vocabulary validation | All files in `data/brands/` validate; unknown attribute values are rejected | Code matches [03-data-model.md](03-data-model.md) | 30 m |
+| 02 | **Contracts + mock mode** | `packages/contracts`: the data-model schemas (`BrandRecord`, `Intent`, `Artifact`, `Vocabulary`), requests, `AgentEvent`; 4 recorded streams; `MOCK=1` replays them on `/v1/generate` and `/v1/brands/ingest` | Fixtures validate against the schemas; `curl -N` streams events | **Review together with the frontend dev**: event shapes and names | 45 m |
+| 03 | **Data validation** | Vocabulary checks on top of the contract schemas (attribute keys/values, `appliesTo`, evidence paths, colour references) | All files in `data/brands/` validate; unknown attribute values are rejected | Code matches [03-data-model.md](03-data-model.md) | 30 m |
 
 **Checkpoint A:** the frontend dev builds the UI against the mock stream from here on.
 
@@ -27,7 +27,7 @@ Estimates are for the backend owner, with the AI pair doing the typing.
 | # | Component | Delivers | Test | Review focus | Est. |
 |---|---|---|---|---|---|
 | 04 | **Seed brands** | The 7 JSON brands + `_house.json` from [05-brand-sources.md](05-brand-sources.md), logos, 3–5 photos each | Test 03 validates all of them; each brand's facts match the coverage matrix | Brands are visibly different in colour, type, `style` and tone | 1.5 h |
-| 05 | **Filter, relax, combine** (`domain/filter.ts`, `relax.ts`, `combine.ts`) | Per-need filter (budget arithmetic, hours past midnight in the venue's timezone, party size, attributes); relaxation ladder; near-miss suggestions; multi-need combinations | **Coverage matrix Q1–Q10 as fixtures** (hand-written intents → expected matches, exclusions, relaxations, NoMatch) | The fixtures: do they match how we think matching should behave? | 1.5 h |
+| 05 | **Filter, relax, combine** (`domain/filter.ts`, `relax.ts`, `combine.ts`) | Per-need filter (budget arithmetic, hours past midnight in the location's timezone, party size, attributes); relaxation ladder; near-miss suggestions; multi-need combinations | **Coverage matrix Q1–Q10 as fixtures** (hand-written intents → expected matches, exclusions, relaxations, NoMatch) | The fixtures: do they match how we think matching should behave? | 1.5 h |
 | 06 | **Colour + checks** (`domain/color.ts`, `domain/check.ts`) | CMYK/RGB → hex, WCAG contrast, the 4 rule-check kinds, grounding checks | Unit tests (CMYK `15 0 46 58` → `#5B6B3A`) | Rule semantics | 30 m |
 | 07 | **Templates** (`banner`, `card`) | `(spec, brandKit) → HTML`, driven by `style` (composition, case, treatment, ornament) | Render 3 brands × 2 formats with fixed slots into `out/*.html`, then open and screenshot | **Visual review**: does each brand look like itself? | 1.5 h |
 
@@ -49,9 +49,9 @@ Estimates are for the backend owner, with the AI pair doing the typing.
 
 | # | Component | Delivers | Test | Review focus | Est. |
 |---|---|---|---|---|---|
-| 13 | **Casa Brisa source pack** | HTML → PDF build script; 7-page guidelines, offers, venue fact sheet; `expected.json` = the current example brand | Every value in `expected.json` appears in the PDF text layer | Does the PDF look like a real brand book? | 1 h |
+| 13 | **Casa Brisa source pack** | HTML → PDF build script; 7-page guidelines, offers, location fact sheet; `expected.json` = the current example brand | Every value in `expected.json` appears in the PDF text layer | Does the PDF look like a real brand book? | 1 h |
 | 14 | **PDF reader** | Text per page + page PNGs | Hex codes found on the right pages | — | 30 m |
-| 15 | **Route + extractors** | One extractor per topic, **added one at a time**: colours → typography → voice → style/logos → offers → venue → photo tags | `npm run eval:extraction` shows the score per topic against `expected.json` | Score and misses per topic | 2 h |
+| 15 | **Route + extractors** | One extractor per topic, **added one at a time**: colours → typography → voice → style/logos → offers → location → photo tags | `npm run eval:extraction` shows the score per topic against `expected.json` | Score and misses per topic | 2 h |
 | 16 | **Normalize + Verify** | Colour maths, vocabulary mapping, conflict re-check loop | The CMYK-only colour comes out correct; the eval score doesn't drop | What gets flagged in `reviewNotes` | 45 m |
 | 17 | **Brand Agent + ingest/verify endpoints** | Orchestration, `finding` events, save draft, verify | Ingest → draft saved → verify → the brand appears in `/v1/generate` results | Live review of the event stream | 45 m |
 

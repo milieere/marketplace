@@ -148,9 +148,11 @@
         "id": "terrace-group",
         "url": "/assets/casa-brisa/photos/terrace-group.jpg",
         "description": "Group of friends sharing tapas on a sunny terrace",
-        "people": "group",
         "orientation": "landscape",
         "attributes": {
+          "people": [
+            "group"
+          ],
           "amenities": [
             "terrace"
           ],
@@ -167,9 +169,11 @@
         "id": "candle-couple",
         "url": "/assets/casa-brisa/photos/candle-couple.jpg",
         "description": "Couple at a candle-lit corner table with cava glasses",
-        "people": "couple",
         "orientation": "portrait",
         "attributes": {
+          "people": [
+            "couple"
+          ],
           "ambience": [
             "romantic",
             "cosy"
@@ -183,9 +187,11 @@
         "id": "table-overhead",
         "url": "/assets/casa-brisa/photos/table-overhead.jpg",
         "description": "Overhead shot of a table covered in small plates",
-        "people": "none",
         "orientation": "square",
         "attributes": {
+          "people": [
+            "none"
+          ],
           "occasion": [
             "group"
           ]
@@ -195,9 +201,11 @@
         "id": "vermut-bar",
         "url": "/assets/casa-brisa/photos/vermut-bar.jpg",
         "description": "Vermouth glasses and olives on the bar at golden hour",
-        "people": "none",
         "orientation": "landscape",
         "attributes": {
+          "people": [
+            "none"
+          ],
           "occasion": [
             "work",
             "group"
@@ -208,9 +216,11 @@
         "id": "private-room",
         "url": "/assets/casa-brisa/photos/private-room.jpg",
         "description": "Long table set for a celebration in a warm private room",
-        "people": "none",
         "orientation": "landscape",
         "attributes": {
+          "people": [
+            "none"
+          ],
           "amenities": [
             "private-room"
           ],
@@ -261,7 +271,7 @@
       }
     ]
   },
-  "venues": [
+  "locations": [
     {
       "id": "casa-brisa-born",
       "name": "Casa Brisa El Born",
@@ -419,6 +429,9 @@
     },
     {
       "id": "cb-private-room",
+      "locationIds": [
+        "casa-brisa-born"
+      ],
       "kind": "event",
       "name": "Private room celebration",
       "description": "Our back room for 10–20 guests with a set tapas menu and a dedicated host.",
@@ -439,10 +452,7 @@
         "min": 10,
         "max": 20
       },
-      "conditions": "10–20 guests. Book at least 48 hours ahead.",
-      "venueIds": [
-        "casa-brisa-born"
-      ]
+      "conditions": "10–20 guests. Book at least 48 hours ahead."
     }
   ],
   "documents": [
@@ -497,7 +507,7 @@
       "confidence": 0.85
     },
     {
-      "field": "venues[casa-brisa-born].openingHours",
+      "field": "locations[casa-brisa-born].openingHours",
       "documentId": "doc-website",
       "confidence": 0.9
     },

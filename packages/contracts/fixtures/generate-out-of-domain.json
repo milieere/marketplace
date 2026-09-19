@@ -1,0 +1,93 @@
+{
+  "scenario": "generate-out-of-domain",
+  "description": "Q11: off-topic request",
+  "match": "\\b(car|coche|weather|tiempo|homework|code)\\b",
+  "events": [
+    {
+      "delayMs": 0,
+      "event": {
+        "type": "step",
+        "agent": "creative",
+        "id": "understand",
+        "label": "Understanding your request",
+        "status": "started"
+      }
+    },
+    {
+      "delayMs": 700,
+      "event": {
+        "type": "step",
+        "agent": "creative",
+        "id": "understand",
+        "label": "Understanding your request",
+        "status": "done",
+        "detail": "Not a hospitality request"
+      }
+    },
+    {
+      "delayMs": 50,
+      "event": {
+        "type": "intent",
+        "intent": {
+          "id": "int-q11",
+          "raw": {
+            "text": "My car is making a weird noise",
+            "inputs": [
+              {
+                "kind": "text"
+              }
+            ]
+          },
+          "scope": "out-of-domain",
+          "language": "en",
+          "phrases": [],
+          "needs": [],
+          "missing": []
+        }
+      }
+    },
+    {
+      "delayMs": 50,
+      "event": {
+        "type": "no-match",
+        "noMatch": {
+          "reason": "out-of-domain",
+          "message": "I plan evenings, meals and stays, not car repairs. Try one of these:",
+          "suggestions": [
+            {
+              "label": "Friday, 8 friends, two vegans, terrace, €30 each",
+              "patch": {
+                "change": {
+                  "text": "Friday, 8 friends, two vegans, terrace, €30 each"
+                }
+              }
+            },
+            {
+              "label": "Romantic weekend for two, hotel and dinner, €400",
+              "patch": {
+                "change": {
+                  "text": "Romantic weekend for two, hotel and dinner, €400"
+                }
+              }
+            },
+            {
+              "label": "Sunday brunch with kids and grandma",
+              "patch": {
+                "change": {
+                  "text": "Sunday brunch with kids and grandma"
+                }
+              }
+            }
+          ],
+          "html": "<!doctype html><html><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">\n<style>body{margin:0;font-family:system-ui,sans-serif;background:#0F0F14;color:#F4F4F6}.box{max-width:420px;margin:0 auto;padding:32px 24px}\nh1{font-size:24px;margin:0 0 10px}p{opacity:.8;line-height:1.5}.chip{display:block;width:100%;text-align:left;margin:8px 0;padding:12px 14px;border-radius:10px;border:1px solid #3A3A48;background:#1A1A22;color:inherit;font:inherit}</style>\n</head><body><div class=\"box\"><h1>That's outside what I do</h1><p>I plan evenings, meals and stays, not car repairs. Try one of these:</p><button class=\"chip\">Friday, 8 friends, two vegans, terrace, €30 each</button><button class=\"chip\">Romantic weekend for two, hotel and dinner, €400</button><button class=\"chip\">Sunday brunch with kids and grandma</button></div></body></html>"
+        }
+      }
+    },
+    {
+      "delayMs": 50,
+      "event": {
+        "type": "done"
+      }
+    }
+  ]
+}

@@ -16,5 +16,5 @@
 | # | Input | Result |
 |---|---|---|
 | B1 | Connected Frontify workspace | BrandKit from structured assets and guidelines (high confidence) |
-| B2 | Guidelines PDF + menu PDF + website | Draft BrandKit, venues and offerings, reviewed by the brand |
+| B2 | Guidelines PDF + menu PDF + website | Draft BrandKit, locations and offerings, reviewed by the brand |
 | B3 | Free text: "2-for-1 cocktails Tue–Thu before 21:00" | Structured offer with conditions |

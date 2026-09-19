@@ -41,7 +41,7 @@ guidelines PDF / Frontify / website / menus     voice memo / text / image / docu
    ┌──────────────────────┐                    ┌──────────────────────────────┐
    │ 1. Brand Agent       │  verified brand    │ 2. Intent & Creative Agent   │
    │ extract → BrandKit + │ ─────────────────▶ │ parse intent → match offers  │
-   │ Venues + Offerings   │      data          │ → generate personalized      │
+   │ Locations + Offerings│      data          │ → generate personalized      │
    └──────────────────────┘                    │ on-brand artifact + check    │
                                                └──────────────────────────────┘
                                                               │
