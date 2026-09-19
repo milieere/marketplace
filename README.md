@@ -11,7 +11,8 @@
 | [context/03-data-model.md](context/03-data-model.md) | The contract between the two agents |
 | [context/04-agents.md](context/04-agents.md) | How the Brand Agent and Creative Agent work, step by step |
 | [context/05-brand-sources.md](context/05-brand-sources.md) | Raw brand materials (PDFs, tokens, offers) the Brand Agent reads |
+| [context/06-architecture.md](context/06-architecture.md) | Repo structure, backend layout, API, config, testing, deploy |
 
 ## Setup
 
-Copy `.env.example` to `.env` and add your Nebius Token Factory credentials. The app scaffold comes after the stack decision (see the open questions in `01-product.md`).
+Copy `.env.example` to `.env` and add your Nebius Token Factory credentials. See `context/06-architecture.md` for the variables.

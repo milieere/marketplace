@@ -81,3 +81,26 @@ type AgentEvent =
 ```
 
 `finding` and `revision` are the most important events for the demo, because they make the agents' work visible.
+
+## Models (Nebius Token Factory, tested 2026-09-19)
+
+Test: 3 intent-parsing queries plus 1 guidelines-page extraction, with JSON-schema output requested.
+
+| Model | Valid JSON | Intents correct | Avg. time (intent) | Brand extraction |
+|---|---|---|---|---|
+| **deepseek-ai/DeepSeek-V4-Pro** | 3/3 | 2/3 | **2.0 s** | correct, 1.9 s |
+| **nvidia/nemotron-3-super-120b-a12b** | 3/3 | 2/3 | 3.6 s | correct, 4.9 s |
+| deepseek-ai/DeepSeek-V4-Flash-0731 | 3/3 | 2/3 | 5.1 s | correct, 5.0 s |
+| Qwen/Qwen3-30B-A3B-Instruct-2507 | 3/3 | 2/3 | 6.7 s | correct, 6.9 s |
+| openai/gpt-oss-120b | 3/3 | 1/3 | 1.7 s | wrong |
+| Qwen/Qwen3-235B-A22B-Instruct-2507 | 1/3 | 1/3 | 45.9 s | correct |
+| GLM-5.3-Flash, DeepSeek-V4.1-Flash, Nemotron-3.5-Lightning, Kimi-K2.6, Gemma-3-27b | unreliable or slow | | | |
+
+**Picks:**
+- **Default for every text step:** `deepseek-ai/DeepSeek-V4-Pro`, with `nvidia/nemotron-3-super-120b-a12b` as the fallback.
+- **Vision** (photo tagging, page roles): `google/gemma-3-27b-it` or `openbmb/MiniCPM-V-4_5`. Both can read images but misread exact colours, and Gemma is slow with JSON schemas. Test both on real pages.
+
+**Lessons for `Llm.structured`:**
+- **JSON schema is requested but not enforced.** Several models returned malformed or empty JSON, so always validate with Zod, retry once with the validation error, then fall back to the next model.
+- **Never let an LLM convert colours.** DeepSeek-V4-Pro converted CMYK `15 0 46 58` to `#6B8E23`; the correct value is `#5B6B3A`. Do it in code.
+- **Intent prompts need worked examples.** Most models missed one case (for example counting "two adults and two kids + grandma" as 5), so add few-shot examples to the prompt.
