@@ -1,9 +1,10 @@
-import Head from "next/head";
 import styles from "./page.module.css";
-import Hero from "../components/hero/hero";
-import Header from "../components/header/header";
+import Head from "next/head";
+import Header from "../../components/header/header";
+import Visualizer from "../../components/visualizer/visualizer";
 
-export default function Home() {
+
+export default function Opciones() {
   return (
     <>
       <Head>
@@ -49,7 +50,7 @@ export default function Home() {
       </Head>
       <main className={styles.main}>
         <Header />
-        <Hero />
+        <Visualizer />
       </main>
     </>
   );
