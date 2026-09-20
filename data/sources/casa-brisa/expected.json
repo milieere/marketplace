@@ -1,5 +1,4 @@
 {
-  "status": "verified",
   "brand": {
     "id": "casa-brisa",
     "name": "Casa Brisa",
@@ -54,6 +53,7 @@
         "hex": "#2B2118",
         "role": "text",
         "pairsWith": [
+          "terracotta",
           "sand",
           "saffron"
         ]
@@ -79,24 +79,7 @@
         "fallback": "system-ui, sans-serif"
       }
     ],
-    "logos": [
-      {
-        "variant": "primary",
-        "url": "/assets/casa-brisa/logo.svg",
-        "onBackgrounds": [
-          "sand"
-        ]
-      },
-      {
-        "variant": "mono",
-        "url": "/assets/casa-brisa/logo-mono.svg",
-        "onBackgrounds": [
-          "terracotta",
-          "olive",
-          "ink"
-        ]
-      }
-    ],
+    "logos": [],
     "style": {
       "radius": 16,
       "density": "airy",
@@ -454,90 +437,5 @@
       },
       "conditions": "10–20 guests. Book at least 48 hours ahead."
     }
-  ],
-  "documents": [
-    {
-      "id": "doc-guidelines",
-      "kind": "pdf",
-      "uri": "data/sources/casa-brisa/brand-guidelines.pdf",
-      "addedAt": "2026-09-19T10:00:00Z"
-    },
-    {
-      "id": "doc-offers",
-      "kind": "pdf",
-      "uri": "data/sources/casa-brisa/offers.pdf",
-      "addedAt": "2026-09-19T10:00:00Z"
-    },
-    {
-      "id": "doc-photos",
-      "kind": "image",
-      "uri": "data/sources/casa-brisa/photos/",
-      "addedAt": "2026-09-19T10:00:00Z"
-    },
-    {
-      "id": "doc-website",
-      "kind": "url",
-      "uri": "https://casabrisa.example",
-      "addedAt": "2026-09-19T10:00:00Z"
-    }
-  ],
-  "evidence": [
-    {
-      "field": "brand.summary",
-      "documentId": "doc-guidelines",
-      "page": 2,
-      "quote": "We are the table you share with the people you love.",
-      "confidence": 0.9
-    },
-    {
-      "field": "brandKit.colors[terracotta].hex",
-      "documentId": "doc-guidelines",
-      "page": 5,
-      "confidence": 0.95
-    },
-    {
-      "field": "brandKit.voice.samples",
-      "documentId": "doc-guidelines",
-      "page": 8,
-      "confidence": 0.85
-    },
-    {
-      "field": "brandKit.photos[terrace-group].attributes",
-      "documentId": "doc-photos",
-      "confidence": 0.85
-    },
-    {
-      "field": "locations[casa-brisa-born].openingHours",
-      "documentId": "doc-website",
-      "confidence": 0.9
-    },
-    {
-      "field": "offerings[cb-sharing-menu].price",
-      "documentId": "doc-offers",
-      "page": 1,
-      "quote": "Sharing menu · 28 € p.p. (min. 4) · V/VG/GF options",
-      "confidence": 0.95
-    },
-    {
-      "field": "offerings[cb-tasting-for-two].price",
-      "documentId": "doc-offers",
-      "page": 1,
-      "quote": "Tasting for two · 46 €",
-      "confidence": 0.95
-    },
-    {
-      "field": "offerings[cb-vermut-hour].conditions",
-      "documentId": "doc-offers",
-      "quote": "Vermut hour Tue–Thu 18–20h, terrace",
-      "confidence": 0.85
-    },
-    {
-      "field": "offerings[cb-private-room].conditions",
-      "documentId": "doc-offers",
-      "page": 1,
-      "quote": "Private room · from 35 € p.p. · 10–20 guests · 48h notice",
-      "confidence": 0.9
-    }
-  ],
-  "reviewNotes": []
+  ]
 }

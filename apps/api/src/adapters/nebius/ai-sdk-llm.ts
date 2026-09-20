@@ -3,7 +3,7 @@ import { generateText, type ModelMessage } from "ai";
 import { z } from "zod";
 import type { Llm, StructuredRequest } from "../../ports/llm";
 
-export type AiSdkLlmOptions = { apiKey: string; baseURL: string; models: string[]; timeoutMs?: number };
+export type AiSdkLlmOptions = { apiKey: string; baseURL: string; models: string[]; visionModels?: string[]; timeoutMs?: number };
 
 function parseJson(text: string): unknown {
   const body = text.match(/```(?:json)?\s*([\s\S]*?)```/)?.[1] ?? text;
@@ -18,14 +18,15 @@ function parseJson(text: string): unknown {
 }
 
 // JSON-schema mode is unreliable here: validate, retry once, then next model
-export function createAiSdkLlm({ apiKey, baseURL, models, timeoutMs = 45_000 }: AiSdkLlmOptions): Llm {
+// Text models reject image parts with a 400, so image requests go to the vision models
+export function createAiSdkLlm({ apiKey, baseURL, models, visionModels = [], timeoutMs = 45_000 }: AiSdkLlmOptions): Llm {
   const provider = createOpenAICompatible({ name: "nebius", baseURL, apiKey });
   return {
     async structured<T>(req: StructuredRequest<T>): Promise<T> {
       const system = `${req.system}\n\nReply with one JSON object that matches this JSON Schema:\n${JSON.stringify(z.toJSONSchema(req.schema))}`;
-      const images = (req.images ?? []).map((i) => ({ type: "image" as const, image: i.data, mediaType: i.mediaType }));
+      const images = (req.images ?? []).map((i) => ({ type: "file" as const, data: i.data, mediaType: i.mediaType }));
       const failures: string[] = [];
-      for (const model of models) {
+      for (const model of images.length ? visionModels : models) {
         let messages: ModelMessage[] = [{ role: "user", content: [{ type: "text", text: req.prompt }, ...images] }];
         for (let attempt = 0; attempt < 2; attempt++) {
           const started = Date.now();
@@ -33,7 +34,9 @@ export function createAiSdkLlm({ apiKey, baseURL, models, timeoutMs = 45_000 }: 
           try {
             ({ text } = await generateText({ model: provider(model), system, messages, temperature: 0.3, abortSignal: AbortSignal.timeout(timeoutMs) }));
           } catch (err) {
-            failures.push(`${model}: ${err instanceof Error ? err.message : String(err)}`);
+            const message = err instanceof Error ? err.message : String(err);
+            console.info(`[llm] ${req.step} ${model} ${Date.now() - started}ms error ${message}`);
+            failures.push(`${model}: ${message}`);
             break;
           }
           const parsed = req.schema.safeParse(parseJson(text));

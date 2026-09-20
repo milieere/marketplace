@@ -171,7 +171,7 @@ export function createCreativeAgent({ llm, brands, artifacts, visuals, clock = (
       };
       if (signal.aborted) return;
 
-      const ctx = { intent, timezone, now, llm, artifacts, loadPhoto: brands.photo, visuals };
+      const ctx = { intent, timezone, now, llm, artifacts, loadAsset: brands.asset, visuals };
       let produced = 0;
       for await (const event of merge(picks.map((p) => orFailed(createArtifact(ctx, p), p)))) {
         if (signal.aborted) return;

@@ -1,0 +1,413 @@
+{
+  "brand": {
+    "id": "bodega-pinyol",
+    "name": "Bodega Pinyol",
+    "industry": "hospitality",
+    "website": "https://bodegapinyol.example",
+    "summary": "Neighbourhood vermouth bodega in Gràcia known for vegan paella for groups and a dog-friendly terrace.",
+    "languages": [
+      "ca",
+      "es",
+      "en"
+    ]
+  },
+  "brandKit": {
+    "colors": [
+      {
+        "id": "bodega-red",
+        "hex": "#A8322D",
+        "role": "primary",
+        "pairsWith": [
+          "pinyol-yellow",
+          "paper"
+        ]
+      },
+      {
+        "id": "oliva",
+        "hex": "#5C732E",
+        "role": "secondary",
+        "pairsWith": [
+          "paper",
+          "carbo"
+        ]
+      },
+      {
+        "id": "pinyol-yellow",
+        "hex": "#E8B84A",
+        "role": "accent",
+        "pairsWith": [
+          "bodega-red",
+          "carbo"
+        ]
+      },
+      {
+        "id": "paper",
+        "hex": "#FBF6EC",
+        "role": "background",
+        "pairsWith": [
+          "bodega-red",
+          "oliva",
+          "carbo"
+        ]
+      },
+      {
+        "id": "carbo",
+        "hex": "#1F1A17",
+        "role": "text",
+        "pairsWith": [
+          "oliva",
+          "pinyol-yellow",
+          "paper"
+        ]
+      }
+    ],
+    "typography": [
+      {
+        "role": "display",
+        "family": "Bricolage Grotesque",
+        "weights": [
+          700,
+          800
+        ],
+        "fallback": "system-ui, sans-serif"
+      },
+      {
+        "role": "body",
+        "family": "Work Sans",
+        "weights": [
+          400,
+          500
+        ],
+        "fallback": "system-ui, sans-serif"
+      }
+    ],
+    "logos": [],
+    "style": {
+      "radius": 4,
+      "density": "balanced",
+      "headlineCase": "sentence",
+      "imageTreatment": "framed",
+      "composition": "image-side",
+      "ornament": "stamp"
+    },
+    "voice": {
+      "summary": "Casual, cheerful, neighbourly. Talks like the bartender who knows your dog's name.",
+      "toneRange": {
+        "formality": [
+          0.1,
+          0.4
+        ],
+        "energy": [
+          0.5,
+          0.8
+        ]
+      },
+      "doSay": [
+        "vermut",
+        "the whole crew",
+        "dogs welcome",
+        "one more round"
+      ],
+      "dontSay": [
+        "cheap",
+        "bargain",
+        "exclusive",
+        "hurry"
+      ],
+      "samples": [
+        "Vermut first, plans later.",
+        "The paella's big. Bring the whole crew.",
+        "Dogs on the terrace, friends at the table."
+      ]
+    },
+    "imagery": {
+      "style": "Natural daylight, big pans shot from above, shared tables, people and dogs on the terrace, candid moments",
+      "avoid": [
+        "flash photography",
+        "staged smiles",
+        "empty tables"
+      ]
+    },
+    "photos": [
+      {
+        "id": "shared-table",
+        "url": "/assets/bodega-pinyol/photos/shared-table.jpg",
+        "description": "Overhead shot of friends sharing vegetable dishes at a long white table",
+        "orientation": "landscape",
+        "attributes": {
+          "people": [
+            "group"
+          ],
+          "occasion": [
+            "group"
+          ]
+        }
+      },
+      {
+        "id": "vermut-olives",
+        "url": "/assets/bodega-pinyol/photos/vermut-olives.jpg",
+        "description": "Bowls of olives on a table",
+        "orientation": "landscape",
+        "attributes": {
+          "people": [
+            "none"
+          ]
+        }
+      }
+    ],
+    "rules": [
+      {
+        "id": "headline-length",
+        "text": "Headlines are at most 50 characters.",
+        "check": {
+          "kind": "max-length",
+          "slot": "headline",
+          "max": 50
+        },
+        "severity": "block"
+      },
+      {
+        "id": "forbidden-words",
+        "text": "Never say cheap, bargain, exclusive or hurry.",
+        "check": {
+          "kind": "forbidden-term",
+          "terms": [
+            "cheap",
+            "bargain",
+            "exclusive",
+            "hurry"
+          ]
+        },
+        "severity": "block"
+      },
+      {
+        "id": "text-contrast",
+        "text": "Text must reach at least 4.5:1 contrast against its background.",
+        "check": {
+          "kind": "min-contrast",
+          "ratio": 4.5
+        },
+        "severity": "block"
+      },
+      {
+        "id": "no-dogs-indoors",
+        "text": "Never show dogs inside the dining room.",
+        "severity": "warn"
+      },
+      {
+        "id": "logo-background",
+        "text": "Primary logo on Paper only; mono logo on dark colours.",
+        "severity": "block"
+      }
+    ]
+  },
+  "locations": [
+    {
+      "id": "bodega-pinyol-gracia",
+      "name": "Bodega Pinyol Gràcia",
+      "address": "Carrer de Verdi 41, 08012 Barcelona",
+      "timezone": "Europe/Madrid",
+      "geo": {
+        "lat": 41.4036,
+        "lng": 2.156
+      },
+      "openingHours": {
+        "tue": [
+          {
+            "from": "12:00",
+            "to": "16:00"
+          },
+          {
+            "from": "19:00",
+            "to": "23:30"
+          }
+        ],
+        "wed": [
+          {
+            "from": "12:00",
+            "to": "16:00"
+          },
+          {
+            "from": "19:00",
+            "to": "23:30"
+          }
+        ],
+        "thu": [
+          {
+            "from": "12:00",
+            "to": "16:00"
+          },
+          {
+            "from": "19:00",
+            "to": "23:30"
+          }
+        ],
+        "fri": [
+          {
+            "from": "12:00",
+            "to": "16:00"
+          },
+          {
+            "from": "19:00",
+            "to": "23:30"
+          }
+        ],
+        "sat": [
+          {
+            "from": "12:00",
+            "to": "00:00"
+          }
+        ],
+        "sun": [
+          {
+            "from": "12:00",
+            "to": "00:00"
+          }
+        ]
+      },
+      "attributes": {
+        "cuisine": [
+          "mediterranean"
+        ],
+        "amenities": [
+          "terrace",
+          "pet-friendly"
+        ],
+        "accessibility": [
+          "wheelchair",
+          "step-free"
+        ],
+        "ambience": [
+          "lively",
+          "family"
+        ]
+      },
+      "priceLevel": 2,
+      "reserveUrl": "https://bodegapinyol.example/reserve"
+    }
+  ],
+  "offerings": [
+    {
+      "id": "bp-vegan-paella",
+      "kind": "menu",
+      "name": "Vegan paella for the table",
+      "description": "A big pan of seasonal vegetable paella for the table, with salad and bread. Vegan and gluten-free.",
+      "price": {
+        "amount": 24,
+        "currency": "EUR",
+        "unit": "person"
+      },
+      "attributes": {
+        "occasion": [
+          "group",
+          "celebration"
+        ],
+        "dietary": [
+          "vegan",
+          "gluten-free"
+        ],
+        "cuisine": [
+          "mediterranean"
+        ]
+      },
+      "availability": {
+        "days": [
+          "sat",
+          "sun"
+        ],
+        "from": "12:00",
+        "to": "16:00"
+      },
+      "partySize": {
+        "min": 6,
+        "max": 12
+      },
+      "conditions": "Order 24 hours ahead. Groups of 6–12."
+    },
+    {
+      "id": "bp-vermut-hour",
+      "kind": "promotion",
+      "name": "Vermut hour",
+      "description": "House vermouth on tap with olives and crisps.",
+      "price": {
+        "amount": 6,
+        "currency": "EUR",
+        "unit": "person"
+      },
+      "attributes": {
+        "occasion": [
+          "work",
+          "group"
+        ]
+      },
+      "availability": {
+        "days": [
+          "tue",
+          "wed",
+          "thu",
+          "fri"
+        ],
+        "from": "18:00",
+        "to": "20:00"
+      },
+      "conditions": "Tuesday to Friday, 18:00–20:00, terrace only."
+    },
+    {
+      "id": "bp-dinner-for-two",
+      "kind": "menu",
+      "name": "Dinner for two",
+      "description": "Four small plates, one rice to share and two glasses of wine.",
+      "price": {
+        "amount": 42,
+        "currency": "EUR",
+        "unit": "group"
+      },
+      "attributes": {
+        "occasion": [
+          "date-night"
+        ]
+      },
+      "availability": {
+        "days": [
+          "tue",
+          "wed",
+          "thu",
+          "fri",
+          "sat"
+        ],
+        "from": "19:30"
+      },
+      "partySize": {
+        "min": 2,
+        "max": 2
+      }
+    },
+    {
+      "id": "bp-terrace-takeover",
+      "locationIds": [
+        "bodega-pinyol-gracia"
+      ],
+      "kind": "event",
+      "name": "Terrace takeover",
+      "description": "The whole terrace for your party, with vermouth, a set menu and dogs welcome.",
+      "price": {
+        "amount": 30,
+        "currency": "EUR",
+        "unit": "person",
+        "from": true
+      },
+      "attributes": {
+        "occasion": [
+          "celebration",
+          "business",
+          "group"
+        ]
+      },
+      "partySize": {
+        "min": 15,
+        "max": 30
+      },
+      "conditions": "15–30 guests. Book at least 72 hours ahead."
+    }
+  ]
+}

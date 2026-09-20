@@ -1,0 +1,844 @@
+{
+  "status": "verified",
+  "brand": {
+    "id": "bodega-pinyol",
+    "name": "Bodega Pinyol",
+    "industry": "hospitality",
+    "website": "https://bodegapinyol.example",
+    "summary": "Bodega Pinyol is a neighbourhood vermouth bodega in Gràcia known for vegan paella for groups and a dog-friendly terrace.",
+    "languages": [
+      "ca",
+      "es",
+      "en"
+    ]
+  },
+  "brandKit": {
+    "colors": [
+      {
+        "id": "bodega-red",
+        "hex": "#A8322D",
+        "role": "primary",
+        "pairsWith": [
+          "pinyol-yellow",
+          "paper"
+        ]
+      },
+      {
+        "id": "oliva",
+        "hex": "#5C732E",
+        "role": "secondary",
+        "pairsWith": [
+          "paper",
+          "carbo"
+        ]
+      },
+      {
+        "id": "pinyol-yellow",
+        "hex": "#E8B84A",
+        "role": "accent",
+        "pairsWith": [
+          "bodega-red",
+          "carbo"
+        ]
+      },
+      {
+        "id": "paper",
+        "hex": "#FBF6EC",
+        "role": "background",
+        "pairsWith": [
+          "bodega-red",
+          "oliva",
+          "carbo"
+        ]
+      },
+      {
+        "id": "carbo",
+        "hex": "#1F1A17",
+        "role": "text",
+        "pairsWith": [
+          "oliva",
+          "pinyol-yellow",
+          "paper"
+        ]
+      }
+    ],
+    "typography": [
+      {
+        "role": "display",
+        "family": "Bricolage Grotesque",
+        "weights": [
+          700,
+          800
+        ],
+        "fallback": "system-ui, sans-serif"
+      },
+      {
+        "role": "heading",
+        "family": "Bricolage Grotesque",
+        "weights": [
+          700,
+          800
+        ],
+        "fallback": "system-ui, sans-serif"
+      },
+      {
+        "role": "body",
+        "family": "Work Sans",
+        "weights": [
+          400,
+          500
+        ],
+        "fallback": "system-ui, sans-serif"
+      }
+    ],
+    "logos": [],
+    "style": {
+      "radius": 4,
+      "density": "balanced",
+      "headlineCase": "sentence",
+      "imageTreatment": "framed",
+      "composition": "image-side",
+      "ornament": "stamp"
+    },
+    "voice": {
+      "summary": "Casual, cheerful, neighbourly. The brand talks like the bartender who knows your dog's name.",
+      "toneRange": {
+        "formality": [
+          0,
+          0.2
+        ],
+        "energy": [
+          0.6,
+          0.8
+        ]
+      },
+      "doSay": [
+        "vermut",
+        "the whole crew",
+        "dogs welcome",
+        "one more round"
+      ],
+      "dontSay": [
+        "cheap",
+        "bargain",
+        "exclusive",
+        "hurry"
+      ],
+      "samples": [
+        "Vermut first, plans later.",
+        "The paella's big. Bring the whole crew.",
+        "Dogs on the terrace, friends at the table."
+      ]
+    },
+    "imagery": {
+      "style": "Natural daylight, big pans shot from above, shared tables, people and dogs on the terrace, candid moments.",
+      "avoid": [
+        "flash photography",
+        "staged smiles",
+        "empty tables",
+        "dogs inside the dining room"
+      ]
+    },
+    "photos": [
+      {
+        "id": "shared-table",
+        "url": "/assets/bodega-pinyol/photos/shared-table.jpg",
+        "description": "Overhead view of a table set with food and multiple people eating.",
+        "orientation": "landscape",
+        "attributes": {
+          "occasion": [
+            "group"
+          ],
+          "people": [
+            "group"
+          ]
+        }
+      },
+      {
+        "id": "vermut-olives",
+        "url": "/assets/bodega-pinyol/photos/vermut-olives.jpg",
+        "description": "Three small bowls of olives are arranged on a marble surface with a linen napkin.",
+        "orientation": "landscape",
+        "attributes": {
+          "people": [
+            "none"
+          ]
+        }
+      }
+    ],
+    "rules": [
+      {
+        "id": "use-it-on-paper-only",
+        "text": "Use it on Paper only.",
+        "severity": "block"
+      },
+      {
+        "id": "keep-a-clear-space-around",
+        "text": "Keep a clear space around the logo equal to the height of the letter \"P\".",
+        "severity": "block"
+      },
+      {
+        "id": "minimum-size-at-least-96",
+        "text": "Minimum size: at least 96 px wide on screen.",
+        "severity": "block"
+      },
+      {
+        "id": "don-t-rotate-recolour-or",
+        "text": "don't rotate, recolour or crop the wordmark.",
+        "severity": "block"
+      },
+      {
+        "id": "never-place-the-logo-on",
+        "text": "Never place the logo on busy photos.",
+        "severity": "block"
+      },
+      {
+        "id": "body-text-is-always-carbo",
+        "text": "Body text is always Carbó on Paper or Paper on Carbó.",
+        "severity": "block"
+      },
+      {
+        "id": "text-must-reach-at-least",
+        "text": "Text must reach at least 4.5:1 contrast against its background.",
+        "check": {
+          "kind": "min-contrast",
+          "ratio": 4.5
+        },
+        "severity": "block"
+      },
+      {
+        "id": "pinyol-yellow-for-stickers-stamps",
+        "text": "Pinyol Yellow For stickers, stamps and small highlights only.",
+        "severity": "block"
+      },
+      {
+        "id": "never-set-pinyol-yellow-text",
+        "text": "Never set Pinyol Yellow text on Paper: nobody can read it.",
+        "severity": "block"
+      },
+      {
+        "id": "headlines-are-set-in-sentence",
+        "text": "Headlines are set in sentence case and are at most 50 characters.",
+        "check": {
+          "kind": "max-length",
+          "slot": "headline",
+          "max": 50
+        },
+        "severity": "block"
+      },
+      {
+        "id": "photos-sit-framed-beside-the",
+        "text": "Photos sit framed beside the text, never full-bleed, and the round Pinyol stamp is our only ornament.",
+        "severity": "block"
+      },
+      {
+        "id": "never-formal",
+        "text": "never formal",
+        "check": {
+          "kind": "forbidden-term",
+          "terms": [
+            "formal"
+          ]
+        },
+        "severity": "block"
+      },
+      {
+        "id": "never-frantic",
+        "text": "never frantic",
+        "check": {
+          "kind": "forbidden-term",
+          "terms": [
+            "frantic"
+          ]
+        },
+        "severity": "block"
+      },
+      {
+        "id": "we-don-t-say-cheap",
+        "text": "We don't say cheap · bargain · exclusive · hurry.",
+        "check": {
+          "kind": "forbidden-term",
+          "terms": [
+            "cheap",
+            "bargain",
+            "exclusive",
+            "hurry"
+          ]
+        },
+        "severity": "block"
+      },
+      {
+        "id": "don-t-use-flash-photography",
+        "text": "Don't use flash photography.",
+        "severity": "block"
+      },
+      {
+        "id": "don-t-use-staged-smiles",
+        "text": "Don't use staged smiles.",
+        "severity": "block"
+      },
+      {
+        "id": "don-t-show-empty-tables",
+        "text": "Don't show empty tables.",
+        "severity": "block"
+      },
+      {
+        "id": "don-t-allow-dogs-indoors",
+        "text": "Don't allow dogs indoors.",
+        "severity": "block"
+      },
+      {
+        "id": "never-show-dogs-inside-the",
+        "text": "Never show dogs inside the dining room.",
+        "severity": "block"
+      }
+    ]
+  },
+  "locations": [
+    {
+      "id": "bodega-pinyol-gracia",
+      "name": "Bodega Pinyol Gràcia",
+      "address": "Carrer de Verdi 41, 08012 Barcelona",
+      "timezone": "Europe/Madrid",
+      "geo": {
+        "lat": 41.4036,
+        "lng": 2.156
+      },
+      "openingHours": {
+        "tue": [
+          {
+            "from": "12:00",
+            "to": "16:00"
+          },
+          {
+            "from": "19:00",
+            "to": "23:30"
+          }
+        ],
+        "wed": [
+          {
+            "from": "12:00",
+            "to": "16:00"
+          },
+          {
+            "from": "19:00",
+            "to": "23:30"
+          }
+        ],
+        "thu": [
+          {
+            "from": "12:00",
+            "to": "16:00"
+          },
+          {
+            "from": "19:00",
+            "to": "23:30"
+          }
+        ],
+        "fri": [
+          {
+            "from": "12:00",
+            "to": "16:00"
+          },
+          {
+            "from": "19:00",
+            "to": "23:30"
+          }
+        ],
+        "sat": [
+          {
+            "from": "12:00",
+            "to": "00:00"
+          }
+        ],
+        "sun": [
+          {
+            "from": "12:00",
+            "to": "00:00"
+          }
+        ]
+      },
+      "attributes": {
+        "cuisine": [
+          "mediterranean"
+        ],
+        "amenities": [
+          "terrace",
+          "pet-friendly"
+        ],
+        "accessibility": [
+          "wheelchair",
+          "step-free"
+        ],
+        "ambience": [
+          "lively",
+          "family"
+        ]
+      },
+      "priceLevel": 2,
+      "reserveUrl": "https://bodegapinyol.example/reserve"
+    }
+  ],
+  "offerings": [
+    {
+      "id": "bp-vegan-paella",
+      "kind": "menu",
+      "name": "Vegan paella for the table",
+      "description": "A big pan of seasonal vegetable paella for the table, with salad and bread. Vegan and gluten-free.",
+      "price": {
+        "amount": 24,
+        "currency": "EUR",
+        "unit": "person"
+      },
+      "attributes": {
+        "occasion": [
+          "group",
+          "celebration"
+        ],
+        "dietary": [
+          "vegan",
+          "gluten-free"
+        ],
+        "cuisine": [
+          "mediterranean"
+        ]
+      },
+      "availability": {
+        "days": [
+          "sat",
+          "sun"
+        ],
+        "from": "12:00",
+        "to": "16:00"
+      },
+      "partySize": {
+        "min": 6,
+        "max": 12
+      },
+      "conditions": "Order 24 hours ahead. Groups of 6–12."
+    },
+    {
+      "id": "bp-vermut-hour",
+      "kind": "promotion",
+      "name": "Vermut hour",
+      "description": "House vermouth on tap with olives and crisps.",
+      "price": {
+        "amount": 6,
+        "currency": "EUR",
+        "unit": "person"
+      },
+      "attributes": {
+        "occasion": [
+          "work",
+          "group"
+        ]
+      },
+      "availability": {
+        "days": [
+          "tue",
+          "wed",
+          "thu",
+          "fri"
+        ],
+        "from": "18:00",
+        "to": "20:00"
+      },
+      "conditions": "Tuesday to Friday, 18:00–20:00, terrace only."
+    },
+    {
+      "id": "bp-dinner-for-two",
+      "kind": "menu",
+      "name": "Dinner for two",
+      "description": "Four small plates, one rice to share and two glasses of wine.",
+      "price": {
+        "amount": 42,
+        "currency": "EUR",
+        "unit": "group"
+      },
+      "attributes": {
+        "occasion": [
+          "date-night"
+        ]
+      },
+      "availability": {
+        "days": [
+          "tue",
+          "wed",
+          "thu",
+          "fri",
+          "sat"
+        ],
+        "from": "19:30"
+      },
+      "partySize": {
+        "min": 2,
+        "max": 2
+      }
+    },
+    {
+      "id": "bp-terrace-takeover",
+      "locationIds": [
+        "bodega-pinyol-gracia"
+      ],
+      "kind": "event",
+      "name": "Terrace takeover",
+      "description": "The whole terrace for your party, with vermouth, a set menu and dogs welcome.",
+      "price": {
+        "amount": 30,
+        "currency": "EUR",
+        "unit": "person",
+        "from": true
+      },
+      "attributes": {
+        "occasion": [
+          "celebration",
+          "business",
+          "group"
+        ]
+      },
+      "partySize": {
+        "min": 15,
+        "max": 30
+      },
+      "conditions": "15–30 guests. Book at least 72 hours ahead."
+    }
+  ],
+  "documents": [
+    {
+      "id": "doc-brand-guidelines",
+      "kind": "pdf",
+      "uri": "data/sources/bodega-pinyol/brand-guidelines.pdf",
+      "addedAt": "2026-09-19T18:36:04.010Z"
+    },
+    {
+      "id": "doc-offers",
+      "kind": "csv",
+      "uri": "data/sources/bodega-pinyol/offers.csv",
+      "addedAt": "2026-09-19T18:36:04.010Z"
+    },
+    {
+      "id": "doc-photos",
+      "kind": "image",
+      "uri": "data/sources/bodega-pinyol/photos/",
+      "addedAt": "2026-09-19T18:36:04.010Z"
+    }
+  ],
+  "evidence": [
+    {
+      "field": "offerings[bp-vegan-paella].price",
+      "documentId": "doc-offers",
+      "quote": "bp-vegan-paella,menu,Vegan paella for the table,\"A big pan of seasonal vegetable paella for the table, with salad and bread. Vegan and gluten-free.\",24,EUR,person,,6,12,sat-sun,12:00,16:00,,Order 24 hours ahead. Groups of 6–12.,\"groups, celebrations\",VG/GF,mediterranean",
+      "confidence": 1
+    },
+    {
+      "field": "offerings[bp-vegan-paella].conditions",
+      "documentId": "doc-offers",
+      "quote": "Order 24 hours ahead. Groups of 6–12.",
+      "confidence": 1
+    },
+    {
+      "field": "offerings[bp-vermut-hour].price",
+      "documentId": "doc-offers",
+      "quote": "bp-vermut-hour,promotion,Vermut hour,House vermouth on tap with olives and crisps.,6,EUR,person,,,,tue-fri,18:00,20:00,,\"Tuesday to Friday, 18:00–20:00, terrace only.\",\"after-work, groups\",,",
+      "confidence": 1
+    },
+    {
+      "field": "offerings[bp-vermut-hour].conditions",
+      "documentId": "doc-offers",
+      "quote": "Tuesday to Friday, 18:00–20:00, terrace only.",
+      "confidence": 1
+    },
+    {
+      "field": "offerings[bp-dinner-for-two].price",
+      "documentId": "doc-offers",
+      "quote": "bp-dinner-for-two,menu,Dinner for two,\"Four small plates, one rice to share and two glasses of wine.\",42,EUR,group,,2,2,tue-sat,19:30,,,,date night,,",
+      "confidence": 1
+    },
+    {
+      "field": "offerings[bp-terrace-takeover].price",
+      "documentId": "doc-offers",
+      "quote": "bp-terrace-takeover,event,Terrace takeover,\"The whole terrace for your party, with vermouth, a set menu and dogs welcome.\",30,EUR,person,yes,15,30,,,,Bodega Pinyol Gràcia,15–30 guests. Book at least 72 hours ahead.,\"birthdays, business, groups\",,",
+      "confidence": 1
+    },
+    {
+      "field": "offerings[bp-terrace-takeover].conditions",
+      "documentId": "doc-offers",
+      "quote": "15–30 guests. Book at least 72 hours ahead.",
+      "confidence": 1
+    },
+    {
+      "field": "brandKit.photos[vermut-olives].attributes",
+      "documentId": "doc-photos",
+      "quote": "Three small bowls of olives are arranged on a marble surface with a linen napkin.",
+      "confidence": 0.95
+    },
+    {
+      "field": "brandKit.photos[shared-table].attributes",
+      "documentId": "doc-photos",
+      "quote": "Overhead view of a table set with food and multiple people eating.",
+      "confidence": 0.9
+    },
+    {
+      "field": "brand.name",
+      "documentId": "doc-brand-guidelines",
+      "page": 1,
+      "quote": "Bodega Pinyol",
+      "confidence": 1
+    },
+    {
+      "field": "brand.summary",
+      "documentId": "doc-brand-guidelines",
+      "page": 2,
+      "quote": "Bodega Pinyol is a neighbourhood vermouth bodega in Gràcia known for vegan paella for groups and a dog-friendly terrace.",
+      "confidence": 1
+    },
+    {
+      "field": "brand.languages",
+      "documentId": "doc-brand-guidelines",
+      "page": 2,
+      "quote": "We welcome guests in Catalan, Spanish and English.",
+      "confidence": 1
+    },
+    {
+      "field": "brandKit.style",
+      "documentId": "doc-brand-guidelines",
+      "page": 6,
+      "quote": "Layouts are balanced, with small 4 px corners. Photos sit framed beside the text, never full-bleed, and the round Pinyol stamp is our only ornament.",
+      "confidence": 1
+    },
+    {
+      "field": "brandKit.imagery",
+      "documentId": "doc-brand-guidelines",
+      "page": 8,
+      "quote": "Natural daylight, big pans shot from above, shared tables, people and dogs on the terrace, candid moments. Avoid: flash photography · staged smiles · empty tables",
+      "confidence": 1
+    },
+    {
+      "field": "brandKit.voice.summary",
+      "documentId": "doc-brand-guidelines",
+      "page": 7,
+      "quote": "Casual, cheerful, neighbourly.",
+      "confidence": 0.95
+    },
+    {
+      "field": "brandKit.voice.toneRange",
+      "documentId": "doc-brand-guidelines",
+      "page": 7,
+      "quote": "Casual, never formal; cheerful and lively, never frantic.",
+      "confidence": 0.95
+    },
+    {
+      "field": "brandKit.voice.doSay",
+      "documentId": "doc-brand-guidelines",
+      "page": 7,
+      "quote": "vermut · the whole crew · dogs welcome · one more round",
+      "confidence": 0.95
+    },
+    {
+      "field": "brandKit.voice.dontSay",
+      "documentId": "doc-brand-guidelines",
+      "page": 7,
+      "quote": "cheap · bargain · exclusive · hurry",
+      "confidence": 0.95
+    },
+    {
+      "field": "brandKit.voice.samples",
+      "documentId": "doc-brand-guidelines",
+      "page": 7,
+      "quote": "Vermut first, plans later.\nThe paella's big. Bring the whole\ncrew.\nDogs on the terrace, friends at the\ntable.",
+      "confidence": 0.95
+    },
+    {
+      "field": "locations[bodega-pinyol-gracia].address",
+      "documentId": "doc-brand-guidelines",
+      "page": 8,
+      "quote": "Carrer de Verdi 41, 08012 Barcelona",
+      "confidence": 1
+    },
+    {
+      "field": "locations[bodega-pinyol-gracia].openingHours",
+      "documentId": "doc-brand-guidelines",
+      "page": 8,
+      "quote": "Monday closed\nTuesday–Friday 12:00–16:00, 19:00–23:30\nSaturday–Sunday 12:00–00:00",
+      "confidence": 1
+    },
+    {
+      "field": "locations[bodega-pinyol-gracia].attributes",
+      "documentId": "doc-brand-guidelines",
+      "page": 8,
+      "quote": "Mediterranean cooking and vermouth. A terrace under the plane trees where dogs are welcome: we are pet-friendly. Step-free entrance and wheelchair accessible. Lively on weekend afternoons, family-friendly at Sunday lunch.",
+      "confidence": 1
+    },
+    {
+      "field": "brandKit.typography",
+      "documentId": "doc-brand-guidelines",
+      "page": 6,
+      "quote": "Display and headlines: Bricolage Grotesque",
+      "confidence": 0.95
+    },
+    {
+      "field": "brandKit.typography",
+      "documentId": "doc-brand-guidelines",
+      "page": 6,
+      "quote": "Body: Work Sans",
+      "confidence": 0.95
+    },
+    {
+      "field": "brandKit.colors[bodega-red].hex",
+      "documentId": "doc-brand-guidelines",
+      "page": 4,
+      "quote": "BODEGA RED (primary)\nHEX #A8322D\nRGB 168 50 45",
+      "confidence": 1
+    },
+    {
+      "field": "brandKit.colors[oliva].hex",
+      "documentId": "doc-brand-guidelines",
+      "page": 4,
+      "quote": "OLIVA (secondary)\nCMYK 20 0 60 55\nPantone match pending",
+      "confidence": 1
+    },
+    {
+      "field": "brandKit.colors[pinyol-yellow].hex",
+      "documentId": "doc-brand-guidelines",
+      "page": 4,
+      "quote": "PINYOL YELLOW (accent)\nHEX #E8B84A\nRGB 232 184 74",
+      "confidence": 1
+    },
+    {
+      "field": "brandKit.colors[paper].hex",
+      "documentId": "doc-brand-guidelines",
+      "page": 4,
+      "quote": "PAPER (background)\nHEX #FBF6EC\nRGB 251 246 236",
+      "confidence": 1
+    },
+    {
+      "field": "brandKit.colors[carbo].hex",
+      "documentId": "doc-brand-guidelines",
+      "page": 4,
+      "quote": "CARBÓ (text)\nHEX #1F1A17\nRGB 31 26 23",
+      "confidence": 1
+    },
+    {
+      "field": "brandKit.rules",
+      "documentId": "doc-brand-guidelines",
+      "page": 3,
+      "quote": "Use it on Paper only.",
+      "confidence": 0.95
+    },
+    {
+      "field": "brandKit.rules",
+      "documentId": "doc-brand-guidelines",
+      "page": 3,
+      "quote": "Keep a clear space around the logo equal to the height of the letter \"P\".",
+      "confidence": 0.95
+    },
+    {
+      "field": "brandKit.rules",
+      "documentId": "doc-brand-guidelines",
+      "page": 3,
+      "quote": "Minimum size: at least 96 px wide on screen.",
+      "confidence": 0.95
+    },
+    {
+      "field": "brandKit.rules",
+      "documentId": "doc-brand-guidelines",
+      "page": 3,
+      "quote": "don't rotate, recolour or crop the wordmark.",
+      "confidence": 0.95
+    },
+    {
+      "field": "brandKit.rules",
+      "documentId": "doc-brand-guidelines",
+      "page": 3,
+      "quote": "Never place the logo on busy photos.",
+      "confidence": 0.95
+    },
+    {
+      "field": "brandKit.rules",
+      "documentId": "doc-brand-guidelines",
+      "page": 5,
+      "quote": "Body text is always Carbó on Paper or Paper on Carbó.",
+      "confidence": 0.95
+    },
+    {
+      "field": "brandKit.rules",
+      "documentId": "doc-brand-guidelines",
+      "page": 5,
+      "quote": "Text must reach at least 4.5:1 contrast against its background.",
+      "confidence": 0.95
+    },
+    {
+      "field": "brandKit.rules",
+      "documentId": "doc-brand-guidelines",
+      "page": 5,
+      "quote": "Pinyol Yellow For stickers, stamps and small highlights only.",
+      "confidence": 0.95
+    },
+    {
+      "field": "brandKit.rules",
+      "documentId": "doc-brand-guidelines",
+      "page": 5,
+      "quote": "Never set Pinyol Yellow text on Paper: nobody can read it.",
+      "confidence": 0.95
+    },
+    {
+      "field": "brandKit.rules",
+      "documentId": "doc-brand-guidelines",
+      "page": 6,
+      "quote": "Headlines are set in sentence case and are at most 50 characters.",
+      "confidence": 0.95
+    },
+    {
+      "field": "brandKit.rules",
+      "documentId": "doc-brand-guidelines",
+      "page": 6,
+      "quote": "Photos sit framed beside the text, never full-bleed, and the round Pinyol stamp is our only ornament.",
+      "confidence": 0.95
+    },
+    {
+      "field": "brandKit.rules",
+      "documentId": "doc-brand-guidelines",
+      "page": 7,
+      "quote": "never formal",
+      "confidence": 0.95
+    },
+    {
+      "field": "brandKit.rules",
+      "documentId": "doc-brand-guidelines",
+      "page": 7,
+      "quote": "never frantic",
+      "confidence": 0.95
+    },
+    {
+      "field": "brandKit.rules",
+      "documentId": "doc-brand-guidelines",
+      "page": 7,
+      "quote": "We don't say\ncheap · bargain · exclusive · hurry",
+      "confidence": 1
+    },
+    {
+      "field": "brandKit.rules",
+      "documentId": "doc-brand-guidelines",
+      "page": 8,
+      "quote": "Avoid: flash photography · staged smiles · empty tables",
+      "confidence": 1
+    },
+    {
+      "field": "brandKit.rules",
+      "documentId": "doc-brand-guidelines",
+      "page": 8,
+      "quote": "Don't: dog indoors",
+      "confidence": 0.95
+    },
+    {
+      "field": "brandKit.rules",
+      "documentId": "doc-brand-guidelines",
+      "page": 8,
+      "quote": "Never show dogs inside the dining room.",
+      "confidence": 0.95
+    }
+  ],
+  "reviewNotes": [
+    "Colour 'OLIVA' was only given in CMYK (20 0 60 55); converted to #5C732E. Please confirm."
+  ]
+}
