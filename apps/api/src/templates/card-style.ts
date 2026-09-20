@@ -77,6 +77,11 @@ function readable(ink: string, over: string, kit: BrandKit): string {
   return [...kit.colors].map((c) => c.hex).sort((a, b) => contrast(b, over) - contrast(a, over))[0]!;
 }
 
+// The shell's reset uses `.card .x`, so these must match it or lose on specificity
+function scope(css: string): string {
+  return css.replace(/^\./gm, ".card .");
+}
+
 export function renderCardStyle(kit: BrandKit, tokens: CardTokens): string {
   const d = cardDesign(kit);
   const palette = kit.colors.map((c) => c.hex);
@@ -97,13 +102,14 @@ export function renderCardStyle(kit: BrandKit, tokens: CardTokens): string {
     "corner-mark": `.price{position:absolute;top:${PAD}px;right:${PAD}px;font:800 24px ${font(kit, "display")};color:${price};background:${rgba(scrim, 0.9)};padding:8px 14px;border-radius:999px;margin:0}`,
   }[tokens.priceTreatment];
 
+
   const badgeCss = {
     solid: `.badges li{background:${accent};color:${d.palette.onAccent};border-radius:999px;padding:5px 12px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em}`,
     outline: `.badges li{border:1px solid ${rgba(ink, 0.45)};color:${ink};border-radius:999px;padding:5px 12px;font-size:11px;font-weight:600}`,
     none: `.badges{display:none}`,
   }[tokens.badges];
 
-  return `
+  return scope(`
 .scrim{background:linear-gradient(${TO[edge]},${rgba(scrim, peak)} 0%,${rgba(scrim, peak * 0.86)} 26%,${rgba(scrim, 0)} ${REACH[tokens.scrimStrength]})}
 .lockup{position:absolute;display:flex;align-items:center;gap:10px;${LOCKUP[tokens.lockup]}}
 .mark{height:34px;width:auto;display:block}
@@ -117,5 +123,5 @@ ${tokens.rule ? `.headline::after{content:"";display:block;width:${Math.round(he
 ${badgeCss}
 .place{font-size:13px;font-weight:600;color:${body};opacity:.85;margin:16px 0 0}
 .offer{font-size:13px;color:${body};opacity:.7;margin:8px 0 0}
-${priceCss}`.trim();
+${priceCss}`).trim();
 }

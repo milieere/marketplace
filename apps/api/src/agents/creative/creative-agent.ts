@@ -7,13 +7,12 @@ import { matchNeed, type BrandMatch, type NeedMatch } from "../../domain/match";
 import type { ArtifactStore } from "../../ports/artifact-store";
 import type { BrandRepository } from "../../ports/brand-repository";
 import type { Llm } from "../../ports/llm";
-import type { Rasterizer } from "../../ports/rasterizer";
 import type { VisualGenerator } from "../../ports/visual-generator";
 import { renderFallback } from "../../templates/fallback";
 import { createArtifact, type Pick } from "./create";
 import { describeIntent, understand } from "./understand";
 
-export type CreativeAgentDeps = { llm: Llm; brands: BrandRepository; artifacts: ArtifactStore; visuals?: VisualGenerator; rasterizer?: Rasterizer; designPasses?: number; clock?: () => Date };
+export type CreativeAgentDeps = { llm: Llm; brands: BrandRepository; artifacts: ArtifactStore; visuals?: VisualGenerator; clock?: () => Date };
 export type CreativeAgent = { run(request: GenerateRequest, signal: AbortSignal): AsyncGenerator<AgentEvent> };
 
 const MAX_ARTIFACTS = 3;
@@ -111,7 +110,7 @@ async function* merge(gens: AsyncGenerator<AgentEvent>[]): AsyncGenerator<AgentE
   }
 }
 
-export function createCreativeAgent({ llm, brands, artifacts, visuals, rasterizer, designPasses, clock = () => new Date() }: CreativeAgentDeps): CreativeAgent {
+export function createCreativeAgent({ llm, brands, artifacts, visuals, clock = () => new Date() }: CreativeAgentDeps): CreativeAgent {
   return {
     async *run(request, signal) {
       const now = request.now ? new Date(request.now) : clock();
@@ -172,7 +171,7 @@ export function createCreativeAgent({ llm, brands, artifacts, visuals, rasterize
       };
       if (signal.aborted) return;
 
-      const ctx = { intent, timezone, now, llm, artifacts, loadAsset: brands.asset, visuals, rasterizer, designPasses };
+      const ctx = { intent, timezone, now, llm, artifacts, loadAsset: brands.asset, visuals };
       let produced = 0;
       for await (const event of merge(picks.map((p) => orFailed(createArtifact(ctx, p), p)))) {
         if (signal.aborted) return;

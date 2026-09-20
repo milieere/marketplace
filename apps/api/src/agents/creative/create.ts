@@ -11,9 +11,8 @@ import { rankPhotos } from "../../domain/photo";
 import { describeLocal } from "../../domain/time";
 import type { ArtifactStore } from "../../ports/artifact-store";
 import type { Llm } from "../../ports/llm";
-import type { Rasterizer } from "../../ports/rasterizer";
 import type { VisualGenerator } from "../../ports/visual-generator";
-import { designCardChecked } from "./design";
+import { designCard } from "./design";
 import { renderCardShell } from "../../templates/card-shell";
 import { cardCurrency, pickLogo, preferredOrientation, renderCard, renderImagePage } from "../../templates/card";
 import { editorialLayout } from "../../templates/editorial";
@@ -29,8 +28,6 @@ export type CreateContext = {
   artifacts: ArtifactStore;
   loadAsset: (url: string) => Promise<string | undefined>;
   visuals?: VisualGenerator;
-  rasterizer?: Rasterizer;
-  designPasses?: number;
 };
 
 function copySchema(offeringIds: string[]) {
@@ -259,20 +256,14 @@ export async function* createArtifact(ctx: CreateContext, pick: Pick): AsyncGene
       // The design needs no photograph, so it runs alongside the image
       const shell = (css: string, image?: string) =>
         renderCardShell({ record, language: intent.language, slots: artifact.slots, priceLines: result.priceLines, location: pick.location, image, logo: logo?.src, css });
-      const strings = [artifact.slots.headline, artifact.slots.subline, artifact.slots.body, ...artifact.slots.badges, pick.location?.name].filter(
-        (x): x is string => Boolean(x),
-      );
       const [visual, design] = await Promise.all([
         ctx.visuals.generate({ artifact, record, intent }),
-        designCardChecked(
-          { llm, rasterizer: ctx.rasterizer, render: (css) => shell(css, photo?.src), strings, size: { width: 480, height: 640 }, attempts: ctx.designPasses },
-          { record, artifact, location: pick.location, hasPhoto: Boolean(photo), hasLogo: Boolean(logo) },
-        ),
+        designCard(llm, { record, artifact, location: pick.location, hasPhoto: Boolean(photo), hasLogo: Boolean(logo) }),
       ]);
 
       const page = shell(design.css, visual.imageUrl);
       await ctx.artifacts.put(id, page).catch((err: unknown) => console.error(`card page for ${id}`, err));
-      const detail = design.defects.length ? `Designed, ${design.defects.length} issue(s) left` : `Designed in ${design.attempts} pass(es)`;
+      const detail = design.idea.slice(0, 80);
       yield { ...visualStep, status: "done", detail };
       yield { type: "visual", artifactId: artifact.id, imageUrl: visual.imageUrl, prompt: visual.prompt, mode: visual.mode, html: page };
     } catch (err) {

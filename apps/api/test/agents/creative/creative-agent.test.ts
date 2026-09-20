@@ -23,10 +23,26 @@ function fakeLlm(script: Script) {
       (prompts[req.step] ??= []).push(req.prompt);
       if (req.step === "understand") return req.schema.parse({ language: "en", scope: "in-domain", ...script.understand });
       const brandId = req.step.split(":")[1]!;
-      if (req.step.startsWith("design:") || req.step.startsWith("repair:")) {
-        return req.schema.parse({ idea: `a card for ${brandId}`, css: ".card{background:#000}" });
+      if (req.step.startsWith("design:")) {
+        return req.schema.parse({
+          idea: `a card for ${brandId}`,
+          copyAnchor: "bottom",
+          lockup: "top-left",
+          scrimStrength: "medium",
+          scrimColour: "#2B2118",
+          headlineSize: "l",
+          headlineUpper: false,
+          headlineTracking: "normal",
+          headlineColour: "#F6EFE6",
+          bodyColour: "#F6EFE6",
+          accent: "#F2A541",
+          priceTreatment: "hero",
+          priceColour: "#F2A541",
+          badges: "solid",
+          rule: true,
+          align: "left",
+        });
       }
-      if (req.step.startsWith("inspect:")) return req.schema.parse({ ok: true, defects: [] });
       const input = JSON.parse(req.prompt.slice("Input:\n".length).split("\n\nYour previous")[0]!);
       const copy = {
         offeringIds: [input.offers[0].id],

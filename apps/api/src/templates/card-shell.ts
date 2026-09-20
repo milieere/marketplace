@@ -48,7 +48,7 @@ body{margin:0;background:${d.palette.background};display:grid;place-items:start 
 .card .photo{display:block!important;width:100%!important;height:100%!important;object-fit:cover!important}
 .card .scrim{position:absolute!important;inset:0!important;display:block}
 .card .lockup,.card .copy{position:relative;z-index:2}
-.card .headline{overflow-wrap:anywhere;hyphens:auto}
+.card .headline{overflow-wrap:break-word;hyphens:manual}
 .card .copy{display:flex;flex-direction:column}
 .card .copy>*{position:relative!important;inset:auto!important;float:none!important;max-width:100%}
 .card ul{list-style:none}

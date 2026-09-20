@@ -3,8 +3,7 @@ import { fileURLToPath } from "node:url";
 import type { Artifact } from "@marketplace/contracts/artifact";
 import { createJsonBrandRepository } from "../src/adapters/fs/json-brand-repository";
 import { createAiSdkLlm } from "../src/adapters/nebius/ai-sdk-llm";
-import { createChromeRasterizer } from "../src/adapters/chrome/rasterizer";
-import { designCardChecked } from "../src/agents/creative/design";
+import { designCard } from "../src/agents/creative/design";
 import { rankPhotos } from "../src/domain/photo";
 import { cardCurrency, pickLogo, preferredOrientation } from "../src/templates/card";
 import { renderCardShell } from "../src/templates/card-shell";
@@ -21,7 +20,6 @@ const llm = createAiSdkLlm({
   visionModels: [process.env.MODEL_VISION ?? "google/gemma-3-27b-it"],
   timeoutMs: 120_000,
 });
-const rasterizer = createChromeRasterizer();
 
 const repo = await createJsonBrandRepository(`${root}data`);
 await mkdir(out, { recursive: true });
@@ -55,19 +53,12 @@ await Promise.all(
     } as unknown as Artifact;
 
     const render = (css: string) => renderCardShell({ record, language: artifact.language, slots, priceLines, location, image, logo, css });
-    const strings = [slots.headline, slots.subline, slots.body, ...slots.badges, location?.name, priceLines[0] && `${priceLines[0].amount}`].filter(
-      (x): x is string => Boolean(x),
-    );
 
     try {
-      const design = await designCardChecked(
-        { llm, rasterizer, render, strings, size: { width: 480, height: 640 } },
-        { record, artifact, location, hasPhoto: Boolean(image), hasLogo: Boolean(logo) },
-      );
+      const design = await designCard(llm, { record, artifact, location, hasPhoto: Boolean(image), hasLogo: Boolean(logo) });
       await writeFile(`${out}/${record.brand.id}.html`, render(design.css));
       await writeFile(`${out}/${record.brand.id}.css`, design.css);
-      const state = design.defects.length ? `STILL BROKEN after ${design.attempts}: ${design.defects.join("; ").slice(0, 70)}` : `clean in ${design.attempts}`;
-      console.log(`ok   ${record.brand.id.padEnd(14)} [${state}] ${design.idea.slice(0, 60)}`);
+      console.log(`ok   ${record.brand.id.padEnd(14)} ${design.tokens.copyAnchor.padEnd(13)} ${design.tokens.priceTreatment.padEnd(12)} ${design.idea.slice(0, 60)}`);
     } catch (err) {
       console.error(`FAIL ${record.brand.id.padEnd(14)} ${err instanceof Error ? err.message.slice(0, 120) : err}`);
     }
