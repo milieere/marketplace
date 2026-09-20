@@ -6,18 +6,8 @@ function artifactVisualStatus(state, artifact) {
   return state.steps.findLast((step) => step.id === `visual-${artifact.brandId}`)?.status;
 }
 
-// Hold the studio until every visual lands, so no card shows half-built
-function visualsSettled(state) {
-  if (state.status !== "loading") return true;
-  if (!state.artifacts.length) return false;
-  return state.artifacts.every(
-    ({ artifact }) => state.visuals?.[artifact.id] || artifactVisualStatus(state, artifact) === "failed",
-  );
-}
-
 export default function VisualizerResults({ query, state }) {
-  const settled = visualsSettled(state);
-  const hasArtifacts = settled && state.artifacts.length > 0;
+  const hasArtifacts = state.artifacts.length > 0;
 
   return (
     <div className={`${styles.results} ${hasArtifacts ? styles.resultsGrid : styles.resultsSingle}`}>
@@ -30,23 +20,22 @@ export default function VisualizerResults({ query, state }) {
         />
       )}
 
-      {settled &&
-        state.artifacts.map(({ artifact, html }) => (
-          <CardView
-            key={artifact.id}
-            title={artifact.slots.headline}
-            subtitle={artifact.slots.subline || artifact.brandId}
-            artifact={artifact}
-            html={html}
-            visual={state.visuals?.[artifact.id]}
-            visualStatus={artifactVisualStatus(state, artifact)}
-            isGenerating={state.status === "loading"}
-          />
-        ))}
+      {state.artifacts.map(({ artifact, html }) => (
+        <CardView
+          key={artifact.id}
+          title={artifact.slots.headline}
+          subtitle={artifact.slots.subline || artifact.brandId}
+          artifact={artifact}
+          html={html}
+          visual={state.visuals?.[artifact.id]}
+          visualStatus={artifactVisualStatus(state, artifact)}
+          isGenerating={state.status === "loading"}
+        />
+      ))}
 
       {!query && <CardView title="Sin consulta" subtitle="Vuelve al inicio y genera una búsqueda para ver el stream." />}
 
-      {query && state.status === "loading" && !settled && !state.noMatch && (
+      {query && state.status === "loading" && state.artifacts.length === 0 && !state.noMatch && (
         <StreamingLoading title="Materializando soluciones" state={state} />
       )}
     </div>

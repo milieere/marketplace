@@ -926,7 +926,6 @@
   flex-direction: column;
   gap: 0;
   align-items: stretch;
-  max-width: 430px;
   cursor: pointer;
   transition:
     filter 0.2s ease,
@@ -951,6 +950,7 @@
   background: transparent;
   overflow: hidden;
   display: block;
+  pointer-events: none;
 }
 
 .visualAssemblyCard {
