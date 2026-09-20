@@ -89,6 +89,28 @@ describe("fal nano-banana visual generator", () => {
     expect(visual).toMatchObject({ artifactId: artifact.id, imageUrl: "https://fal.media/files/card.png", mode: "full-card" });
   });
 
+  it("keeps every word out of the scene, since the DOM renders the copy", async () => {
+    const { record, artifact, intent } = await fixture();
+    let body: Record<string, unknown> = {};
+    const generator = createFalVisualGenerator({
+      apiKey: "k",
+      mode: "scene",
+      fetcher: async (_url, init) => {
+        body = JSON.parse(init.body);
+        return ok({ images: [{ url: "https://fal.media/files/scene.png" }] });
+      },
+    });
+
+    const visual = await generator.generate({ artifact, record, intent });
+    const prompt = body.prompt as string;
+
+    expect(prompt).toMatch(/no text, letters, numbers, words/i);
+    expect(prompt).not.toContain(artifact.slots.headline);
+    expect(prompt).not.toContain("28");
+    expect(body.system_prompt).toBeUndefined();
+    expect(visual.mode).toBe("scene");
+  });
+
   it("falls back to text-to-image when the brand has no reference images", async () => {
     const { record, artifact, intent } = await fixture();
     const bare = { ...artifact, presentation: { ...artifact.presentation!, photo: undefined } };

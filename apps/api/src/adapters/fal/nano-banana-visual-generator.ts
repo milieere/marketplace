@@ -3,7 +3,7 @@ import type { BrandRecord, Photo } from "@marketplace/contracts/brand-record";
 import type { Intent } from "@marketplace/contracts/intent";
 import type { GeneratedVisual, VisualGenerator, VisualMode } from "../../ports/visual-generator";
 import { preferredOrientation } from "../../templates/card";
-import { buildFullCardPrompt } from "../../templates/card-prompt";
+import { buildFullCardPrompt, buildScenePrompt } from "../../templates/card-prompt";
 import { buildImagePrompt } from "../openai/image-visual-generator";
 
 type Fetcher = (url: string, init: { method: "POST"; headers: Record<string, string>; body: string; signal?: AbortSignal }) => Promise<Response>;
@@ -34,6 +34,15 @@ function seedOf(id: string): number {
 }
 
 const PLANS: Record<VisualMode, (input: GenerateInput, model: string) => Plan> = {
+  scene: ({ artifact, record }, model) => {
+    const built = buildScenePrompt({ artifact, record });
+    return {
+      path: built.referenceImages.length ? `${model}/edit` : model,
+      prompt: built.prompt,
+      aspectRatio: built.aspectRatio,
+      imageUrls: built.referenceImages,
+    };
+  },
   "full-card": ({ artifact, record }, model) => {
     const built = buildFullCardPrompt({ artifact, record });
     return {

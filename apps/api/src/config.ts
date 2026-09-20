@@ -18,7 +18,7 @@ const ConfigSchema = z
     MODEL_VISION: z.string().default("google/gemma-3-27b-it"),
     MODEL_IMAGE: z.string().default("black-forest-labs/flux-schnell"),
     VISUAL_PROVIDER: z.enum(["auto", "fal", "nebius", "svg"]).default("auto"),
-    VISUAL_MODE: z.enum(["full-card", "background"]).default("full-card"),
+    VISUAL_MODE: z.enum(["scene", "full-card", "background"]).default("scene"),
     FAL_API_KEY: z.string().optional(),
     FAL_MODEL: z.string().default("fal-ai/nano-banana"),
     FAL_RESOLUTION: z.enum(["1K", "2K", "4K"]).default("2K"),
