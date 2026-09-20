@@ -112,11 +112,13 @@
 
 .results {
   width: 100%;
-  gap: 5px;
+  /* headerOptions is 100px and absolutely positioned, so the grid must clear it */
+  padding: 124px 24px 32px;
+  gap: 24px;
 }
 
 .resultsSingle {
-  min-height: 100vh;
+  min-height: calc(100vh - 124px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -126,8 +128,9 @@
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   align-items: start;
-  justify-items: stretch;
+  justify-items: center;
   max-width: 1680px;
+  margin: 0 auto;
 }
 
 @media (max-width: 1180px) {
@@ -138,7 +141,8 @@
 
 @media (max-width: 760px) {
   .results {
-    padding: 14px;
+    padding: 112px 14px 24px;
+    gap: 18px;
   }
 
   .resultsGrid {

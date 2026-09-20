@@ -821,8 +821,10 @@
 .designed {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 0;
   align-items: stretch;
+  width: 100%;
+  max-width: 430px;
 }
 
 .designedFrame {
@@ -837,11 +839,20 @@
 
 .designedCta {
   display: block;
+  margin-top: 12px;
+  padding: 15px 20px;
   text-align: center;
-  padding: 14px;
-  border-radius: var(--brand-radius, 16px);
+  border-radius: 999px;
   background: var(--brand-primary, #c8553d);
   color: var(--brand-background, #fff);
-  font-weight: 700;
+  font-size: 0.95rem;
+  font-weight: 650;
+  letter-spacing: 0.01em;
   text-decoration: none;
+  transition: transform 0.15s ease, filter 0.15s ease;
+}
+
+.designedCta:hover {
+  filter: brightness(1.08);
+  transform: translateY(-1px);
 }
