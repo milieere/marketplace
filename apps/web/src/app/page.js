@@ -1,7 +1,9 @@
 import Head from "next/head";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styles from "./page.module.css";
 import Hero from "../components/hero/hero";
 import Header from "../components/header/header";
+import { faWandMagicSparkles } from "../lib/fontawesome";
 
 export default function Home() {
   return (
@@ -35,6 +37,9 @@ export default function Home() {
         <link rel="canonical" href="https://oli.intent-demo.com" />
       </Head>
       <main className={styles.main}>
+        <div className={styles.homeIcon} aria-label="Oli generative magic">
+          <FontAwesomeIcon icon={faWandMagicSparkles} />
+        </div>
         <Header />
         <Hero />
       </main>
