@@ -82,6 +82,8 @@ export async function designCard(llm: Llm, input: DesignInput): Promise<CardDesi
   return { idea: result.idea, css: sanitizeCss(result.css) };
 }
 
+const OBJECTIVE = new Set(["clipped", "overlap", "missing", "empty"]);
+
 export type CheckedDesign = CardDesignResult & { attempts: number; defects: string[] };
 
 export type DesignDeps = {
@@ -95,7 +97,7 @@ export type DesignDeps = {
 
 // The designer cannot see its own output, so render it and let a vision model look
 export async function designCardChecked(deps: DesignDeps, input: DesignInput): Promise<CheckedDesign> {
-  const { llm, rasterizer, render, strings, size, attempts = 3 } = deps;
+  const { llm, rasterizer, render, strings, size, attempts = 2 } = deps;
   let design = await designCard(llm, input);
   let defects: string[] = [];
 
@@ -107,7 +109,11 @@ export async function designCardChecked(deps: DesignDeps, input: DesignInput): P
     const seen = await inspectCard(llm, { brandId: input.record.brand.id, png, strings }).catch(() => undefined);
     if (!seen || seen.ok) return { ...design, attempts: attempt, defects: [] };
 
-    defects = seen.defects.map((d) => `${d.kind}: ${d.detail}`);
+    // "illegible" is a judgement call the checker gets wrong often; chasing it
+    // costs a full design pass and rarely converges
+    const actionable = seen.defects.filter((d) => OBJECTIVE.has(d.kind));
+    defects = actionable.map((d) => `${d.kind}: ${d.detail}`);
+    if (!actionable.length) return { ...design, attempts: attempt, defects: [] };
     if (attempt === attempts) break;
     design = await repairCard(llm, input, design, defects);
   }

@@ -815,3 +815,33 @@
     transform: scale(1.04);
   }
 }
+
+/* A designed card brings its own stylesheet, so it renders isolated and this
+   component contributes only the reserve link beneath it. */
+.designed {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  align-items: stretch;
+}
+
+.designedFrame {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  border: 0;
+  border-radius: var(--brand-radius, 16px);
+  background: transparent;
+  overflow: hidden;
+  display: block;
+}
+
+.designedCta {
+  display: block;
+  text-align: center;
+  padding: 14px;
+  border-radius: var(--brand-radius, 16px);
+  background: var(--brand-primary, #c8553d);
+  color: var(--brand-background, #fff);
+  font-weight: 700;
+  text-decoration: none;
+}

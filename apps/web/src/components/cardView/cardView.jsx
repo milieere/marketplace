@@ -217,6 +217,20 @@ export default function CardView({ title, subtitle, artifact, html, visual, visu
   const statusLabel = artifact.check?.passed ? "Brand check passed" : "Needs review";
   const relaxed = artifact.relaxed || [];
   const fonts = fontHref(kit);
+  // The designed card is the brand's own stylesheet over the generated scene;
+  // it replaces this component's generic chrome entirely.
+  const designed = visual?.html;
+
+  if (designed) {
+    return (
+      <article className={`${styles.cardView} ${styles.designed}`} style={cssVars(presentation)}>
+        <iframe className={styles.designedFrame} title={title} srcDoc={designed} sandbox="allow-popups allow-same-origin" scrolling="no" />
+        <a className={styles.designedCta} href={artifact.slots.cta.url} target="_blank" rel="noreferrer">
+          {artifact.slots.cta.label}
+        </a>
+      </article>
+    );
+  }
 
   return (
     <article className={styles.cardView} style={cssVars(presentation)}>

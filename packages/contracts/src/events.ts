@@ -29,6 +29,8 @@ export const AgentEvent = z.discriminatedUnion("type", [
     prompt: z.string().optional(),
     // full-card images already contain the copy, so the frontend must not overlay it
     mode: z.enum(["scene", "full-card", "background"]).default("background"),
+    // The finished card: our markup, the model's stylesheet, the generated scene
+    html: z.string().optional(),
   }),
   z.object({ type: z.literal("no-match"), noMatch: NoMatch }),
   z.object({ type: z.literal("error"), message: z.string() }),

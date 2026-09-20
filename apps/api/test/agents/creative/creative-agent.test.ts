@@ -23,6 +23,10 @@ function fakeLlm(script: Script) {
       (prompts[req.step] ??= []).push(req.prompt);
       if (req.step === "understand") return req.schema.parse({ language: "en", scope: "in-domain", ...script.understand });
       const brandId = req.step.split(":")[1]!;
+      if (req.step.startsWith("design:") || req.step.startsWith("repair:")) {
+        return req.schema.parse({ idea: `a card for ${brandId}`, css: ".card{background:#000}" });
+      }
+      if (req.step.startsWith("inspect:")) return req.schema.parse({ ok: true, defects: [] });
       const input = JSON.parse(req.prompt.slice("Input:\n".length).split("\n\nYour previous")[0]!);
       const copy = {
         offeringIds: [input.offers[0].id],

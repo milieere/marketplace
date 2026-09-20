@@ -1,6 +1,7 @@
 import { fileURLToPath } from "node:url";
 import { createJsonBrandRepository } from "./adapters/fs/json-brand-repository";
 import { createFsSourcePacks } from "./adapters/fs/source-packs";
+import { createChromeRasterizer } from "./adapters/chrome/rasterizer";
 import { createFalVisualGenerator } from "./adapters/fal/nano-banana-visual-generator";
 import { createSvgVisualGenerator } from "./adapters/local/svg-visual-generator";
 import { createMemoryArtifactStore } from "./adapters/memory/artifact-store";
@@ -52,5 +53,5 @@ export async function createContainer(config: Config): Promise<AppDeps> {
   const sources = createFsSourcePacks(`${DATA_DIR}/sources`);
   const brandAgent = createBrandAgent({ llm, brands, sources, reader: createPdfReader() });
   const visuals = selectVisualGenerator(config);
-  return { agent: createCreativeAgent({ llm, brands, artifacts, visuals }), brandAgent, artifacts, brands, sources };
+  return { agent: createCreativeAgent({ llm, brands, artifacts, visuals, rasterizer: createChromeRasterizer() }), brandAgent, artifacts, brands, sources };
 }
