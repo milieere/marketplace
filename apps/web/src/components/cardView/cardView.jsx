@@ -1,8 +1,9 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBullseye, faTriangleExclamation } from "../../lib/fontawesome";
+import { useRouter } from "next/navigation";
+import { faArrowUpRightFromSquare, faBullseye, faTriangleExclamation } from "../../lib/fontawesome";
+import { saveAdDetail } from "../../lib/adDetailStorage";
 import { getApiUrl } from "../../lib/api/generate";
 import styles from "./cardView.module.css";
 
@@ -105,6 +106,11 @@ function extractImageSrc(html) {
   return assetSource(src);
 }
 
+function extractLogoSrc(html) {
+  const src = html?.match(/<img[^>]*class="[^"]*\blogo\b[^"]*"[^>]*\ssrc="([^"]+)"/i)?.[1];
+  return assetSource(src);
+}
+
 function assetSource(src) {
   if (!src) return null;
   if (src.startsWith("data:") || src.startsWith("http")) return src;
@@ -112,8 +118,11 @@ function assetSource(src) {
   return src;
 }
 
-function brandLogo(kit) {
+function brandLogo(kit, html) {
+  const embeddedLogo = extractLogoSrc(html);
+  if (embeddedLogo) return embeddedLogo;
   const logo = kit.logos.find((item) => item.variant === "icon") || kit.logos.find((item) => item.variant === "mono") || kit.logos[0];
+  if (logo?.url?.startsWith("/assets/")) return null;
   return assetSource(logo?.url);
 }
 
@@ -130,6 +139,11 @@ function formatPrice(line, language) {
 function generateFromSuggestion(router, suggestion) {
   const text = suggestion.patch?.change?.text || suggestion.label;
   router.push(`/opciones?query=${encodeURIComponent(text)}`);
+}
+
+function openDetail(router, artifact, html, visual) {
+  saveAdDetail({ artifact, html, visual });
+  router.push(`/detalle/${artifact.id}`);
 }
 
 function imageSource(artifact, html, visual) {
@@ -230,7 +244,7 @@ export default function CardView({ title, subtitle, artifact, html, visual, visu
   const kit = presentation.kit;
   const style = kit.style;
   const imageSrc = imageSource(artifact, html, visual);
-  const logoSrc = brandLogo(kit);
+  const logoSrc = brandLogo(kit, html);
   const statusLabel = artifact.check?.passed ? "Brand check passed" : "Needs review";
   const relaxed = artifact.relaxed || [];
   const fonts = fontHref(kit);
@@ -240,11 +254,21 @@ export default function CardView({ title, subtitle, artifact, html, visual, visu
 
   if (designed) {
     return (
-      <article className={`${styles.cardView} ${styles.designed}`} style={cssVars(presentation)}>
+      <article
+        className={`${styles.cardView} ${styles.designed}`}
+        style={cssVars(presentation)}
+        role="button"
+        tabIndex={0}
+        aria-label={`Ver detalle de ${artifact.slots.headline || presentation.brand.name}`}
+        onClick={() => openDetail(router, artifact, html, visual)}
+        onKeyDown={(event) => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            openDetail(router, artifact, html, visual);
+          }
+        }}
+      >
         <iframe className={styles.designedFrame} title={title} srcDoc={designed} sandbox="allow-popups allow-same-origin" scrolling="no" />
-        <a className={styles.designedCta} href={artifact.slots.cta.url} target="_blank" rel="noreferrer">
-          {artifact.slots.cta.label}
-        </a>
       </article>
     );
   }
@@ -262,6 +286,16 @@ export default function CardView({ title, subtitle, artifact, html, visual, visu
         data-case={style.headlineCase}
         data-ornament={style.ornament}
         data-building={!visual && isGenerating ? "true" : "false"}
+        role="button"
+        tabIndex={0}
+        aria-label={`Ver detalle de ${artifact.slots.headline || presentation.brand.name}`}
+        onClick={() => openDetail(router, artifact, html, visual)}
+        onKeyDown={(event) => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            openDetail(router, artifact, html, visual);
+          }
+        }}
       >
         <div className={styles.visual}>
           {/* eslint-disable-next-line @next/next/no-img-element -- Artifact photos can arrive as data URLs from the API. */}
@@ -288,7 +322,13 @@ export default function CardView({ title, subtitle, artifact, html, visual, visu
 
         <div className={styles.copy}>
           <div className={styles.topline}>
-            <span>{presentation.brand.name}</span>
+            <span className={styles.toplineBrand}>
+              {logoSrc ? (
+                // eslint-disable-next-line @next/next/no-img-element -- Brand logos can arrive embedded in the artifact HTML.
+                <img src={logoSrc} alt="" />
+              ) : null}
+              {presentation.brand.name}
+            </span>
             <span data-status={artifact.check?.passed ? "passed" : "review"}>{statusLabel}</span>
           </div>
 
@@ -323,9 +363,20 @@ export default function CardView({ title, subtitle, artifact, html, visual, visu
             </div>
           )}
 
-          <a className={styles.cta} href={artifact.slots.cta.url} target="_blank" rel="noreferrer">
+          <a className={styles.cta} href={artifact.slots.cta.url} target="_blank" rel="noreferrer" onClick={(event) => event.stopPropagation()}>
             {artifact.slots.cta.label}
           </a>
+          <button
+            type="button"
+            className={styles.detailCta}
+            onClick={(event) => {
+              event.stopPropagation();
+              openDetail(router, artifact, html, visual);
+            }}
+          >
+            Ver detalle
+            <FontAwesomeIcon icon={faArrowUpRightFromSquare} />
+          </button>
         </div>
         <AssemblyOverlay visual={visual} visualStatus={visualStatus} isGenerating={isGenerating} presentation={presentation} logoSrc={logoSrc} />
       </section>

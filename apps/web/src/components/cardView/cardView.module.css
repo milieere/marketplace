@@ -24,6 +24,22 @@
     linear-gradient(145deg, color-mix(in srgb, var(--brand-background) 92%, white 8%), var(--brand-background)),
     var(--brand-background);
   box-shadow: 0 28px 80px rgba(0, 0, 0, 0.35);
+  cursor: pointer;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+
+.generatedAd:hover {
+  border-color: color-mix(in srgb, var(--brand-primary) 52%, rgba(255, 255, 255, 0.14));
+  box-shadow: 0 34px 92px rgba(0, 0, 0, 0.42);
+  transform: translateY(-2px);
+}
+
+.generatedAd:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--brand-accent) 80%, white);
+  outline-offset: 5px;
 }
 
 .generatedAd[data-composition="image-top"] {
@@ -230,6 +246,20 @@
   background: rgba(80, 224, 124, 0.16);
 }
 
+.toplineBrand {
+  min-width: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.toplineBrand img {
+  width: 28px;
+  height: 28px;
+  flex: 0 0 auto;
+  object-fit: contain;
+}
+
 .copy h2 {
   max-width: 12ch;
   color: var(--brand-text);
@@ -390,6 +420,26 @@
   color: #ffffff;
   text-decoration: none;
   font-weight: 900;
+}
+
+.detailCta {
+  width: 100%;
+  min-height: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  border: 1px solid color-mix(in srgb, var(--brand-primary) 42%, transparent);
+  border-radius: max(6px, calc(var(--brand-radius) * 0.75));
+  background: color-mix(in srgb, var(--brand-background) 74%, white);
+  color: var(--brand-primary);
+  font: inherit;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.detailCta:hover {
+  background: color-mix(in srgb, var(--brand-primary) 12%, var(--brand-background));
 }
 
 .htmlPreview {
