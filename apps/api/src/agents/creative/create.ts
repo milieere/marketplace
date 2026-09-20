@@ -12,7 +12,8 @@ import { describeLocal } from "../../domain/time";
 import type { ArtifactStore } from "../../ports/artifact-store";
 import type { Llm } from "../../ports/llm";
 import type { VisualGenerator } from "../../ports/visual-generator";
-import { pickLogo, preferredOrientation, renderCard } from "../../templates/card";
+import { cardCurrency, pickLogo, preferredOrientation, renderCard, renderImagePage } from "../../templates/card";
+import { editorialLayout } from "../../templates/editorial";
 
 const SYSTEM = readFileSync(new URL("../../prompts/create.md", import.meta.url), "utf8");
 
@@ -105,7 +106,7 @@ function prompt(ctx: CreateContext, pick: Pick, relaxed: Relaxation[], feedback?
       headlineMaxCharacters: headlineMax,
     },
     location: pick.location && { name: pick.location.name, attributes: pick.location.attributes },
-    offers: pick.candidates.map(({ offering: o }) => ({ id: o.id, name: o.name, description: o.description, conditions: o.conditions, attributes: o.attributes })),
+    offers: pick.candidates.map(({ offering: o }, i) => ({ id: o.id, bestFit: i === 0, name: o.name, description: o.description, conditions: o.conditions, attributes: o.attributes })),
   };
   const revision = feedback
     ? `\n\nYour previous draft broke brand rules. Fix exactly these and keep the rest:\n${feedback.issues.map((i) => `- ${i.ruleId}: ${i.message}`).join("\n")}\nPrevious draft:\n${JSON.stringify(feedback.draft)}`
@@ -171,7 +172,7 @@ export async function* createArtifact(ctx: CreateContext, pick: Pick): AsyncGene
       cta: { label: copy.ctaLabel, url: ctaUrl(pick, party?.size) },
     };
     const priceLines = offerings.map((o) => ({ offeringId: o.id, label: o.name, amount: o.price.amount, unit: o.price.unit, from: o.price.from ?? false }));
-    const { html, colorPairs } = renderCard({ record, language: intent.language, slots, priceLines, currency: offerings[0]!.price.currency, photo, logo, location: pick.location });
+    const { html, colorPairs } = renderCard({ record, language: intent.language, slots, priceLines, currency: cardCurrency(record, priceLines), photo, logo, location: pick.location });
     const relaxed = [...new Map(chosen.flatMap((c) => c.relaxed).map((r) => [`${r.needId}:${r.constraint}`, r])).values()];
     return { chosen, offerings, slots, priceLines, html, relaxed, badgeTrace, issues: checkCopy(kit, slots, colorPairs) };
   };
@@ -230,6 +231,8 @@ export async function* createArtifact(ctx: CreateContext, pick: Pick): AsyncGene
         imagery: kit.imagery,
       },
       photo: photo && photoOrientation ? { ...photo, orientation: photoOrientation } : undefined,
+      logo,
+      layout: editorialLayout(kit),
     },
     htmlUrl: `/v1/artifacts/${id}`,
     createdAt: ctx.now.toISOString(),
@@ -249,8 +252,14 @@ export async function* createArtifact(ctx: CreateContext, pick: Pick): AsyncGene
     yield { ...visualStep, status: "started" };
     try {
       const visual = await ctx.visuals.generate({ artifact, record, intent });
+      // The whole card is the image now, so the share link should serve that, not the HTML card
+      if (visual.mode === "full-card") {
+        const page = renderImagePage({ record, language: intent.language, imageUrl: visual.imageUrl, slots: artifact.slots, alt: artifact.slots.headline, logo: logo?.src });
+        // A failed upgrade just leaves the HTML card on the share link; the image still streams
+        await ctx.artifacts.put(id, page).catch((err: unknown) => console.error(`share page for ${id}`, err));
+      }
       yield { ...visualStep, status: "done", detail: "Brand visual ready" };
-      yield { type: "visual", artifactId: artifact.id, imageUrl: visual.imageUrl, prompt: visual.prompt };
+      yield { type: "visual", artifactId: artifact.id, imageUrl: visual.imageUrl, prompt: visual.prompt, mode: visual.mode };
     } catch (err) {
       console.error(err);
       const detail = err instanceof Error ? err.message : "failed";

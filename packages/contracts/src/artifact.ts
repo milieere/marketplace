@@ -33,6 +33,23 @@ export const ArtifactPresentation = z.object({
       orientation: z.enum(["landscape", "portrait", "square"]),
     })
     .optional(),
+  logo: z.object({ src: z.string() }).optional(),
+  layout: z
+    .object({
+      frame: z.enum(["poster", "editorial", "split"]),
+      logoCorner: z.enum(["top-left", "top-right", "bottom-left", "top-center"]),
+      copyAnchor: z.enum(["bottom-left", "bottom-right", "below-media", "side-right", "top-left", "centre"]),
+      align: z.enum(["left", "centre"]),
+      showSubline: z.boolean(),
+      showBody: z.boolean(),
+      showBadges: z.boolean(),
+      priceStyle: z.enum(["hero", "editorial", "inline"]),
+      headlineScale: z.number(),
+      scrim: z.enum(["bottom", "top", "left", "right", "none"]),
+      rule: z.boolean(),
+      stamp: z.boolean(),
+    })
+    .optional(),
 });
 export type ArtifactPresentation = z.infer<typeof ArtifactPresentation>;
 

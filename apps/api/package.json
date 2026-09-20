@@ -9,8 +9,12 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "render:samples": "tsx scripts/render-samples.ts",
+    "design:samples": "tsx --env-file-if-exists=../../.env scripts/design-samples.ts",
     "e2e:live": "tsx scripts/e2e-generate.ts",
     "build:sources": "tsx scripts/build-sources.ts",
+    "build:logos": "tsx scripts/build-logos.ts",
+    "visual:samples": "tsx --env-file-if-exists=../../.env scripts/visual-samples.ts",
+    "demo:pitch": "tsx --env-file-if-exists=../../.env scripts/demo-pitch.ts",
     "eval:extraction": "tsx --env-file-if-exists=../../.env scripts/eval-extraction.ts"
   },
   "dependencies": {
@@ -24,6 +28,7 @@
   },
   "devDependencies": {
     "@types/node": "^26.6.2",
+    "sharp": "^0.35.4",
     "tsx": "^4.23.13",
     "typescript": "^7.0.2",
     "vitest": "^5.0.1"

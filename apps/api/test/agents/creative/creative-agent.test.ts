@@ -151,6 +151,7 @@ describe("Creative Agent over HTTP with a scripted LLM", () => {
           artifactId: artifact.id,
           imageUrl: "data:image/jpeg;base64,ZmFrZQ==",
           prompt: `${record.brand.name} | ${intent.raw.text} | ${artifact.offeringIds.join(",")}`,
+          mode: "full-card" as const,
         };
       },
     };
@@ -158,10 +159,39 @@ describe("Creative Agent over HTTP with a scripted LLM", () => {
     const visualEvents = events.filter((e): e is Extract<AgentEvent, { type: "visual" }> => e.type === "visual");
 
     expect(visualEvents).toHaveLength(artifacts.length);
-    expect(visualEvents[0]).toMatchObject({ artifactId: artifacts[0]!.id, imageUrl: "data:image/jpeg;base64,ZmFrZQ==" });
+    expect(visualEvents[0]).toMatchObject({ artifactId: artifacts[0]!.id, imageUrl: "data:image/jpeg;base64,ZmFrZQ==", mode: "full-card" });
     expect(visualEvents[0]?.prompt).toContain("Friday, 8 friends");
     expect(types).toContain("visual-casa-brisa:started");
     expect(types).toContain("visual-casa-brisa:done");
+  });
+
+  it("ships the vector mark and a layout for the card to render", async () => {
+    const { artifacts } = await generate("Friday, 8 friends, two vegans, one celiac, terrace, ~€30 each", q1);
+    const withLogo = artifacts.filter((a) => a.presentation?.logo);
+
+    expect(withLogo.length).toBeGreaterThan(0);
+    for (const artifact of withLogo) {
+      // The DOM draws the mark now, so it wants the crisp vector
+      expect(artifact.presentation!.logo!.src.startsWith("data:image/svg+xml;base64,"), artifact.brandId).toBe(true);
+      expect(artifact.presentation!.layout, artifact.brandId).toBeDefined();
+    }
+    // Two brands, two different layouts
+    const frames = new Set(artifacts.map((a) => a.presentation?.layout?.copyAnchor));
+    expect(frames.size).toBeGreaterThan(1);
+  });
+
+  it("reports a failed visual step and still finishes the stream", async () => {
+    const visuals: VisualGenerator = {
+      async generate() {
+        throw new Error("fal is out of credit");
+      },
+    };
+    const { events, types } = await generate("Friday, 8 friends, two vegans, one celiac, terrace, ~€30 each", q1, visuals);
+
+    expect(types).toContain("visual-casa-brisa:started");
+    expect(types).toContain("visual-casa-brisa:failed");
+    expect(events.filter((e) => e.type === "visual")).toHaveLength(0);
+    expect(events.at(-1)?.type).toBe("done");
   });
 
   it("keeps streaming when one brand's copy step fails", async () => {

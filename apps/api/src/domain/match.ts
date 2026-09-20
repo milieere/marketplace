@@ -40,6 +40,15 @@ function closestRules(need: Need, vocabulary: Vocabulary): Rules {
   return { required, dropped, budgetFactor: CLOSEST_BUDGET_FACTOR };
 }
 
+// A purpose-built offer that fits beats a catch-all that also fits
+function specificity(offering: Offering, need: Need, hasParty: boolean): number {
+  const { min, max } = offering.partySize ?? {};
+  const bounded = hasParty && min !== undefined && max !== undefined ? 1 : 0;
+  const days = need.when && offering.availability?.days?.length ? 1 : 0;
+  const window = need.when && (offering.availability?.from || offering.availability?.to) ? 1 : 0;
+  return bounded + days + window;
+}
+
 function evaluate(intent: Intent, need: Need, record: BrandRecord, offering: Offering, location: Location | undefined, rules: Rules): Outcome {
   const attributes = merge(offering.attributes, location?.attributes);
   const party = need.party ?? intent.party;
@@ -90,7 +99,8 @@ function evaluate(intent: Intent, need: Need, record: BrandRecord, offering: Off
   }
   const preferredHits = pairs(need.preferred).filter(([k, v]) => has(attributes, k, v)).length;
   const priceFit = limit ? 0.5 * (1 - cost / limit) : 0;
-  return { candidate: { offering, cost, score: preferredHits + priceFit - relaxed.length, relaxed }, location };
+  const fit = 0.75 * specificity(offering, need, Boolean(party));
+  return { candidate: { offering, cost, score: preferredHits + priceFit + fit - relaxed.length, relaxed }, location };
 }
 
 function matchBrand(intent: Intent, need: Need, record: BrandRecord, rules: Rules): BrandMatch | Exclusion {

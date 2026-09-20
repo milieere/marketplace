@@ -42,10 +42,19 @@
       },
       {
         "id": "ink",
-        "hex": "#1B2A41",
+        "hex": "#2A2622",
         "role": "text",
         "pairsWith": [
           "ivory"
+        ]
+      },
+      {
+        "id": "sage",
+        "hex": "#7D8471",
+        "role": "secondary",
+        "pairsWith": [
+          "ivory",
+          "ink"
         ]
       }
     ],
@@ -69,7 +78,23 @@
         "fallback": "system-ui, sans-serif"
       }
     ],
-    "logos": [],
+    "logos": [
+      {
+        "variant": "primary",
+        "url": "/assets/hotel-albada/logo.svg",
+        "onBackgrounds": [
+          "ivory"
+        ]
+      },
+      {
+        "variant": "mono",
+        "url": "/assets/hotel-albada/logo-mono.svg",
+        "onBackgrounds": [
+          "navy",
+          "ink"
+        ]
+      }
+    ],
     "style": {
       "radius": 2,
       "density": "airy",
@@ -108,17 +133,19 @@
       ]
     },
     "imagery": {
-      "style": "Warm low light, linen textures, symmetrical interiors",
+      "style": "Warm low lamplight, linen and stone textures, symmetrical interiors, generous empty space, one or two unhurried guests",
       "avoid": [
         "crowds",
-        "flash photography"
+        "flash photography",
+        "bright midday light",
+        "clutter or visible signage"
       ]
     },
     "photos": [
       {
         "id": "suite",
         "url": "/assets/hotel-albada/photos/suite.jpg",
-        "description": "Suite with linen bed and morning light",
+        "description": "A calm suite in warm lamplight, linen bed and stone walls, shutters half open on the evening",
         "orientation": "landscape",
         "attributes": {
           "people": [
@@ -136,7 +163,7 @@
       {
         "id": "candle-dinner",
         "url": "/assets/hotel-albada/photos/candle-dinner.jpg",
-        "description": "Candle-lit table for two in the restaurant",
+        "description": "A table for two under low lamplight, linen napkins and gold candlelight against dark panelling",
         "orientation": "portrait",
         "attributes": {
           "people": [
@@ -154,7 +181,7 @@
       {
         "id": "sunday-brunch",
         "url": "/assets/hotel-albada/photos/sunday-brunch.jpg",
-        "description": "Family brunch table in the courtyard",
+        "description": "An unhurried Sunday brunch laid out on linen, pastries and coffee in soft morning light",
         "orientation": "landscape",
         "attributes": {
           "people": [
@@ -171,7 +198,7 @@
       {
         "id": "spa",
         "url": "/assets/hotel-albada/photos/spa.jpg",
-        "description": "Candle-lit spa pool",
+        "description": "The quiet spa pool in low warm light, stone surround and steam rising off still water",
         "orientation": "landscape",
         "attributes": {
           "people": [
@@ -182,6 +209,9 @@
           ],
           "ambience": [
             "quiet"
+          ],
+          "occasion": [
+            "date-night"
           ]
         }
       }
@@ -218,8 +248,36 @@
           "ratio": 4.5
         },
         "severity": "block"
+      },
+      {
+        "id": "never-shout",
+        "text": "Never shout. Restraint is the brand.",
+        "severity": "warn"
+      },
+      {
+        "id": "space-is-luxury",
+        "text": "Leave generous empty space; crowding reads as cheap.",
+        "severity": "warn"
+      },
+      {
+        "id": "symmetry-and-calm",
+        "text": "Compose symmetrically and keep the frame still.",
+        "severity": "warn"
       }
-    ]
+    ],
+    "advertising": {
+      "direction": "Extreme restraint. Most of the card is empty. Small type, wide letter-spacing, one thin gold line at most. Navy and ivory. If it looks like an advert, it is wrong.",
+      "shows": [
+        "subline",
+        "price"
+      ],
+      "avoid": [
+        "badges",
+        "body copy",
+        "bright colour",
+        "anything crowded"
+      ]
+    }
   },
   "locations": [
     {

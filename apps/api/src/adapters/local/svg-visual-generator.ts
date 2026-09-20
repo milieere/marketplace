@@ -88,6 +88,7 @@ export function createSvgVisualGenerator(): VisualGenerator {
         artifactId: input.artifact.id,
         imageUrl: encodeSvg(svg),
         prompt: promptSummary(input),
+        mode: "background" as const,
       };
     },
   };

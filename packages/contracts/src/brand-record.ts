@@ -109,6 +109,14 @@ export const BrandKit = z.object({
     samples: z.array(z.string()),
   }),
   imagery: z.object({ style: z.string(), avoid: z.array(z.string()) }),
+  // How this brand advertises: what a banner shows and how it should feel
+  advertising: z
+    .object({
+      direction: z.string(),
+      shows: z.array(z.enum(["subline", "body", "badges", "place", "priceLevel", "price"])),
+      avoid: z.array(z.string()).default([]),
+    })
+    .optional(),
   photos: z.array(Photo),
   rules: z.array(BrandRule),
 });

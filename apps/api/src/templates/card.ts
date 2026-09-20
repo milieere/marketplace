@@ -48,14 +48,14 @@ function weight(kit: BrandKit, role: "display" | "body", end: "min" | "max"): nu
 const UNIT: Record<PriceUnit, string> = { person: " pp", group: "", night: " / night", item: "", hour: " / h" };
 const FROM: Record<string, string> = { en: "from", es: "desde", ca: "des de", fr: "dès" };
 
-function price(line: Artifact["priceLines"][number], currency: string, language: string): string {
+export function formatPrice(line: Artifact["priceLines"][number], currency: string, language: string): string {
   const amount = new Intl.NumberFormat(language, { style: "currency", currency, maximumFractionDigits: 0 }).format(line.amount);
   return `${line.from ? `${FROM[language] ?? FROM.en} ` : ""}${amount}${UNIT[line.unit]}`;
 }
 
 const PIN = `<svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor" aria-hidden="true"><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5Z"/></svg>`;
 
-function currencySymbol(currency: string, language: string): string {
+export function currencySymbol(currency: string, language: string): string {
   const parts = new Intl.NumberFormat(language, { style: "currency", currency, maximumFractionDigits: 0 }).formatToParts(0);
   return parts.find((part) => part.type === "currency")?.value ?? "";
 }
@@ -68,24 +68,40 @@ function metaRow(input: CardInput): string {
   return `<div class="meta"><span class="place">${PIN}${escapeHtml(location.name)}</span>${level}</div>`;
 }
 
-const CASE = { upper: "uppercase", title: "capitalize", sentence: "none" } as const;
-const HEAD_TRACKING = { upper: ".01em", title: "0", sentence: "-.01em" } as const;
-const MARK_TRACKING = { upper: ".2em", title: ".1em", sentence: ".14em" } as const;
-const PADDING = { airy: 30, balanced: 24, dense: 18 } as const;
-const LAYOUT = { "text-over-image": "poster", "image-top": "editorial", "image-side": "split" } as const;
-const HEADLINE = {
+export const CASE = { upper: "uppercase", title: "capitalize", sentence: "none" } as const;
+export const HEAD_TRACKING = { upper: ".01em", title: "0", sentence: "-.01em" } as const;
+export const MARK_TRACKING = { upper: ".2em", title: ".1em", sentence: ".14em" } as const;
+export const PADDING = { airy: 30, balanced: 24, dense: 18 } as const;
+export const LAYOUT = { "text-over-image": "poster", "image-top": "editorial", "image-side": "split" } as const;
+export const HEADLINE = {
   poster: { airy: 38, balanced: 36, dense: 42 },
   editorial: { airy: 31, balanced: 30, dense: 34 },
   split: { airy: 27, balanced: 26, dense: 30 },
 } as const;
-const MEDIA_HEIGHT = { airy: 240, balanced: 215, dense: 190 } as const;
+export const MEDIA_HEIGHT = { airy: 240, balanced: 215, dense: 190 } as const;
 const ORIENTATION = { poster: "portrait", editorial: "landscape", split: "portrait" } as const;
+export const CARD_WIDTH = { poster: 430, editorial: 430, split: 680 } as const;
+// The card's own proportions. Not ORIENTATION, which is the shape of the photo to pick:
+// an editorial card is portrait even though its media band is landscape.
+export const ASPECT = { poster: "3:4", editorial: "4:5", split: "3:2" } as const;
+
+// The HTML applies text-transform in CSS, so slots.headline is not the visible string.
+export function applyCase(text: string, headlineCase: BrandKit["style"]["headlineCase"]): string {
+  if (headlineCase === "upper") return text.toLocaleUpperCase();
+  if (headlineCase === "title") return text.replace(/\p{L}[\p{L}\p{M}'']*/gu, (w) => w[0]!.toLocaleUpperCase() + w.slice(1));
+  return text;
+}
+
+// priceLines carry no currency of their own; it lives on the offering they came from.
+export function cardCurrency(record: BrandRecord, priceLines: Artifact["priceLines"]): string {
+  return record.offerings.find((o) => o.id === priceLines[0]?.offeringId)?.price.currency ?? "EUR";
+}
 
 export function preferredOrientation(kit: BrandKit): Photo["orientation"] {
   return ORIENTATION[LAYOUT[kit.style.composition]];
 }
 
-type Surface = { bg: string; fg: string };
+export type Surface = { bg: string; fg: string };
 type LayoutArgs = { kit: BrandKit; surface: Surface; pad: number; radius: number; framed: boolean };
 
 // Variant declared safe on the surface the lockup lands on
@@ -127,22 +143,38 @@ function body(record: BrandRecord, input: CardInput, withLockup: boolean): strin
     slots.badges.length ? `<div class="badges">${slots.badges.map((b) => `<span class="badge">${escapeHtml(b)}</span>`).join("")}</div>` : "",
     metaRow(input),
     `<ul class="prices">${priceLines
-      .map((l) => `<li><span>${escapeHtml(l.label)}</span><strong>${escapeHtml(price(l, currency, language))}</strong></li>`)
+      .map((l) => `<li><span>${escapeHtml(l.label)}</span><strong>${escapeHtml(formatPrice(l, currency, language))}</strong></li>`)
       .join("")}</ul>`,
     `<a class="cta" href="${escapeHtml(slots.cta.url)}" target="_blank" rel="noopener">${escapeHtml(slots.cta.label)}</a>`,
   ].join("");
 }
 
-export function renderCard(input: CardInput): { html: string; colorPairs: [string, string][] } {
-  const { record, language, photo } = input;
-  const kit = record.brandKit;
+export type CardLayout = (typeof LAYOUT)[keyof typeof LAYOUT];
+export type CardDesign = {
+  palette: Palette;
+  layout: CardLayout;
+  pad: number;
+  radius: number;
+  framed: boolean;
+  headSize: number;
+  upper: boolean;
+  surface: Surface;
+  veil: string;
+  cta: { background: string; text: string };
+  onSurfaceAccent: string;
+  levelColor: string;
+  badgeRadius: number;
+  badgeStyle: "solid" | "outline";
+  badgePair: [string, string];
+};
+
+// Every contrast-dependent decision lives here so the HTML card and the image
+// prompt cannot drift apart.
+export function cardDesign(kit: BrandKit): CardDesign {
   const style = kit.style;
   const p = palette(kit);
   const layout = LAYOUT[style.composition];
-  const pad = PADDING[style.density];
   const radius = style.radius;
-  const framed = style.imageTreatment === "framed";
-  const headSize = HEADLINE[layout][style.density];
   const upper = style.headlineCase === "upper";
 
   // Poster copy sits on the scrim, other layouts on the brand background
@@ -154,22 +186,64 @@ export function renderCard(input: CardInput): { html: string; colorPairs: [strin
 
   // A CTA the colour of the scrim it sits on disappears
   const ctaOnSurface = layout === "poster" && contrast(p.cta.background, surface.bg) < 1.6;
-  const cta = ctaOnSurface ? { background: p.accent, text: p.onAccent } : p.cta;
 
-  // An accent the brand pairs with another surface goes unreadable on this one
-  const onSurfaceAccent = contrast(p.accent, surface.bg) >= 3 ? p.accent : p.primary;
-  const levelColor = contrast(p.accent, surface.bg) >= 4.5 ? p.accent : surface.fg;
+  return {
+    palette: p,
+    layout,
+    pad: PADDING[style.density],
+    radius,
+    framed: style.imageTreatment === "framed",
+    headSize: HEADLINE[layout][style.density],
+    upper,
+    surface,
+    veil,
+    cta: ctaOnSurface ? { background: p.accent, text: p.onAccent } : p.cta,
+    // An accent the brand pairs with another surface goes unreadable on this one
+    onSurfaceAccent: contrast(p.accent, surface.bg) >= 3 ? p.accent : p.primary,
+    levelColor: contrast(p.accent, surface.bg) >= 4.5 ? p.accent : surface.fg,
+    badgeRadius: radius >= 16 ? 999 : Math.min(radius, 6),
+    badgeStyle: upper ? "solid" : "outline",
+    badgePair: upper ? [p.onAccent, p.accent] : [surface.fg, surface.bg],
+  };
+}
 
-  const badgeRadius = radius >= 16 ? 999 : Math.min(radius, 6);
-  const badge = upper
-    ? `background:${p.accent};color:${p.onAccent};text-transform:uppercase;letter-spacing:.08em;font-size:11px`
-    : `border:1px solid ${surface.fg}59;color:${surface.fg};font-size:12px`;
-  const badgePair: [string, string] = upper ? [p.onAccent, p.accent] : [surface.fg, surface.bg];
+// The shared artifact page for full-card mode: the generated image is the card, but
+// the CTA has to stay a real link — it cannot live inside a bitmap.
+export function renderImagePage(input: { record: BrandRecord; language: string; imageUrl: string; slots: Artifact["slots"]; alt: string; logo?: string }): string {
+  const { record, language, imageUrl, slots, alt, logo } = input;
+  const kit = record.brandKit;
+  const d = cardDesign(kit);
+  const p = d.palette;
+  const onArt = d.layout === "poster" ? p.onDeep : p.text;
+  return `<!doctype html><html lang="${escapeHtml(language)}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${escapeHtml(record.brand.name)}</title><style>
+*{box-sizing:border-box}
+body{margin:0;padding:24px;background:${p.background};font-family:${font(record.brandKit, "body")};display:flex;justify-content:center}
+.card{width:100%;max-width:${CARD_WIDTH[d.layout]}px}
+.art{position:relative}
+.art img{display:block;width:100%;border-radius:${record.brandKit.style.radius}px}
+.lockup{position:absolute;top:5%;left:6%;right:6%;display:flex;align-items:center;gap:12px;color:${onArt}}
+.lockup img{width:auto;height:2.4em;border-radius:0}
+.lockup span{font:${weight(kit, "display", "max")} 1.3em/1 ${font(kit, "display")};text-transform:uppercase;letter-spacing:${MARK_TRACKING[kit.style.headlineCase]}}
+.cta{display:block;margin-top:14px;text-align:center;background:${d.cta.background};color:${d.cta.text};text-decoration:none;padding:13px;border-radius:${Math.min(record.brandKit.style.radius, 14)}px;font-weight:${weight(record.brandKit, "body", "max")}}
+</style></head><body><div class="card"><div class="art"><img src="${escapeHtml(imageUrl)}" alt="${escapeHtml(alt)}"><div class="lockup">${logo ? `<img src="${escapeHtml(logo)}" alt="">` : ""}<span>${escapeHtml(record.brand.name)}</span></div></div><a class="cta" href="${escapeHtml(slots.cta.url)}" target="_blank" rel="noopener">${escapeHtml(slots.cta.label)}</a></div></body></html>`;
+}
+
+export function renderCard(input: CardInput): { html: string; colorPairs: [string, string][] } {
+  const { record, language, photo } = input;
+  const kit = record.brandKit;
+  const style = kit.style;
+  const d = cardDesign(kit);
+  const { palette: p, layout, pad, radius, framed, headSize, upper, surface, veil, cta, onSurfaceAccent, levelColor, badgeRadius, badgePair } = d;
+
+  const badge =
+    d.badgeStyle === "solid"
+      ? `background:${p.accent};color:${p.onAccent};text-transform:uppercase;letter-spacing:.08em;font-size:11px`
+      : `border:1px solid ${surface.fg}59;color:${surface.fg};font-size:12px`;
 
   const css = `
 *{box-sizing:border-box}
 body{margin:0;font-family:${font(kit, "body")};font-weight:${weight(kit, "body", "min")};background:${p.background};color:${p.text};-webkit-font-smoothing:antialiased}
-.card{position:relative;max-width:${layout === "split" ? 680 : 430}px;margin:0 auto;border-radius:${radius}px;overflow:hidden;background:${p.background}}
+.card{position:relative;max-width:${CARD_WIDTH[layout]}px;margin:0 auto;border-radius:${radius}px;overflow:hidden;background:${p.background}}
 .media{position:relative;overflow:hidden;isolation:isolate;background:${style.imageTreatment === "duotone" ? p.accent : p.deep}}
 .photo{display:block;width:100%;height:100%;object-fit:cover;${style.imageTreatment === "duotone" ? `filter:grayscale(1) contrast(1.2);mix-blend-mode:multiply` : ""}}
 .placeholder{background:linear-gradient(145deg,${p.primary},${p.accent})}

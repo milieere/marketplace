@@ -48,6 +48,15 @@
         "pairsWith": [
           "black"
         ]
+      },
+      {
+        "id": "charcoal",
+        "hex": "#2B2B2B",
+        "role": "secondary",
+        "pairsWith": [
+          "white",
+          "yellow"
+        ]
       }
     ],
     "typography": [
@@ -69,7 +78,23 @@
         "fallback": "system-ui, sans-serif"
       }
     ],
-    "logos": [],
+    "logos": [
+      {
+        "variant": "primary",
+        "url": "/assets/nami-ramen/logo.svg",
+        "onBackgrounds": [
+          "black"
+        ]
+      },
+      {
+        "variant": "mono",
+        "url": "/assets/nami-ramen/logo-mono.svg",
+        "onBackgrounds": [
+          "black",
+          "red"
+        ]
+      }
+    ],
     "style": {
       "radius": 0,
       "density": "dense",
@@ -107,17 +132,19 @@
       ]
     },
     "imagery": {
-      "style": "High-contrast night shots, steam, neon reflections",
+      "style": "High-contrast night shots, thick steam over the bowl, neon reflections on wet surfaces, close crops, deep shadow",
       "avoid": [
         "daylight",
-        "empty bowls"
+        "empty bowls",
+        "pastel colours",
+        "wide empty rooms"
       ]
     },
     "photos": [
       {
         "id": "steam-bowl",
         "url": "/assets/nami-ramen/photos/steam-bowl.jpg",
-        "description": "Steaming bowl of ramen under neon light",
+        "description": "A ramen bowl under thick steam, neon red light catching the broth, chopsticks lifting noodles",
         "orientation": "portrait",
         "attributes": {
           "people": [
@@ -125,13 +152,16 @@
           ],
           "ambience": [
             "lively"
+          ],
+          "occasion": [
+            "date-night"
           ]
         }
       },
       {
         "id": "counter-pair",
         "url": "/assets/nami-ramen/photos/counter-pair.jpg",
-        "description": "Two friends at the counter, chopsticks up",
+        "description": "Two people side by side at the neon-lit counter, bowls steaming, reflections on the dark wood",
         "orientation": "landscape",
         "attributes": {
           "people": [
@@ -177,8 +207,36 @@
           "ratio": 4.5
         },
         "severity": "block"
+      },
+      {
+        "id": "steam-is-mandatory",
+        "text": "Steam is mandatory. A still bowl is a dead bowl.",
+        "severity": "warn"
+      },
+      {
+        "id": "night-and-neon",
+        "text": "Always night, always high contrast, always a little neon.",
+        "severity": "warn"
+      },
+      {
+        "id": "crop-in-close",
+        "text": "Crop in close. Wide, tidy rooms are not the brand.",
+        "severity": "warn"
       }
-    ]
+    ],
+    "advertising": {
+      "direction": "Neon night. High contrast, deep black, red and yellow used like signage. Type cropped and oversized, diagonal energy. Steam and glow.",
+      "shows": [
+        "badges",
+        "price"
+      ],
+      "avoid": [
+        "daylight palettes",
+        "pastel",
+        "polite spacing",
+        "long copy"
+      ]
+    }
   },
   "locations": [
     {

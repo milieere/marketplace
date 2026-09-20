@@ -7,6 +7,8 @@ Hackathon project. **Current work and next step: [context/07-build-plan.md](cont
 - `npm install`: installs all workspaces
 - `npm run dev:api`: Hono API on :8787 (reads `.env`)
 - `npm run dev:web`: Next.js frontend on :3000
+- `npm run build:logos`: rasterizes the SVG brand marks to PNG for the image model
+- `npm run visual:samples`: one generated card per brand into `out/visuals/` (costs fal credit)
 - `npm run typecheck`, `npm test`, `npm run lint`
 
 ## Rules
@@ -18,5 +20,6 @@ Hackathon project. **Current work and next step: [context/07-build-plan.md](cont
 - No barrel files: packages expose files through an `exports` map.
 - Tests live in a `test/` folder next to `src/`, mirroring its structure (`src/http/app.ts` → `test/http/app.test.ts`); never inside `src/`.
 - The core value is personalization of the artifact to the user's query. Search/discovery is intentionally thin.
-- Never let LLM output supply prices, hours or conditions. They come from `Offering` data.
-- Brand tokens (logo, fonts, colours) are rendered from `BrandKit`, never generated.
+- Prices, hours and conditions are never authored by a model. They come from `Offering`/`Location` data and are passed verbatim to whatever renders them. In `VISUAL_MODE=full-card` the image model transcribes them; the HTML card stays the grounded rendering and the fallback.
+- Brand tokens come from `BrandKit` and are never invented. The HTML card renders them exactly. The image model receives them as explicit hex values, named typefaces and the logo as a reference image, and must reproduce rather than reinterpret them.
+- Two renderers, one design. `templates/card.ts` (HTML) and `templates/card-prompt.ts` (image) both derive from `cardDesign(kit)` and the shared tables in `card.ts`. Never make a layout, colour or contrast decision in one without the other.

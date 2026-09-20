@@ -178,13 +178,14 @@ export function createNebiusImageVisualGenerator(options: ImageVisualGeneratorOp
         const imageUrl = image?.b64_json ? imageDataUrl(image.b64_json, options.responseExtension) : image?.url;
         if (!imageUrl) throw new Error("Nebius image generation returned no image");
 
-        return { artifactId: input.artifact.id, imageUrl, prompt };
+        return { artifactId: input.artifact.id, imageUrl, prompt, mode: "background" as const };
       } catch (error) {
         if (!options.fallback) throw error;
         const fallback = await options.fallback.generate(input);
         return {
           artifactId: input.artifact.id,
           imageUrl: fallback.imageUrl,
+          mode: fallback.mode,
           prompt: `${prompt}\n\nFallback visual used because image generation failed: ${error instanceof Error ? error.message : String(error)}`,
         };
       }
