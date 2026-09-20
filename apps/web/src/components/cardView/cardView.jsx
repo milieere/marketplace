@@ -391,7 +391,7 @@ export default function CardView({
         }}
       >
         <div className={styles.visual}>
-          {/* eslint-disable-next-line @next/next/no-img-element -- Artifact photos can arrive as data URLs from the API. */}
+          {}
           {imageSrc ? (
             <img src={imageSrc} alt={presentation.photo?.alt || ""} />
           ) : (

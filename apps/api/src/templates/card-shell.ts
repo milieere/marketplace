@@ -33,7 +33,6 @@ export function renderCardShell(input: CardShellInput): string {
   const body = [
     `<h1 class="headline">${escapeHtml(headline)}</h1>`,
     shows.has("subline") && slots.subline && slots.subline !== line?.label ? `<p class="subline">${escapeHtml(slots.subline)}</p>` : "",
-    shows.has("body") ? `<p class="body">${escapeHtml(slots.body)}</p>` : "",
     shows.has("badges") && slots.badges.length ? `<ul class="badges">${slots.badges.map((b) => `<li>${escapeHtml(b)}</li>`).join("")}</ul>` : "",
     shows.has("place") && location ? `<p class="place">${escapeHtml(location.name)}${level && shows.has("priceLevel") ? ` <span class="level">${escapeHtml(level)}</span>` : ""}</p>` : "",
     shows.has("price") && line ? `<p class="offer">${escapeHtml(line.label)}</p>` : "",
@@ -42,9 +41,10 @@ export function renderCardShell(input: CardShellInput): string {
 
   const reset = `
 *{box-sizing:border-box}
-body{margin:0;background:${d.palette.background};display:grid;place-items:start center;padding:24px}
-.card{position:relative;width:${CARD_W}px;aspect-ratio:${CARD_ASPECT};border-radius:${kit.style.radius}px;overflow:hidden;isolation:isolate}
-.card .media{position:absolute!important;inset:0!important;margin:0!important;width:auto!important;height:auto!important;z-index:0}
+html,body{width:100%;height:100%;margin:0;overflow:hidden;background:${d.palette.background}}
+body{display:block}
+.card{position:relative;width:100%;height:100%;aspect-ratio:${CARD_ASPECT};border-radius:16px;overflow:hidden;isolation:isolate}
+.card .media{position:absolute!important;inset:0!important;margin:0!important;width:100%!important;height:100%!important;z-index:0}
 .card .photo{display:block!important;width:100%!important;height:100%!important;object-fit:cover!important}
 .card .scrim{position:absolute!important;inset:0!important;display:block}
 .card .lockup,.card .copy{position:relative;z-index:2}

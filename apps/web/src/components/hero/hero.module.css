@@ -8,6 +8,7 @@
   gap: 40px;
   background: linear-gradient(#010c16, #04192e);
   position: relative;
+  overflow: hidden;
 }
 
 .bgImage {
@@ -21,19 +22,19 @@
 }
 
 .heroContent {
-  width: 50%;
+  width: min(50%, 760px);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 20px;
   z-index: 1;
 }
 
 .heroContent h1 {
   width: 100%;
   color: white;
-  font-size: 1.7rem;
+  font-size: 2rem;
   font-weight: 600;
   letter-spacing: 1px;
   text-align: center;
@@ -44,12 +45,13 @@
 }
 
 .heroContent h2 {
+  width: 80%;
   color: white;
   font-size: 0.9rem;
   font-weight: 300;
-  width: 100%;
   text-align: center;
   letter-spacing: 1px;
+  line-height: 1.5;
 }
 
 .heroForm {
@@ -80,12 +82,13 @@
   color: white;
   font-size: 1rem;
   font-weight: 300;
-  padding-left: 10px;
   border: none;
   padding-left: 20px;
+  padding-right: 82px;
   border-radius: 20px;
   outline: none;
   letter-spacing: 0.5px;
+  backdrop-filter: blur(10px);
 }
 
 .heroForm label input::placeholder {
@@ -98,16 +101,14 @@
   position: absolute;
   right: 20px;
   width: 45px;
-  aspect-ratio: 1/1;
+  aspect-ratio: 1 / 1;
   color: white;
-  font-size: 1.2rem;
   border-radius: 50%;
-  border: none;
+  border: 1px solid #1fb2db;
   display: flex;
   align-items: center;
   justify-content: center;
   background-color: #0d7f9f;
-  border: 1px solid #1fb2db;
   cursor: pointer;
   font-size: 1rem;
   padding: 0;
@@ -117,15 +118,18 @@
   background-color: #1fb2db;
 }
 
-.heroForm label .btnHero:disabled {
-  opacity: 0.45;
+.heroForm label .btnHero:disabled,
+.heroForm .btnGenerator:disabled {
   cursor: not-allowed;
+  opacity: 0.42;
+  filter: grayscale(0.45);
+  box-shadow: none;
 }
 
 .heroForm .btnGenerator {
   width: 65%;
   height: 40px;
-  background: linear-gradient(to Left, #24cefd, #1fb2db, #24cefd);
+  background: linear-gradient(to left, #24cefd, #1fb2db, #24cefd);
   color: white;
   font-size: 1rem;
   border-radius: 50px;
@@ -139,7 +143,7 @@
   gap: 5px;
 }
 
-.heroForm .btnGenerator .icon{
+.heroForm .btnGenerator .icon {
   font-size: 1.1rem;
 }
 
@@ -150,19 +154,20 @@
   justify-content: center;
   position: absolute;
   bottom: 25px;
-  gap: 20px;
-    z-index: 1;
+  gap: 10px;
+  z-index: 1;
 }
 
 .titleSugerencies {
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 8px;
 }
 
 .titleSugerencies p {
   color: white;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   letter-spacing: 1px;
   font-weight: 300;
 }
@@ -198,19 +203,6 @@
 .demoQueries button:hover {
   background: rgba(31, 152, 185, 0.2);
   color: white;
-}
-
-@media (max-width: 760px) {
-  .heroContent,
-  .heroForm label,
-  .heroForm button,
-  .demoQueries {
-    width: min(92%, 560px);
-  }
-
-  .demoQueries {
-    grid-template-columns: 1fr;
-  }
 }
 
 .brandCta {
@@ -250,163 +242,11 @@
   color: rgba(255, 255, 255, 0.9);
 }
 
-.heroContent {
-  width: 50%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-}
-
-.heroContent h1 {
-  width: 100%;
-  color: white;
-  font-size: 1.7rem;
-  font-weight: 600;
-  letter-spacing: 1px;
-  text-align: center;
-}
-
-.heroContent h1 span {
-  color: #1fb2db;
-}
-
-.heroContent h2 {
-  color: white;
-  font-size: 0.9rem;
-  font-weight: 300;
-  width: 100%;
-  text-align: center;
-  letter-spacing: 1px;
-}
-
-.heroForm {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 15px;
-}
-
-.heroForm label {
-  border: 1px solid #1fb2db;
-  width: 65%;
-  height: 85px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  border-radius: 20px;
-}
-
-.heroForm label input {
-  width: 100%;
-  height: 100%;
-  background-color: #1f98b921;
-  color: white;
-  font-size: 1rem;
-  font-weight: 300;
-  padding-left: 10px;
-  border: none;
-  padding-left: 20px;
-  border-radius: 20px;
-  outline: none;
-  letter-spacing: 0.5px;
-}
-
-.heroForm label input::placeholder {
-  font-size: 16px;
-  letter-spacing: 1px;
-  font-weight: 300;
-}
-
-.heroForm label .btnHero {
-  position: absolute;
-  right: 20px;
-  width: 45px;
-  aspect-ratio: 1/1;
-  color: white;
-  font-size: 1.2rem;
-  border-radius: 50%;
-  border: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #0d7f9f;
-  border: 1px solid #1fb2db;
-  cursor: pointer;
-}
-
-.heroForm .btnGenerator {
-  width: 65%;
-  height: 40px;
-  background: linear-gradient(to Left, #24cefd, #1fb2db, #24cefd);
-  color: white;
-  font-size: 1rem;
-  border-radius: 50px;
-  border: none;
-  letter-spacing: 1px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 300;
-  cursor: pointer;
-}
-
-.boxFlex {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  position: absolute;
-  bottom: 25px;
-  gap: 10px;
-}
-
-.titleSugerencies {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.titleSugerencies p {
-  color: white;
-  font-size: 0.9rem;
-  letter-spacing: 1px;
-  font-weight: 300;
-}
-
-.demoQueries {
-  width: 85%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-}
-
-.demoQueries button {
-  width: 100%;
-  min-height: 46px;
-  padding: 8px 12px;
-  border: 1px solid rgba(31, 152, 185, 0.45);
-  border-radius: 14px;
-  background: rgba(31, 152, 185, 0.12);
-  color: rgba(255, 255, 255, 0.86);
-  font-size: 0.8rem;
-  line-height: 1.25;
-  letter-spacing: 0.5px;
-  text-align: center;
-  cursor: pointer;
-}
-
-.demoQueries button:hover {
-  background: rgba(31, 152, 185, 0.2);
-  color: white;
-}
-
 @media (max-width: 760px) {
+  .hero {
+    gap: 28px;
+  }
+
   .heroContent,
   .heroForm label,
   .heroForm button,
@@ -414,7 +254,11 @@
     width: min(92%, 560px);
   }
 
+  .heroContent h2 {
+    width: 100%;
+  }
+
   .demoQueries {
-    grid-template-columns: 1fr;
+    flex-direction: column;
   }
 }

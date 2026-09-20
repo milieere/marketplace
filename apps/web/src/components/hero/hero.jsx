@@ -20,7 +20,8 @@ const DEMO_QUERIES = [
 
 export default function Hero() {
   const router = useRouter();
-  const [query, setQuery] = useState(DEMO_QUERIES[0]);
+  const [query, setQuery] = useState("");
+  const canGenerate = Boolean(query.trim());
 
   function generate(text) {
     const cleanText = text.trim();
@@ -37,9 +38,9 @@ export default function Hero() {
     <section className={styles.hero}>
       <section className={styles.heroContent}>
         <h1>
-          Convierte tus ideas en <span>planes reales</span>
+          Una intención, <span>muchas posibilidades</span>
         </h1>
-        <h2>Genera anuncios y beneficios en tiempo real</h2>
+        <h2>Cuéntame qué tienes en mente y descubre diferentes maneras de hacerlo realidad, adaptadas a tu tiempo, presupuesto y momento.</h2>
       </section>
       <form className={styles.heroForm} onSubmit={handleSubmit}>
         <label>
@@ -52,7 +53,7 @@ export default function Hero() {
           <button
             type="submit"
             className={styles.btnHero}
-            disabled={!query.trim()}
+            disabled={!canGenerate}
             aria-label="Generar"
           >
             <FontAwesomeIcon className={styles.icon} icon={faArrowRight} />
@@ -61,7 +62,7 @@ export default function Hero() {
         <button
           className={styles.btnGenerator}
           type="submit"
-          disabled={!query.trim()}
+          disabled={!canGenerate}
         >
           Generar
           <FontAwesomeIcon className={styles.icon} icon={faHexagonNodes} />

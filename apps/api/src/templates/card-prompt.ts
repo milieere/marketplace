@@ -317,7 +317,7 @@ What the frame should favour: ${attributeList(tagged?.attributes)}.`
     : `Shoot the scene yourself: ${kit.imagery.style}. Subject: ${offerings[0]?.description ?? record.brand.summary}. Place: ${location?.name ?? record.brand.name}.`;
 
   return {
-    prompt: `A single photographic image for a ${record.brand.name} advertisement. No card, no layout, no frame — just the picture.
+    prompt: `A single photographic image for a ${record.brand.name} advertisement. No card, no layout, no frame, no poster, no typography — just the picture that will sit behind a real HTML brand layer.
 
 ${scene}
 
@@ -326,7 +326,7 @@ Grade and mood
 - The brand reads as: ${kit.voice.summary}
 - ${ENERGY[band(artifact.tone.energy)]}
 - ${FORMALITY[band(artifact.tone.formality)]}
-- Let the brand's own colours sit naturally in the light: ${d.palette.primary} and ${d.palette.accent} against ${d.palette.deep}.
+- Let the brand's own colours sit naturally in the lighting and props only: ${d.palette.primary} and ${d.palette.accent} against ${d.palette.deep}. Do not create flat colour panels; those are rendered later from the brand kit.
 - ${TREATMENT[kit.style.imageTreatment](d)}
 - Never show: ${kit.imagery.avoid.join(", ")}.
 
@@ -335,7 +335,7 @@ Composition
 - ${clear} Keep that area quiet: no faces, no busy detail, no hard edges, so type laid over it stays readable.
 - Put the subject in the remaining space and let it breathe.
 
-Absolutely no text, letters, numbers, words, signage, menus, labels, price tags, logos, emblems, watermarks or UI of any kind anywhere in the image. A photograph only.`,
+Absolutely no text, letters, numbers, words, signage, menus, labels, price tags, logos, emblems, brand marks, monograms, watermarks, buttons, badges, cards, frames or UI of any kind anywhere in the image. A photograph only.`,
     aspectRatio: ASPECT[d.layout],
     referenceImages: photo?.src ? [photo.src] : [],
   };

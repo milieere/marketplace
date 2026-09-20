@@ -28,7 +28,7 @@ export type CardTokens = {
 
 const PAD = 28;
 const CARD_H = 573;
-const HEADLINE = { s: 26, m: 31, l: 37, xl: 43 } as const;
+const HEADLINE = { s: 29, m: 34, l: 41, xl: 47 } as const;
 const TRACKING = { tight: "-.02em", normal: "0", wide: ".04em" } as const;
 // Capped: a solid scrim would hide the photograph
 const PEAK = { light: 0.68, medium: 0.84, heavy: 0.94 } as const;
@@ -97,9 +97,9 @@ export function renderCardStyle(kit: BrandKit, tokens: CardTokens): string {
   const centred = tokens.align === "centre";
 
   const priceCss = {
-    hero: `.price{font:800 ${Math.round(head * 0.9)}px/1 ${font(kit, "display")};color:${price};margin-top:10px}`,
-    inline: `.price{font:700 20px ${font(kit, "display")};color:${price};margin-top:6px}`,
-    "corner-mark": `.price{position:absolute;top:${PAD}px;right:${PAD}px;font:800 24px ${font(kit, "display")};color:${price};background:${rgba(scrim, 0.9)};padding:8px 14px;border-radius:999px;margin:0}`,
+    hero: `.price{font:900 ${Math.round(head * 1.32)}px/0.95 ${font(kit, "display")};color:${price};margin-top:12px}`,
+    inline: `.price{font:800 ${Math.round(head * 0.82)}px/1 ${font(kit, "display")};color:${price};margin-top:10px}`,
+    "corner-mark": `.price{position:absolute;top:${PAD}px;right:${PAD}px;font:900 ${Math.round(head * 0.82)}px/1 ${font(kit, "display")};color:${price};background:${rgba(scrim, 0.9)};padding:10px 16px;border-radius:999px;margin:0}`,
   }[tokens.priceTreatment];
 
 

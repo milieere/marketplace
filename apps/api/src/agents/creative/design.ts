@@ -64,7 +64,7 @@ export function designPrompt(input: DesignInput): string {
         headline: applyCase(artifact.slots.headline, kit.style.headlineCase),
         headlineCharacters: artifact.slots.headline.length,
         subline: artifact.slots.subline ?? null,
-        body: kit.advertising?.shows.includes("body") ? artifact.slots.body : null,
+        body: null,
         badges: artifact.slots.badges,
         place: location?.name ?? null,
         offer: line?.label ?? null,
