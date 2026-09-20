@@ -200,3 +200,40 @@
     grid-template-columns: 1fr;
   }
 }
+
+.brandCta {
+  z-index: 1;
+  width: min(85%, 640px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 14px 20px;
+  border: 1px solid rgba(31, 152, 185, 0.45);
+  border-radius: 16px;
+  background: rgba(31, 152, 185, 0.1);
+  text-align: center;
+  text-decoration: none;
+}
+
+.brandCta strong {
+  color: #1fdef5;
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+  font-weight: 700;
+}
+
+.brandCta span {
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 0.8rem;
+  line-height: 1.35;
+  letter-spacing: 0.5px;
+}
+
+.brandCta:hover {
+  background: rgba(31, 152, 185, 0.2);
+}
+
+.brandCta:hover span {
+  color: rgba(255, 255, 255, 0.9);
+}
