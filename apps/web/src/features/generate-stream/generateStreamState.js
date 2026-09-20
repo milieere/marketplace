@@ -33,8 +33,14 @@ export function reduceGenerateEvent(state, event) {
       return { ...state, relaxations: [...state.relaxations, ...event.relaxations] };
     case "revision":
       return { ...state, revisions: [...state.revisions, event] };
-    case "artifact":
-      return { ...state, artifacts: [...state.artifacts, { artifact: event.artifact, html: event.html }] };
+    case "artifact": {
+      const nextArtifact = { artifact: event.artifact, html: event.html };
+      const exists = state.artifacts.some((item) => item.artifact.id === event.artifact.id);
+      return {
+        ...state,
+        artifacts: exists ? state.artifacts.map((item) => (item.artifact.id === event.artifact.id ? nextArtifact : item)) : [...state.artifacts, nextArtifact],
+      };
+    }
     case "visual":
       return { ...state, visuals: { ...state.visuals, [event.artifactId]: event } };
     case "no-match":

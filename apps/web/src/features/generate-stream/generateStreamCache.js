@@ -1,8 +1,26 @@
 const CACHE_PREFIX = "oli:generate:";
-const CACHE_VERSION = 1;
+const CACHE_VERSION = 3;
 
 function cacheKey(query) {
   return `${CACHE_PREFIX}${CACHE_VERSION}:${query.trim().toLowerCase()}`;
+}
+
+export function normalizeGenerateQuery(query) {
+  return query.trim().toLowerCase();
+}
+
+export function clearGenerateCache() {
+  if (typeof window === "undefined") return;
+  try {
+    for (let index = window.localStorage.length - 1; index >= 0; index -= 1) {
+      const key = window.localStorage.key(index);
+      if (key?.startsWith(CACHE_PREFIX)) {
+        window.localStorage.removeItem(key);
+      }
+    }
+  } catch {
+    // localStorage can fail in private browsing or when quota is locked.
+  }
 }
 
 export function readGenerateCache(query) {

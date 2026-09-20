@@ -33,6 +33,10 @@ const ConfigSchema = z
   .refine((c) => c.MOCK || Boolean(c.NEBIUS_API_KEY), {
     path: ["NEBIUS_API_KEY"],
     message: "required unless MOCK=1",
+  })
+  .refine((c) => c.MOCK || c.VISUAL_PROVIDER !== "fal" || Boolean(c.FAL_API_KEY), {
+    path: ["FAL_API_KEY"],
+    message: "required when VISUAL_PROVIDER=fal",
   });
 
 export type Config = z.infer<typeof ConfigSchema>;

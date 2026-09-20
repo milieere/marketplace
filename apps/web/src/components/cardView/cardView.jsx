@@ -61,7 +61,11 @@ function color(kit, role, fallback) {
 }
 
 function typeface(kit, role) {
-  return kit.typography.find((item) => item.role === role) || kit.typography[0] || FALLBACK_THEME.kit.typography[0];
+  return (
+    kit.typography.find((item) => item.role === role) ||
+    kit.typography[0] ||
+    FALLBACK_THEME.kit.typography[0]
+  );
 }
 
 function fontFamily(font) {
@@ -69,9 +73,18 @@ function fontFamily(font) {
 }
 
 function fontHref(kit) {
-  const families = [...new Set(kit.typography.filter((font) => !font.fontUrl).map((font) => font.family))];
+  const families = [
+    ...new Set(
+      kit.typography.filter((font) => !font.fontUrl).map((font) => font.family),
+    ),
+  ];
   if (!families.length) return null;
-  const query = families.map((family) => `family=${encodeURIComponent(family).replace(/%20/g, "+")}:wght@400;600;700;800;900`).join("&");
+  const query = families
+    .map(
+      (family) =>
+        `family=${encodeURIComponent(family).replace(/%20/g, "+")}:wght@400;600;700;800;900`,
+    )
+    .join("&");
   return `https://fonts.googleapis.com/css2?${query}&display=swap`;
 }
 
@@ -91,7 +104,11 @@ function cssVars(presentation) {
   const body = typeface(kit, "body");
   return {
     "--brand-primary": color(kit, "primary", "#1F98B9"),
-    "--brand-secondary": color(kit, "secondary", color(kit, "primary", "#08233E")),
+    "--brand-secondary": color(
+      kit,
+      "secondary",
+      color(kit, "primary", "#08233E"),
+    ),
     "--brand-accent": color(kit, "accent", color(kit, "primary", "#50E07C")),
     "--brand-background": color(kit, "background", "#F4F8FF"),
     "--brand-text": color(kit, "text", "#08233E"),
@@ -107,7 +124,9 @@ function extractImageSrc(html) {
 }
 
 function extractLogoSrc(html) {
-  const src = html?.match(/<img[^>]*class="[^"]*\blogo\b[^"]*"[^>]*\ssrc="([^"]+)"/i)?.[1];
+  const src = html?.match(
+    /<img[^>]*class="[^"]*\blogo\b[^"]*"[^>]*\ssrc="([^"]+)"/i,
+  )?.[1];
   return assetSource(src);
 }
 
@@ -121,7 +140,10 @@ function assetSource(src) {
 function brandLogo(kit, html) {
   const embeddedLogo = extractLogoSrc(html);
   if (embeddedLogo) return embeddedLogo;
-  const logo = kit.logos.find((item) => item.variant === "icon") || kit.logos.find((item) => item.variant === "mono") || kit.logos[0];
+  const logo =
+    kit.logos.find((item) => item.variant === "icon") ||
+    kit.logos.find((item) => item.variant === "mono") ||
+    kit.logos[0];
   if (logo?.url?.startsWith("/assets/")) return null;
   return assetSource(logo?.url);
 }
@@ -147,10 +169,24 @@ function openDetail(router, artifact, html, visual) {
 }
 
 function imageSource(artifact, html, visual) {
-  return visual?.imageUrl || artifact.presentation?.photo?.src || extractImageSrc(html);
+  return (
+    visual?.imageUrl ||
+    artifact.presentation?.photo?.src ||
+    extractImageSrc(html)
+  );
 }
 
-function AssemblyOverlay({ visual, visualStatus, isGenerating, presentation, logoSrc }) {
+function isWaitingForOfficialVisual(visual, visualStatus, isGenerating) {
+  return !visual && isGenerating && visualStatus !== "failed";
+}
+
+function AssemblyOverlay({
+  visual,
+  visualStatus,
+  isGenerating,
+  presentation,
+  logoSrc,
+}) {
   const failed = visualStatus === "failed";
   const done = Boolean(visual);
   const label = done
@@ -171,7 +207,10 @@ function AssemblyOverlay({ visual, visualStatus, isGenerating, presentation, log
   ];
 
   return (
-    <div className={styles.assembly} data-status={failed ? "failed" : "building"}>
+    <div
+      className={styles.assembly}
+      data-status={failed ? "failed" : "building"}
+    >
       <div className={styles.assemblyPreview}>
         <span className={styles.assemblyScan} />
         <div className={styles.assemblyLogo}>
@@ -211,13 +250,25 @@ function AssemblyOverlay({ visual, visualStatus, isGenerating, presentation, log
   );
 }
 
-export default function CardView({ title, subtitle, artifact, html, visual, visualStatus, isGenerating = false, suggestions = [] }) {
+export default function CardView({
+  title,
+  subtitle,
+  artifact,
+  html,
+  visual,
+  visualStatus,
+  isGenerating = false,
+  suggestions = [],
+}) {
   const router = useRouter();
 
   if (!artifact) {
     const reason = NO_MATCH[subtitle];
     return (
-      <article className={`${styles.cardView} ${styles.emptyState}`} style={cssVars(FALLBACK_THEME)}>
+      <article
+        className={`${styles.cardView} ${styles.emptyState}`}
+        style={cssVars(FALLBACK_THEME)}
+      >
         <div className={styles.emptyPanel}>
           <span className={styles.emptyGlow} aria-hidden="true" />
           <span className={styles.emptyBadge} aria-hidden="true">
@@ -229,7 +280,11 @@ export default function CardView({ title, subtitle, artifact, html, visual, visu
           {suggestions.length > 0 && (
             <div className={styles.suggestions}>
               {suggestions.map((suggestion) => (
-                <button key={suggestion.label} type="button" onClick={() => generateFromSuggestion(router, suggestion)}>
+                <button
+                  key={suggestion.label}
+                  type="button"
+                  onClick={() => generateFromSuggestion(router, suggestion)}
+                >
                   {suggestion.label}
                 </button>
               ))}
@@ -245,12 +300,39 @@ export default function CardView({ title, subtitle, artifact, html, visual, visu
   const style = kit.style;
   const imageSrc = imageSource(artifact, html, visual);
   const logoSrc = brandLogo(kit, html);
-  const statusLabel = artifact.check?.passed ? "Brand check passed" : "Needs review";
+  const statusLabel = artifact.check?.passed
+    ? "Brand check passed"
+    : "Needs review";
   const relaxed = artifact.relaxed || [];
   const fonts = fontHref(kit);
+  const waitingForOfficialVisual = isWaitingForOfficialVisual(
+    visual,
+    visualStatus,
+    isGenerating,
+  );
   // The designed card is the brand's own stylesheet over the generated scene;
   // it replaces this component's generic chrome entirely.
   const designed = visual?.html;
+
+  if (waitingForOfficialVisual) {
+    return (
+      <article
+        className={`${styles.cardView} ${styles.designed}`}
+        style={cssVars(presentation)}
+        aria-label={`Generando ${artifact.slots.headline || presentation.brand.name}`}
+      >
+        <div className={styles.visualAssemblyCard}>
+          <AssemblyOverlay
+            visual={visual}
+            visualStatus={visualStatus}
+            isGenerating={isGenerating}
+            presentation={presentation}
+            logoSrc={logoSrc}
+          />
+        </div>
+      </article>
+    );
+  }
 
   if (designed) {
     return (
@@ -268,7 +350,13 @@ export default function CardView({ title, subtitle, artifact, html, visual, visu
           }
         }}
       >
-        <iframe className={styles.designedFrame} title={title} srcDoc={designed} sandbox="allow-popups allow-same-origin" scrolling="no" />
+        <iframe
+          className={styles.designedFrame}
+          title={title}
+          srcDoc={designed}
+          sandbox="allow-popups allow-same-origin"
+          scrolling="no"
+        />
       </article>
     );
   }
@@ -276,7 +364,12 @@ export default function CardView({ title, subtitle, artifact, html, visual, visu
   return (
     <article className={styles.cardView} style={cssVars(presentation)}>
       {fonts && <link rel="stylesheet" href={fonts} />}
-      {kit.typography.map((font) => font.fontUrl && <link key={font.fontUrl} rel="stylesheet" href={font.fontUrl} />)}
+      {kit.typography.map(
+        (font) =>
+          font.fontUrl && (
+            <link key={font.fontUrl} rel="stylesheet" href={font.fontUrl} />
+          ),
+      )}
 
       <section
         className={styles.generatedAd}
@@ -299,11 +392,17 @@ export default function CardView({ title, subtitle, artifact, html, visual, visu
       >
         <div className={styles.visual}>
           {/* eslint-disable-next-line @next/next/no-img-element -- Artifact photos can arrive as data URLs from the API. */}
-          {imageSrc ? <img src={imageSrc} alt={presentation.photo?.alt || ""} /> : <div className={styles.generatedBackdrop} />}
+          {imageSrc ? (
+            <img src={imageSrc} alt={presentation.photo?.alt || ""} />
+          ) : (
+            <div className={styles.generatedBackdrop} />
+          )}
           {!visual && (
             <div className={styles.visualStatus}>
               <span />
-              {visualStatus === "failed" ? "Brand fallback active" : "Generating brand visual"}
+              {visualStatus === "failed"
+                ? "Brand fallback active"
+                : "Generating brand visual"}
             </div>
           )}
           <div className={styles.visualOverlay}>
@@ -329,15 +428,22 @@ export default function CardView({ title, subtitle, artifact, html, visual, visu
               ) : null}
               {presentation.brand.name}
             </span>
-            <span data-status={artifact.check?.passed ? "passed" : "review"}>{statusLabel}</span>
+            <span data-status={artifact.check?.passed ? "passed" : "review"}>
+              {statusLabel}
+            </span>
           </div>
 
           <h2>{artifact.slots.headline || title}</h2>
-          {artifact.slots.subline && <p className={styles.subline}>{artifact.slots.subline}</p>}
+          {artifact.slots.subline && (
+            <p className={styles.subline}>{artifact.slots.subline}</p>
+          )}
           <p className={styles.body}>{artifact.slots.body}</p>
 
           {artifact.slots.badges.length > 0 && (
-            <ul className={styles.badges} aria-label="Motivos por los que encaja">
+            <ul
+              className={styles.badges}
+              aria-label="Motivos por los que encaja"
+            >
               {artifact.slots.badges.map((badge) => (
                 <li key={badge}>{badge}</li>
               ))}
@@ -359,11 +465,21 @@ export default function CardView({ title, subtitle, artifact, html, visual, visu
           {relaxed.length > 0 && (
             <div className={styles.relaxed}>
               <strong>Ajuste honesto</strong>
-              <span>{relaxed.map((item) => item.constraint.replace(/:/g, " ")).join(", ")}</span>
+              <span>
+                {relaxed
+                  .map((item) => item.constraint.replace(/:/g, " "))
+                  .join(", ")}
+              </span>
             </div>
           )}
 
-          <a className={styles.cta} href={artifact.slots.cta.url} target="_blank" rel="noreferrer" onClick={(event) => event.stopPropagation()}>
+          <a
+            className={styles.cta}
+            href={artifact.slots.cta.url}
+            target="_blank"
+            rel="noreferrer"
+            onClick={(event) => event.stopPropagation()}
+          >
             {artifact.slots.cta.label}
           </a>
           <button
@@ -378,13 +494,23 @@ export default function CardView({ title, subtitle, artifact, html, visual, visu
             <FontAwesomeIcon icon={faArrowUpRightFromSquare} />
           </button>
         </div>
-        <AssemblyOverlay visual={visual} visualStatus={visualStatus} isGenerating={isGenerating} presentation={presentation} logoSrc={logoSrc} />
+        <AssemblyOverlay
+          visual={visual}
+          visualStatus={visualStatus}
+          isGenerating={isGenerating}
+          presentation={presentation}
+          logoSrc={logoSrc}
+        />
       </section>
 
       {html && (
         <details className={styles.htmlPreview}>
           <summary>Ver artifact HTML</summary>
-          <iframe title={`${title} HTML`} srcDoc={html} sandbox="allow-popups" />
+          <iframe
+            title={`${title} HTML`}
+            srcDoc={html}
+            sandbox="allow-popups"
+          />
         </details>
       )}
     </article>

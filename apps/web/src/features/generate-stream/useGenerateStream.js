@@ -2,8 +2,10 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { streamGenerate } from "../../lib/api/generate";
-import { readGenerateCache, writeGenerateCache } from "./generateStreamCache";
+import { clearGenerateCache, normalizeGenerateQuery, readGenerateCache, writeGenerateCache } from "./generateStreamCache";
 import { appendGenerateError, createInitialGenerateState, getLatestStep, reduceGenerateEvent } from "./generateStreamState";
+
+const LAST_QUERY_KEY = "oli:generate:last-query";
 
 export function useGenerateStream(query) {
   const [state, setState] = useState(() => createInitialGenerateState());
@@ -18,6 +20,17 @@ export function useGenerateStream(query) {
         }
       });
       return () => controller.abort();
+    }
+
+    const normalizedQuery = normalizeGenerateQuery(query);
+    try {
+      const lastQuery = window.sessionStorage.getItem(LAST_QUERY_KEY);
+      if (lastQuery && lastQuery !== normalizedQuery) {
+        clearGenerateCache();
+      }
+      window.sessionStorage.setItem(LAST_QUERY_KEY, normalizedQuery);
+    } catch {
+      // If sessionStorage is unavailable, keep the normal cache behavior.
     }
 
     const cached = readGenerateCache(query);

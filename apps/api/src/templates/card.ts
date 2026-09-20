@@ -207,25 +207,16 @@ export function cardDesign(kit: BrandKit): CardDesign {
   };
 }
 
-// The shared artifact page for full-card mode: the generated image is the card, but
-// the CTA has to stay a real link — it cannot live inside a bitmap.
-export function renderImagePage(input: { record: BrandRecord; language: string; imageUrl: string; slots: Artifact["slots"]; alt: string; logo?: string }): string {
-  const { record, language, imageUrl, slots, alt, logo } = input;
-  const kit = record.brandKit;
-  const d = cardDesign(kit);
-  const p = d.palette;
-  const onArt = d.layout === "poster" ? p.onDeep : p.text;
+// The generated image is already the whole card in full-card mode.
+// Keep this page intentionally empty around it so the frontend does not duplicate copy,
+// price, logo or CTAs over the bitmap.
+export function renderImagePage(input: { record: BrandRecord; language: string; imageUrl: string; alt: string }): string {
+  const { record, language, imageUrl, alt } = input;
   return `<!doctype html><html lang="${escapeHtml(language)}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${escapeHtml(record.brand.name)}</title><style>
 *{box-sizing:border-box}
-body{margin:0;padding:24px;background:${p.background};font-family:${font(record.brandKit, "body")};display:flex;justify-content:center}
-.card{width:100%;max-width:${CARD_WIDTH[d.layout]}px}
-.art{position:relative}
-.art img{display:block;width:100%;border-radius:${record.brandKit.style.radius}px}
-.lockup{position:absolute;top:5%;left:6%;right:6%;display:flex;align-items:center;gap:12px;color:${onArt}}
-.lockup img{width:auto;height:2.4em;border-radius:0}
-.lockup span{font:${weight(kit, "display", "max")} 1.3em/1 ${font(kit, "display")};text-transform:uppercase;letter-spacing:${MARK_TRACKING[kit.style.headlineCase]}}
-.cta{display:block;margin-top:14px;text-align:center;background:${d.cta.background};color:${d.cta.text};text-decoration:none;padding:13px;border-radius:${Math.min(record.brandKit.style.radius, 14)}px;font-weight:${weight(record.brandKit, "body", "max")}}
-</style></head><body><div class="card"><div class="art"><img src="${escapeHtml(imageUrl)}" alt="${escapeHtml(alt)}"><div class="lockup">${logo ? `<img src="${escapeHtml(logo)}" alt="">` : ""}<span>${escapeHtml(record.brand.name)}</span></div></div><a class="cta" href="${escapeHtml(slots.cta.url)}" target="_blank" rel="noopener">${escapeHtml(slots.cta.label)}</a></div></body></html>`;
+html,body{width:100%;height:100%;margin:0;overflow:hidden;background:transparent}
+img{display:block;width:100vw;height:100vh;object-fit:cover}
+</style></head><body><img src="${escapeHtml(imageUrl)}" alt="${escapeHtml(alt)}"></body></html>`;
 }
 
 export function renderCard(input: CardInput): { html: string; colorPairs: [string, string][] } {

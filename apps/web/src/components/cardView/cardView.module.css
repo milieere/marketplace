@@ -1,11 +1,8 @@
 .cardView {
   width: 100%;
-  min-width: 0;
-  min-height: auto;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  gap: 14px;
   color: #ffffff;
   font-family: var(--font-body);
 }
@@ -18,7 +15,6 @@
   grid-template-columns: 1fr;
   grid-template-rows: minmax(360px, 0.82fr) auto;
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: var(--brand-radius);
   background:
     linear-gradient(145deg, color-mix(in srgb, var(--brand-background) 92%, white 8%), var(--brand-background)),
@@ -106,7 +102,6 @@
 }
 
 .generatedAd[data-treatment="framed"] .visual {
-  margin: clamp(12px, 2vw, 20px);
   min-height: calc(360px - clamp(12px, 2vw, 20px) * 2);
   border: 1px solid color-mix(in srgb, var(--brand-text) 24%, transparent);
   border-radius: max(2px, var(--brand-radius));
@@ -924,43 +919,46 @@
   }
 }
 
-/* A designed card brings its own stylesheet, so it renders isolated and this
-   component contributes only the reserve link beneath it. */
+/* A designed card brings its own stylesheet, so it renders isolated. */
 .designed {
+  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 0;
   align-items: stretch;
-  width: 100%;
   max-width: 430px;
+  cursor: pointer;
+  transition:
+    filter 0.2s ease,
+    transform 0.2s ease;
+}
+
+.designed:hover {
+  filter: brightness(1.04);
+  transform: translateY(-2px);
+}
+
+.designed:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--brand-accent) 80%, white);
+  outline-offset: 5px;
 }
 
 .designedFrame {
   width: 100%;
   aspect-ratio: 3 / 4;
   border: 0;
-  border-radius: var(--brand-radius, 16px);
+  border-radius: 16px;
   background: transparent;
   overflow: hidden;
   display: block;
 }
 
-.designedCta {
-  display: block;
-  margin-top: 12px;
-  padding: 15px 20px;
-  text-align: center;
-  border-radius: 999px;
-  background: var(--brand-primary, #c8553d);
-  color: var(--brand-background, #fff);
-  font-size: 0.95rem;
-  font-weight: 650;
-  letter-spacing: 0.01em;
-  text-decoration: none;
-  transition: transform 0.15s ease, filter 0.15s ease;
-}
-
-.designedCta:hover {
-  filter: brightness(1.08);
-  transform: translateY(-1px);
+.visualAssemblyCard {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  border-radius: var(--brand-radius, 16px);
+  background: var(--brand-background);
+  box-shadow: 0 28px 80px rgba(0, 0, 0, 0.28);
 }
