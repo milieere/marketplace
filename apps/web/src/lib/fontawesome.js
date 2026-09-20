@@ -1,8 +1,19 @@
 import { config, library } from "@fortawesome/fontawesome-svg-core";
-import { faWandMagicSparkles } from "@fortawesome/free-solid-svg-icons";
+import {
+  faAngleDown,
+  faBullseye,
+  faCheck,
+  faHexagonNodes,
+  faLayerGroup,
+  faMicrophone,
+  faPenNib,
+  faRankingStar,
+  faTriangleExclamation,
+  faUser,
+} from "@fortawesome/free-solid-svg-icons";
 
 config.autoAddCss = false;
 
-library.add(faWandMagicSparkles);
+library.add(faMicrophone, faAngleDown, faHexagonNodes, faUser, faBullseye, faLayerGroup, faRankingStar, faPenNib, faCheck, faTriangleExclamation);
 
-export { faWandMagicSparkles };
+export { faMicrophone, faAngleDown, faHexagonNodes, faUser, faBullseye, faLayerGroup, faRankingStar, faPenNib, faCheck, faTriangleExclamation };

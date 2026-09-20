@@ -1,8 +1,15 @@
 "use client";
-
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import styles from "./hero.module.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faMicrophone,
+  faAngleDown,
+  faHexagonNodes,
+  faUser,
+} from "../../lib/fontawesome";
+import Image from "next/image";
 
 const DEMO_QUERIES = [
   "Friday, 8 friends, two vegans, one celiac, terrace, ~€30 each",
@@ -42,15 +49,23 @@ export default function Hero() {
             placeholder="Ej. Una cena romántica en Barcelona por menos de 50€..."
             onChange={(event) => setQuery(event.target.value)}
           />
-          <div className={styles.btnHero}>g</div>
+          <div className={styles.btnHero}>
+            <FontAwesomeIcon className={styles.icon} icon={faMicrophone} />
+          </div>
         </label>
-        <button className={styles.btnGenerator} type="submit" disabled={!query.trim()}>
+        <button
+          className={styles.btnGenerator}
+          type="submit"
+          disabled={!query.trim()}
+        >
           Generar
+          <FontAwesomeIcon className={styles.icon} icon={faHexagonNodes} />
         </button>
       </form>
       <section className={styles.boxFlex}>
         <div className={styles.titleSugerencies}>
           <p>Generaciones más frecuentes</p>
+          <FontAwesomeIcon className={styles.icon} icon={faAngleDown} />
         </div>
         <div className={styles.demoQueries} aria-label="Consultas de prueba">
           {DEMO_QUERIES.map((demoQuery) => (
@@ -64,6 +79,7 @@ export default function Hero() {
           ))}
         </div>
       </section>
+      <Image src="/bg.png" alt="Hero" fill={true} className={styles.bgImage} />
     </section>
   );
 }

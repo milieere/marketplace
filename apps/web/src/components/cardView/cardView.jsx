@@ -86,10 +86,19 @@ function cssVars(presentation) {
 
 function extractImageSrc(html) {
   const src = html?.match(/<img[^>]*\ssrc="([^"]+)"/i)?.[1];
+  return assetSource(src);
+}
+
+function assetSource(src) {
   if (!src) return null;
   if (src.startsWith("data:") || src.startsWith("http")) return src;
   if (src.startsWith("/")) return `${getApiUrl()}${src}`;
   return src;
+}
+
+function brandLogo(kit) {
+  const logo = kit.logos.find((item) => item.variant === "icon") || kit.logos.find((item) => item.variant === "mono") || kit.logos[0];
+  return assetSource(logo?.url);
 }
 
 function formatPrice(line, language) {
@@ -111,52 +120,7 @@ function imageSource(artifact, html, visual) {
   return visual?.imageUrl || artifact.presentation?.photo?.src || extractImageSrc(html);
 }
 
-function stepStatus(steps, id) {
-  return steps?.findLast((step) => step.id === id)?.status;
-}
-
-function LoadingStudio({ title, subtitle, state }) {
-  const phases = [
-    { id: "understand", label: "Interpretando necesidad", status: stepStatus(state.steps, "understand") },
-    { id: "filter", label: "Cruzando datos reales", status: stepStatus(state.steps, "filter") },
-    { id: "rank", label: "Ordenando marcas", status: stepStatus(state.steps, "rank") },
-    {
-      id: "create",
-      label: "Redactando anuncios",
-      status: state.steps.findLast((step) => step.id?.startsWith("create-"))?.status,
-    },
-  ];
-
-  return (
-    <article className={`${styles.cardView} ${styles.emptyState}`} style={cssVars(FALLBACK_THEME)}>
-      <div className={styles.studioPanel}>
-        <div className={styles.studioPreview} aria-hidden="true">
-          <div className={styles.studioGrid} />
-          <div className={styles.studioImage} />
-          <div className={styles.studioHeadline} />
-          <div className={styles.studioLine} />
-          <div className={styles.studioPrice} />
-          <div className={styles.studioScan} />
-        </div>
-        <div className={styles.studioCopy}>
-          <span className={styles.kicker}>{subtitle || "Oli agent studio"}</span>
-          <h2>{title}</h2>
-          <p className={styles.body}>La IA esta componiendo la pieza visual con la necesidad, la marca y los datos verificados.</p>
-          <ul className={styles.pipeline} aria-label="Estado de generacion">
-            {phases.map((phase, index) => (
-              <li key={phase.id} data-status={phase.status || (index === 0 ? "started" : "waiting")}>
-                <span />
-                {phase.label}
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
-    </article>
-  );
-}
-
-function AssemblyOverlay({ visual, visualStatus, isGenerating }) {
+function AssemblyOverlay({ visual, visualStatus, isGenerating, presentation, logoSrc }) {
   const failed = visualStatus === "failed";
   const done = Boolean(visual);
   const label = done
@@ -164,42 +128,61 @@ function AssemblyOverlay({ visual, visualStatus, isGenerating }) {
     : failed
       ? "Componiendo fallback de marca"
       : isGenerating
-        ? "Armando visual por capas"
+        ? "Ensamblando anuncio"
         : "Visual de marca";
 
   if (done || (failed && !isGenerating)) return null;
+  const kit = presentation.kit;
+  const stages = [
+    ["Brand kit", "done"],
+    ["Layout", "done"],
+    ["Copy", "done"],
+    [failed ? "Fallback" : "Imagen", failed ? "failed" : "started"],
+  ];
 
   return (
     <div className={styles.assembly} data-status={failed ? "failed" : "building"}>
-      <div className={styles.assemblyFrame}>
+      <div className={styles.assemblyPreview}>
         <span className={styles.assemblyScan} />
-        <span className={styles.assemblyBlob} />
-        <span className={styles.assemblySubject} />
-        <span className={styles.assemblyCopy} />
+        <div className={styles.assemblyLogo}>
+          {logoSrc ? (
+            // eslint-disable-next-line @next/next/no-img-element -- Brand logos can arrive from the API or local fixtures.
+            <img src={logoSrc} alt={`${presentation.brand.name} logo`} />
+          ) : (
+            <span>{mark(presentation.brand.name)}</span>
+          )}
+        </div>
+        <div className={styles.assemblyPalette} aria-hidden="true">
+          {kit.colors.slice(0, 4).map((item) => (
+            <span key={item.id} style={{ background: item.hex }} />
+          ))}
+        </div>
       </div>
-      <div className={styles.assemblySteps}>
-        {[
-          ["Datos", true],
-          ["Brand kit", true],
-          ["Composicion", true],
-          [failed ? "Fallback" : "Imagen", failed || isGenerating],
-        ].map(([item, active]) => (
-          <span key={item} data-active={active}>
-            {item}
-          </span>
-        ))}
+      <div className={styles.assemblyInfo}>
+        <div className={styles.assemblyTopline}>
+          <span>{presentation.brand.name}</span>
+          <span>{label}</span>
+        </div>
+        <div className={styles.assemblyBlueprint} aria-hidden="true">
+          <span />
+          <span />
+          <span />
+          <span />
+        </div>
+        <div className={styles.assemblySteps}>
+          {stages.map(([item, status]) => (
+            <span key={item} data-status={status}>
+              {item}
+            </span>
+          ))}
+        </div>
       </div>
-      <strong>{label}</strong>
     </div>
   );
 }
 
-export default function CardView({ title, subtitle, artifact, html, visual, visualStatus, isGenerating = false, generationState, suggestions = [] }) {
+export default function CardView({ title, subtitle, artifact, html, visual, visualStatus, isGenerating = false, suggestions = [] }) {
   const router = useRouter();
-
-  if (!artifact && generationState) {
-    return <LoadingStudio title={title} subtitle={subtitle} state={generationState} />;
-  }
 
   if (!artifact) {
     return (
@@ -230,6 +213,7 @@ export default function CardView({ title, subtitle, artifact, html, visual, visu
   const kit = presentation.kit;
   const style = kit.style;
   const imageSrc = imageSource(artifact, html, visual);
+  const logoSrc = brandLogo(kit);
   const statusLabel = artifact.check?.passed ? "Brand check passed" : "Needs review";
   const relaxed = artifact.relaxed || [];
   const fonts = fontHref(kit);
@@ -246,11 +230,11 @@ export default function CardView({ title, subtitle, artifact, html, visual, visu
         data-density={style.density}
         data-case={style.headlineCase}
         data-ornament={style.ornament}
+        data-building={!visual && isGenerating ? "true" : "false"}
       >
         <div className={styles.visual}>
           {/* eslint-disable-next-line @next/next/no-img-element -- Artifact photos can arrive as data URLs from the API. */}
           {imageSrc ? <img src={imageSrc} alt={presentation.photo?.alt || ""} /> : <div className={styles.generatedBackdrop} />}
-          <AssemblyOverlay visual={visual} visualStatus={visualStatus} isGenerating={isGenerating} />
           {!visual && (
             <div className={styles.visualStatus}>
               <span />
@@ -261,7 +245,14 @@ export default function CardView({ title, subtitle, artifact, html, visual, visu
             <span>{kit.imagery.style}</span>
             <strong>{presentation.brand.name}</strong>
           </div>
-          <div className={styles.brandMark}>{mark(presentation.brand.name)}</div>
+          <div className={styles.brandMark}>
+            {logoSrc ? (
+              // eslint-disable-next-line @next/next/no-img-element -- Brand logos can arrive from the API or local fixtures.
+              <img src={logoSrc} alt={`${presentation.brand.name} logo`} />
+            ) : (
+              mark(presentation.brand.name)
+            )}
+          </div>
         </div>
 
         <div className={styles.copy}>
@@ -305,6 +296,7 @@ export default function CardView({ title, subtitle, artifact, html, visual, visu
             {artifact.slots.cta.label}
           </a>
         </div>
+        <AssemblyOverlay visual={visual} visualStatus={visualStatus} isGenerating={isGenerating} presentation={presentation} logoSrc={logoSrc} />
       </section>
 
       {html && (

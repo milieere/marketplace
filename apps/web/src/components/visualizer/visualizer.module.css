@@ -1,11 +1,13 @@
 .visualizer {
   width: 100%;
+  min-height: 100vh;
   gap: 24px;
   color: #f4f8ff;
   background: #010c16;
-  display:flex;
-  align-items: center;
+  display: flex;
+  align-items: flex-start;
   justify-content: center;
+  overflow-x: hidden;
 }
 
 .sidebar {
@@ -38,7 +40,6 @@
   border: 1px solid rgba(31, 152, 185, 0.35);
   border-radius: 18px;
   background: rgba(8, 35, 62, 0.62);
-  padding: 16px;
 }
 
 .panel h2 {
@@ -111,9 +112,36 @@
 
 .results {
   width: 100%;
+  gap: 5px;
+}
+
+.resultsSingle {
+  min-height: 100vh;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 20px;
+}
+
+.resultsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: start;
+  justify-items: stretch;
+  max-width: 1680px;
+}
+
+@media (max-width: 1180px) {
+  .resultsGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .results {
+    padding: 14px;
+  }
+
+  .resultsGrid {
+    grid-template-columns: 1fr;
+  }
 }

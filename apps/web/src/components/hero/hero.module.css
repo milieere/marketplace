@@ -7,6 +7,17 @@
   justify-content: center;
   gap: 40px;
   background: linear-gradient(#010c16, #04192e);
+  position: relative;
+}
+
+.bgImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: left bottom;
+  z-index: 0;
+  opacity: 0.1;
+  transform: rotate(180deg);
 }
 
 .heroContent {
@@ -16,6 +27,7 @@
   align-items: center;
   justify-content: center;
   gap: 10px;
+  z-index: 1;
 }
 
 .heroContent h1 {
@@ -112,6 +124,11 @@
   justify-content: center;
   font-weight: 300;
   cursor: pointer;
+  gap: 5px;
+}
+
+.heroForm .btnGenerator .icon{
+  font-size: 1.1rem;
 }
 
 .boxFlex {
@@ -121,7 +138,8 @@
   justify-content: center;
   position: absolute;
   bottom: 25px;
-  gap: 10px;
+  gap: 20px;
+    z-index: 1;
 }
 
 .titleSugerencies {
@@ -132,9 +150,14 @@
 
 .titleSugerencies p {
   color: white;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   letter-spacing: 1px;
   font-weight: 300;
+}
+
+.titleSugerencies .icon {
+  color: #1fb2db;
+  font-size: 0.8rem;
 }
 
 .demoQueries {

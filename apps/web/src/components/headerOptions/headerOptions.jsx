@@ -1,21 +1,18 @@
-import styles from "./header.module.css";
+import styles from "./headerOptions.module.css";
 import Image from "next/image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "../../lib/fontawesome";
-import Link from "next/link";
 
-export default function Header() {
+
+export default function HeaderOptions() {
   return (
     <section className={styles.header}>
       <div className={styles.legal}>
-        <p>Desarrollado para:</p>
         <h3>@HackBarna26</h3>
       </div>
-      <Link href="/">
-        <Image src="/logo.png" alt="Logo" width={73} height={50} />
-      </Link>
+      <Image src="/logo.png" alt="Logo" width={100} height={68} />
       <button className={styles.btnAction}>
-        Dashboard
+        Volver al home
         <FontAwesomeIcon icon={faUser} />
       </button>
     </section>

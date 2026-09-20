@@ -1,4 +1,5 @@
 import CardView from "../../cardView/cardView";
+import StreamingLoading from "../../streamingLoading/StreamingLoading";
 import styles from "../visualizer.module.css";
 
 function artifactVisualStatus(state, artifact) {
@@ -6,8 +7,10 @@ function artifactVisualStatus(state, artifact) {
 }
 
 export default function VisualizerResults({ query, state }) {
+  const hasArtifacts = state.artifacts.length > 0;
+
   return (
-    <div className={styles.results}>
+    <div className={`${styles.results} ${hasArtifacts ? styles.resultsGrid : styles.resultsSingle}`}>
       {state.noMatch && (
         <CardView
           title={state.noMatch.message}
@@ -33,7 +36,7 @@ export default function VisualizerResults({ query, state }) {
       {!query && <CardView title="Sin consulta" subtitle="Vuelve al inicio y genera una búsqueda para ver el stream." />}
 
       {query && state.status === "loading" && state.artifacts.length === 0 && !state.noMatch && (
-        <CardView title="Generando opciones..." subtitle="Los artifacts aparecerán aquí cuando llegue el stream." generationState={state} />
+        <StreamingLoading title="Materializando soluciones" state={state} />
       )}
     </div>
   );

@@ -3,9 +3,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  position: absolute;
-  top: 0px;
-  height: 80px;
+  height: 100px;
   z-index: 1000;
   background: linear-gradient(#001c2328, #001c2328, #001c2300);
   backdrop-filter: blur(10px);
