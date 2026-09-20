@@ -136,18 +136,19 @@
       ]
     },
     "imagery": {
-      "style": "Warm golden-hour light, overhead shots of shared tables, natural textures, candid people",
+      "style": "Warm golden-hour light, overhead shots of shared tables, natural textures, candid people, terracotta and olive tones",
       "avoid": [
         "flash photography",
         "empty rooms",
-        "close-ups of hands eating"
+        "close-ups of hands eating",
+        "cold blue grading"
       ]
     },
     "photos": [
       {
         "id": "terrace-group",
         "url": "/assets/casa-brisa/photos/terrace-group.jpg",
-        "description": "Group of friends sharing tapas on a sunny terrace",
+        "description": "Friends around a crowded terrace table at golden hour, small plates everywhere, glasses raised mid-conversation",
         "orientation": "landscape",
         "attributes": {
           "people": [
@@ -168,7 +169,7 @@
       {
         "id": "candle-couple",
         "url": "/assets/casa-brisa/photos/candle-couple.jpg",
-        "description": "Couple at a candle-lit corner table with cava glasses",
+        "description": "A couple at a candle-lit corner table, cava glasses catching the flame, leaning in close",
         "orientation": "portrait",
         "attributes": {
           "people": [
@@ -186,36 +187,42 @@
       {
         "id": "table-overhead",
         "url": "/assets/casa-brisa/photos/table-overhead.jpg",
-        "description": "Overhead shot of a table covered in small plates",
+        "description": "Overhead shot of a full table of small plates, bread and vermouth on warm terracotta tiles",
         "orientation": "square",
         "attributes": {
           "people": [
             "none"
           ],
           "occasion": [
-            "group"
+            "group",
+            "celebration"
+          ],
+          "ambience": [
+            "lively"
           ]
         }
       },
       {
         "id": "vermut-bar",
         "url": "/assets/casa-brisa/photos/vermut-bar.jpg",
-        "description": "Vermouth glasses and olives on the bar at golden hour",
+        "description": "Vermouth glasses and a dish of olives on the marble bar, late afternoon light across the counter",
         "orientation": "landscape",
         "attributes": {
           "people": [
             "none"
           ],
           "occasion": [
-            "work",
             "group"
+          ],
+          "ambience": [
+            "quiet"
           ]
         }
       },
       {
         "id": "private-room",
         "url": "/assets/casa-brisa/photos/private-room.jpg",
-        "description": "Long table set for a celebration in a warm private room",
+        "description": "A long table set for a celebration in the warm back room, candles and shared plates down its length",
         "orientation": "landscape",
         "attributes": {
           "people": [
@@ -268,8 +275,37 @@
         "id": "logo-background",
         "text": "Primary logo only on sand; use the mono logo on dark colours.",
         "severity": "block"
+      },
+      {
+        "id": "warmth-over-polish",
+        "text": "Warm and lived-in always beats polished and styled.",
+        "severity": "warn"
+      },
+      {
+        "id": "show-the-table-not-the-plate",
+        "text": "Show the whole table, never a single styled plate.",
+        "severity": "warn"
+      },
+      {
+        "id": "golden-hour-only",
+        "text": "Light is late-afternoon or evening; never harsh midday sun.",
+        "severity": "warn"
       }
-    ]
+    ],
+    "advertising": {
+      "direction": "Warm and unhurried. The photograph carries the card; type sits low and quiet over it. Terracotta and saffron only as accents, never as fields. Never busy, never shouty.",
+      "shows": [
+        "subline",
+        "body",
+        "place",
+        "price"
+      ],
+      "avoid": [
+        "hard edges",
+        "loud colour blocks",
+        "anything that reads as a discount"
+      ]
+    }
   },
   "locations": [
     {

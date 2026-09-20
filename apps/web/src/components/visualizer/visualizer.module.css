@@ -1,0 +1,151 @@
+.visualizer {
+  width: 100%;
+  min-height: 100vh;
+  gap: 24px;
+  color: #f4f8ff;
+  background: #010c16;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  overflow-x: hidden;
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.eyebrow {
+  color: #1fdef5;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.sidebar h1 {
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  line-height: 1.05;
+  font-weight: 800;
+}
+
+.status {
+  color: rgba(244, 248, 255, 0.72);
+  line-height: 1.4;
+}
+
+.panel,
+.error {
+  border: 1px solid rgba(31, 152, 185, 0.35);
+  border-radius: 18px;
+  background: rgba(8, 35, 62, 0.62);
+}
+
+.panel h2 {
+  margin-bottom: 12px;
+  color: #ffffff;
+  font-size: 0.85rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.panel p,
+.panel span {
+  color: rgba(244, 248, 255, 0.76);
+  line-height: 1.45;
+}
+
+.steps,
+.matches {
+  display: grid;
+  gap: 10px;
+}
+
+.steps li,
+.matches li {
+  display: grid;
+  gap: 4px;
+  color: rgba(244, 248, 255, 0.74);
+  line-height: 1.35;
+}
+
+.steps li::before {
+  content: "";
+  width: 9px;
+  height: 9px;
+  display: inline-block;
+  border-radius: 50%;
+  background: #9aa8b6;
+  box-shadow: 0 0 12px rgba(154, 168, 182, 0.35);
+}
+
+.steps li[data-status="started"]::before {
+  background: #1fdef5;
+  box-shadow: 0 0 16px rgba(31, 222, 245, 0.58);
+}
+
+.steps li[data-status="done"]::before {
+  background: #50e07c;
+}
+
+.steps li[data-status="failed"]::before {
+  background: #ff6b6b;
+}
+
+.steps strong,
+.matches strong {
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.steps span,
+.matches span {
+  color: rgba(244, 248, 255, 0.64);
+}
+
+.error {
+  border-color: rgba(255, 107, 107, 0.55);
+  color: #ffd8d8;
+}
+
+.results {
+  width: 100%;
+  /* headerOptions is 100px and absolutely positioned, so the grid must clear it */
+  padding: 124px 24px 32px;
+  gap: 24px;
+}
+
+.resultsSingle {
+  min-height: calc(100vh - 124px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.resultsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: start;
+  justify-items: center;
+  max-width: 1680px;
+  margin: 0 auto;
+}
+
+@media (max-width: 1180px) {
+  .resultsGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .results {
+    padding: 112px 14px 24px;
+    gap: 18px;
+  }
+
+  .resultsGrid {
+    grid-template-columns: 1fr;
+  }
+}

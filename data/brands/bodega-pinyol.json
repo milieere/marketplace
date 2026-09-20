@@ -91,7 +91,24 @@
         "fallback": "system-ui, sans-serif"
       }
     ],
-    "logos": [],
+    "logos": [
+      {
+        "variant": "primary",
+        "url": "/assets/bodega-pinyol/logo.svg",
+        "onBackgrounds": [
+          "paper"
+        ]
+      },
+      {
+        "variant": "mono",
+        "url": "/assets/bodega-pinyol/logo-mono.svg",
+        "onBackgrounds": [
+          "bodega-red",
+          "oliva",
+          "carbo"
+        ]
+      }
+    ],
     "style": {
       "radius": 4,
       "density": "balanced",
@@ -143,7 +160,7 @@
       {
         "id": "shared-table",
         "url": "/assets/bodega-pinyol/photos/shared-table.jpg",
-        "description": "Overhead view of a table set with food and multiple people eating.",
+        "description": "A big pan of paella between friends and a dog under the neighbourhood terrace table, midday sun",
         "orientation": "landscape",
         "attributes": {
           "occasion": [
@@ -151,17 +168,30 @@
           ],
           "people": [
             "group"
+          ],
+          "ambience": [
+            "lively"
+          ],
+          "amenities": [
+            "terrace",
+            "pet-friendly"
           ]
         }
       },
       {
         "id": "vermut-olives",
         "url": "/assets/bodega-pinyol/photos/vermut-olives.jpg",
-        "description": "Three small bowls of olives are arranged on a marble surface with a linen napkin.",
+        "description": "Vermouth on ice with olives and crisps on a worn wooden bar top, daylight from the street",
         "orientation": "landscape",
         "attributes": {
           "people": [
             "none"
+          ],
+          "ambience": [
+            "lively"
+          ],
+          "occasion": [
+            "group"
           ]
         }
       }
@@ -291,8 +321,26 @@
         "id": "never-show-dogs-inside-the",
         "text": "Never show dogs inside the dining room.",
         "severity": "block"
+      },
+      {
+        "id": "candid-over-composed",
+        "text": "Candid beats composed. Let the moment be slightly messy.",
+        "severity": "warn"
       }
-    ]
+    ],
+    "advertising": {
+      "direction": "Neighbourhood and handmade. A framed photo, a yellow stamp set at an angle, type that feels printed rather than designed. Slightly imperfect on purpose.",
+      "shows": [
+        "badges",
+        "place",
+        "price"
+      ],
+      "avoid": [
+        "glossy finishes",
+        "corporate symmetry",
+        "anything exclusive"
+      ]
+    }
   },
   "locations": [
     {

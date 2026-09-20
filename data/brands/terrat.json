@@ -47,6 +47,15 @@
         "pairsWith": [
           "night"
         ]
+      },
+      {
+        "id": "dusk",
+        "hex": "#3A3550",
+        "role": "secondary",
+        "pairsWith": [
+          "cream",
+          "gold"
+        ]
       }
     ],
     "typography": [
@@ -68,7 +77,22 @@
         "fallback": "system-ui, sans-serif"
       }
     ],
-    "logos": [],
+    "logos": [
+      {
+        "variant": "primary",
+        "url": "/assets/terrat/logo.svg",
+        "onBackgrounds": [
+          "night"
+        ]
+      },
+      {
+        "variant": "mono",
+        "url": "/assets/terrat/logo-mono.svg",
+        "onBackgrounds": [
+          "night"
+        ]
+      }
+    ],
     "style": {
       "radius": 4,
       "density": "balanced",
@@ -105,16 +129,19 @@
       ]
     },
     "imagery": {
-      "style": "Golden hour, silhouettes against the skyline, coral glasses",
+      "style": "Golden hour on a rooftop, silhouettes against the city skyline, coral glasses catching the last light",
       "avoid": [
-        "daylight interiors"
+        "daylight interiors",
+        "flash photography",
+        "crowded daytime scenes",
+        "ground-level views"
       ]
     },
     "photos": [
       {
         "id": "skyline-pair",
         "url": "/assets/terrat/photos/skyline-pair.jpg",
-        "description": "Couple toasting against the sunset skyline",
+        "description": "Two coral cocktails on a rooftop ledge, city skyline silhouetted against the last of the sunset",
         "orientation": "landscape",
         "attributes": {
           "people": [
@@ -134,7 +161,7 @@
       {
         "id": "rooftop-crowd",
         "url": "/assets/terrat/photos/rooftop-crowd.jpg",
-        "description": "Friends laughing on the rooftop at dusk",
+        "description": "A rooftop crowd at golden hour, silhouettes against the skyline, glasses catching the low sun",
         "orientation": "landscape",
         "attributes": {
           "people": [
@@ -184,8 +211,35 @@
           "ratio": 4.5
         },
         "severity": "block"
+      },
+      {
+        "id": "always-up-high",
+        "text": "Always up high, always with the city behind.",
+        "severity": "warn"
+      },
+      {
+        "id": "last-light",
+        "text": "Shoot at last light; the sky does the work.",
+        "severity": "warn"
+      },
+      {
+        "id": "theatrical-not-earnest",
+        "text": "A little theatrical, never earnest.",
+        "severity": "warn"
       }
-    ]
+    ],
+    "advertising": {
+      "direction": "Cinematic and theatrical. One silhouette, one skyline, coral against near-black. Type small and wide at the foot, letting the picture do the talking.",
+      "shows": [
+        "subline",
+        "price"
+      ],
+      "avoid": [
+        "clutter",
+        "more than two type sizes",
+        "anything literal"
+      ]
+    }
   },
   "locations": [
     {

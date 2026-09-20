@@ -6,6 +6,7 @@ import type { IntentDraft } from "../../../src/agents/creative/understand";
 import { loadConfig } from "../../../src/config";
 import { createApp } from "../../../src/http/app";
 import type { Llm } from "../../../src/ports/llm";
+import type { VisualGenerator } from "../../../src/ports/visual-generator";
 import { loadRepository, parseSse } from "../../support";
 
 const NOW = "2026-09-18T17:00:00+02:00";
@@ -22,6 +23,26 @@ function fakeLlm(script: Script) {
       (prompts[req.step] ??= []).push(req.prompt);
       if (req.step === "understand") return req.schema.parse({ language: "en", scope: "in-domain", ...script.understand });
       const brandId = req.step.split(":")[1]!;
+      if (req.step.startsWith("design:")) {
+        return req.schema.parse({
+          idea: `a card for ${brandId}`,
+          copyAnchor: "bottom",
+          lockup: "top-left",
+          scrimStrength: "medium",
+          scrimColour: "#2B2118",
+          headlineSize: "l",
+          headlineUpper: false,
+          headlineTracking: "normal",
+          headlineColour: "#F6EFE6",
+          bodyColour: "#F6EFE6",
+          accent: "#F2A541",
+          priceTreatment: "hero",
+          priceColour: "#F2A541",
+          badges: "solid",
+          rule: true,
+          align: "left",
+        });
+      }
       const input = JSON.parse(req.prompt.slice("Input:\n".length).split("\n\nYour previous")[0]!);
       const copy = {
         offeringIds: [input.offers[0].id],
@@ -39,10 +60,10 @@ function fakeLlm(script: Script) {
   return { llm, prompts };
 }
 
-async function generate(text: string, script: Script) {
+async function generate(text: string, script: Script, visuals?: VisualGenerator) {
   const { llm, prompts } = fakeLlm(script);
   const artifacts = createMemoryArtifactStore();
-  const agent = createCreativeAgent({ llm, brands: await loadRepository(), artifacts });
+  const agent = createCreativeAgent({ llm, brands: await loadRepository(), artifacts, visuals });
   const app = createApp(loadConfig({ NEBIUS_API_KEY: "test" }), { agent, artifacts });
   const res = await app.request("/v1/generate", {
     method: "POST",
@@ -88,6 +109,9 @@ describe("Creative Agent over HTTP with a scripted LLM", () => {
         expect(line.amount).toBe(offering.price.amount);
       }
       expect(a.check.passed).toBe(true);
+      expect(a.presentation?.brand.name).toBe(record.brand.name);
+      expect(a.presentation?.kit.colors).toEqual(record.brandKit.colors);
+      expect(a.presentation?.photo?.src).toMatch(/^data:image\//);
       expect(a.slots.badges).toEqual(expect.arrayContaining(["🌱 Vegan", "Gluten free", "Terrace"]));
       const page = await app.request(a.htmlUrl);
       expect(page.status).toBe(200);
@@ -138,6 +162,56 @@ describe("Creative Agent over HTTP with a scripted LLM", () => {
     const verde = artifacts.find((a) => a.brandId === "verde")!;
     expect(verde.slots.body).not.toContain("€");
     expect(verde.check.passed).toBe(true);
+  });
+
+  it("streams a generated visual after each artifact when a visual generator is configured", async () => {
+    const visuals: VisualGenerator = {
+      async generate({ artifact, record, intent }) {
+        return {
+          artifactId: artifact.id,
+          imageUrl: "data:image/jpeg;base64,ZmFrZQ==",
+          prompt: `${record.brand.name} | ${intent.raw.text} | ${artifact.offeringIds.join(",")}`,
+          mode: "full-card" as const,
+        };
+      },
+    };
+    const { events, artifacts, types } = await generate("Friday, 8 friends, two vegans, one celiac, terrace, ~€30 each", q1, visuals);
+    const visualEvents = events.filter((e): e is Extract<AgentEvent, { type: "visual" }> => e.type === "visual");
+
+    expect(visualEvents).toHaveLength(artifacts.length);
+    expect(visualEvents[0]).toMatchObject({ artifactId: artifacts[0]!.id, imageUrl: "data:image/jpeg;base64,ZmFrZQ==", mode: "full-card" });
+    expect(visualEvents[0]?.prompt).toContain("Friday, 8 friends");
+    expect(types).toContain("visual-casa-brisa:started");
+    expect(types).toContain("visual-casa-brisa:done");
+  });
+
+  it("ships the vector mark and a layout for the card to render", async () => {
+    const { artifacts } = await generate("Friday, 8 friends, two vegans, one celiac, terrace, ~€30 each", q1);
+    const withLogo = artifacts.filter((a) => a.presentation?.logo);
+
+    expect(withLogo.length).toBeGreaterThan(0);
+    for (const artifact of withLogo) {
+      // The DOM draws the mark now, so it wants the crisp vector
+      expect(artifact.presentation!.logo!.src.startsWith("data:image/svg+xml;base64,"), artifact.brandId).toBe(true);
+      expect(artifact.presentation!.layout, artifact.brandId).toBeDefined();
+    }
+    // Two brands, two different layouts
+    const frames = new Set(artifacts.map((a) => a.presentation?.layout?.copyAnchor));
+    expect(frames.size).toBeGreaterThan(1);
+  });
+
+  it("reports a failed visual step and still finishes the stream", async () => {
+    const visuals: VisualGenerator = {
+      async generate() {
+        throw new Error("fal is out of credit");
+      },
+    };
+    const { events, types } = await generate("Friday, 8 friends, two vegans, one celiac, terrace, ~€30 each", q1, visuals);
+
+    expect(types).toContain("visual-casa-brisa:started");
+    expect(types).toContain("visual-casa-brisa:failed");
+    expect(events.filter((e) => e.type === "visual")).toHaveLength(0);
+    expect(events.at(-1)?.type).toBe("done");
   });
 
   it("keeps streaming when one brand's copy step fails", async () => {

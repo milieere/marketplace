@@ -1,0 +1,52 @@
+.header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 0px;
+  height: 80px;
+  z-index: 1000;
+  background: linear-gradient(#001c2328, #001c2328, #001c2300);
+  backdrop-filter: blur(10px);
+}
+
+.legal {
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 5px;
+  position: absolute;
+  left: 20px;
+}
+
+.legal p,
+.legal h3 {
+  font-size: 0.8rem;
+  letter-spacing: 0.5px;
+  color: rgba(255, 255, 255, 0.367);
+}
+
+.btnAction {
+  position: absolute;
+  right: 20px;
+  padding: 10px 15px;
+  border: 1px solid rgba(31, 152, 185, 0.45);
+  background: rgba(31, 152, 185, 0.12);
+  color: rgba(255, 255, 255, 0.86);
+  border-radius: 50px;
+  font-size: 0.9rem;
+  letter-spacing: 0.5px;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+
+.btnAction:hover {
+  background: linear-gradient(to Left, #24cefd, #1fb2db, #24cefd);
+}

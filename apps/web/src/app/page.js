@@ -1,6 +1,8 @@
 import Head from "next/head";
 import styles from "./page.module.css";
 import Hero from "../components/hero/hero";
+import Header from "../components/header/header";
+
 
 export default function Home() {
   return (
@@ -8,45 +10,33 @@ export default function Home() {
       <Head>
         <meta charSet="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>
-          Quesada Coach App - Planes de entrenamiento y nutrición personalizados
-          creados por expertos
-        </title>
+        <title>Oli - Creatividades personalizadas para marcas hospitality</title>
         <meta
           name="description"
-          content="Descubre Quesada Coach App, Planes de entrenamiento y nutrición personalizados creados por
-            expertos, diseñados para transformar tu cuerpo y tu vida"
+          content="Oli transforma una intención de usuario en anuncios y experiencias personalizadas, fieles a la marca y basadas en ofertas reales."
         />
         <meta name="robots" content="index, follow" />
         <meta
           name="keywords"
-          content="fitness, Quesada Coach, alimentación saludalbe, bienestar, entrenamiento personalizado"
+          content="Oli, hospitality, anuncios personalizados, brand safety, creatividad generativa, restaurantes, hoteles, ofertas verificadas"
         />
         <link rel="icon" href="/favicon.ico" />
-        <link
-          rel="apple-touch-icon"
-          sizes="180x180"
-          href="https://quesadacoach.com/logo512.png"
-        />
+        <link rel="apple-touch-icon" sizes="180x180" href="/favicon.ico" />
         <meta
           property="og:title"
-          content="Quesada Coach App - Planes de entrenamiento y nutrición personalizados
-          creados por expertos"
+          content="Oli - Creatividades personalizadas para marcas hospitality"
         />
         <meta
           property="og:description"
-          content="Descubre Quesada Coach App, Planes de entrenamiento y nutrición personalizados creados por
-            expertos, diseñados para transformar tu cuerpo y tu vida."
+          content="Cada mensaje de marca, personalizado para lo que una persona acaba de pedir y siempre construido con datos reales de la marca."
         />
-        <meta
-          property="og:image"
-          content="https://quesadacoach.com/logo512.png"
-        />
-        <meta property="og:url" content="https://quesadacoach.com" />
+        <meta property="og:image" content="/favicon.ico" />
+        <meta property="og:url" content="https://oli.intent-demo.com" />
         <meta property="og:type" content="website" />
-        <link rel="canonical" href="https://quesadacoach.com" />
+        <link rel="canonical" href="https://oli.intent-demo.com" />
       </Head>
       <main className={styles.main}>
+        <Header />
         <Hero />
       </main>
     </>

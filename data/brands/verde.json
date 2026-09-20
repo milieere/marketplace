@@ -47,17 +47,26 @@
           "forest",
           "leaf"
         ]
+      },
+      {
+        "id": "bark",
+        "hex": "#6B4F3A",
+        "role": "secondary",
+        "pairsWith": [
+          "cream",
+          "lime"
+        ]
       }
     ],
     "typography": [
       {
         "role": "display",
-        "family": "Nunito",
+        "family": "Lora",
         "weights": [
-          700,
-          800
+          600,
+          700
         ],
-        "fallback": "system-ui, sans-serif"
+        "fallback": "Georgia, serif"
       },
       {
         "role": "body",
@@ -69,7 +78,23 @@
         "fallback": "system-ui, sans-serif"
       }
     ],
-    "logos": [],
+    "logos": [
+      {
+        "variant": "primary",
+        "url": "/assets/verde/logo.svg",
+        "onBackgrounds": [
+          "cream"
+        ]
+      },
+      {
+        "variant": "mono",
+        "url": "/assets/verde/logo-mono.svg",
+        "onBackgrounds": [
+          "leaf",
+          "forest"
+        ]
+      }
+    ],
     "style": {
       "radius": 24,
       "density": "airy",
@@ -108,17 +133,19 @@
       ]
     },
     "imagery": {
-      "style": "Soft daylight, green plants, colourful plates from above",
+      "style": "Soft daylight, abundant green plants, colourful plates shot from above, raw wood, relaxed hands reaching across",
       "avoid": [
         "dark rooms",
-        "close-ups of raw vegetables"
+        "close-ups of raw vegetables",
+        "clinical white plating",
+        "anything that looks like diet food"
       ]
     },
     "photos": [
       {
         "id": "long-table",
         "url": "/assets/verde/photos/long-table.jpg",
-        "description": "Long wooden table on the terrace with colourful plant-based dishes",
+        "description": "A long shared table of colourful plant-based plates from above, hands reaching across, plants everywhere",
         "orientation": "landscape",
         "attributes": {
           "people": [
@@ -136,7 +163,7 @@
       {
         "id": "two-bowls",
         "url": "/assets/verde/photos/two-bowls.jpg",
-        "description": "Two bowls and two glasses on a small table by the window",
+        "description": "Two generous grain bowls on pale wood in soft daylight, herbs and lemon, a green plant behind",
         "orientation": "square",
         "attributes": {
           "people": [
@@ -153,7 +180,7 @@
       {
         "id": "lunch-plate",
         "url": "/assets/verde/photos/lunch-plate.jpg",
-        "description": "Colourful lunch plate from above",
+        "description": "A colourful seasonal plate shot from above in soft daylight, surrounded by green leaves and raw wood",
         "orientation": "square",
         "attributes": {
           "people": [
@@ -161,6 +188,9 @@
           ],
           "occasion": [
             "work"
+          ],
+          "ambience": [
+            "quiet"
           ]
         }
       }
@@ -197,8 +227,37 @@
           "ratio": 4.5
         },
         "severity": "block"
+      },
+      {
+        "id": "food-first",
+        "text": "Food first. Never preach about what is not on the plate.",
+        "severity": "warn"
+      },
+      {
+        "id": "plants-in-frame",
+        "text": "Something green and growing is always in frame.",
+        "severity": "warn"
+      },
+      {
+        "id": "generous-not-virtuous",
+        "text": "Portions look generous, never small or virtuous.",
+        "severity": "warn"
       }
-    ]
+    ],
+    "advertising": {
+      "direction": "Bright, generous and unfussy. Daylight, green, plenty of air. Type is friendly and low-contrast. Never preachy, never clinical.",
+      "shows": [
+        "subline",
+        "body",
+        "place",
+        "price"
+      ],
+      "avoid": [
+        "dark backgrounds",
+        "shouty caps",
+        "diet language"
+      ]
+    }
   },
   "locations": [
     {

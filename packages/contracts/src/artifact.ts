@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { PriceUnit } from "./brand-record";
+import { BrandKit, PriceUnit } from "./brand-record";
 
 const unit = z.number().min(0).max(1);
 
@@ -10,6 +10,48 @@ export const Relaxation = z.object({
   to: z.string(),
 });
 export type Relaxation = z.infer<typeof Relaxation>;
+
+export const ArtifactPresentation = z.object({
+  brand: z.object({
+    id: z.string(),
+    name: z.string(),
+    summary: z.string(),
+  }),
+  kit: BrandKit.pick({
+    colors: true,
+    typography: true,
+    logos: true,
+    style: true,
+    voice: true,
+    imagery: true,
+  }),
+  photo: z
+    .object({
+      id: z.string(),
+      src: z.string(),
+      alt: z.string(),
+      orientation: z.enum(["landscape", "portrait", "square"]),
+    })
+    .optional(),
+  logo: z.object({ src: z.string() }).optional(),
+  layout: z
+    .object({
+      frame: z.enum(["poster", "editorial", "split"]),
+      logoCorner: z.enum(["top-left", "top-right", "bottom-left", "top-center"]),
+      copyAnchor: z.enum(["bottom-left", "bottom-right", "below-media", "side-right", "top-left", "centre"]),
+      align: z.enum(["left", "centre"]),
+      showSubline: z.boolean(),
+      showBody: z.boolean(),
+      showBadges: z.boolean(),
+      priceStyle: z.enum(["hero", "editorial", "inline"]),
+      headlineScale: z.number(),
+      scrim: z.enum(["bottom", "top", "left", "right", "none"]),
+      rule: z.boolean(),
+      stamp: z.boolean(),
+    })
+    .optional(),
+});
+export type ArtifactPresentation = z.infer<typeof ArtifactPresentation>;
 
 export const Artifact = z.object({
   id: z.string(),
@@ -38,6 +80,7 @@ export const Artifact = z.object({
     issues: z.array(z.object({ ruleId: z.string(), message: z.string(), severity: z.enum(["block", "warn"]) })),
   }),
   relaxed: z.array(Relaxation),
+  presentation: ArtifactPresentation.optional(),
   htmlUrl: z.string(),
   createdAt: z.iso.datetime({ offset: true }),
 });

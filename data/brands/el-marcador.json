@@ -47,6 +47,15 @@
         "pairsWith": [
           "navy"
         ]
+      },
+      {
+        "id": "steel",
+        "hex": "#2E4272",
+        "role": "secondary",
+        "pairsWith": [
+          "white",
+          "gold"
+        ]
       }
     ],
     "typography": [
@@ -69,7 +78,23 @@
         "fallback": "system-ui, sans-serif"
       }
     ],
-    "logos": [],
+    "logos": [
+      {
+        "variant": "primary",
+        "url": "/assets/el-marcador/logo.svg",
+        "onBackgrounds": [
+          "navy"
+        ]
+      },
+      {
+        "variant": "mono",
+        "url": "/assets/el-marcador/logo-mono.svg",
+        "onBackgrounds": [
+          "navy",
+          "red"
+        ]
+      }
+    ],
     "style": {
       "radius": 6,
       "density": "dense",
@@ -106,16 +131,19 @@
       ]
     },
     "imagery": {
-      "style": "Crowded bar, screens, raised glasses",
+      "style": "Packed bar at kick-off, screens glowing overhead, raised glasses, scarves, faces caught mid-roar, warm amber light",
       "avoid": [
-        "empty bar"
+        "empty bar",
+        "daylight interiors",
+        "posed portraits",
+        "quiet or sparse rooms"
       ]
     },
     "photos": [
       {
         "id": "match-night",
         "url": "/assets/el-marcador/photos/match-night.jpg",
-        "description": "Friends cheering in front of a big screen",
+        "description": "A packed bar at kick-off, screens glowing above raised glasses, scarves and faces caught mid-roar",
         "orientation": "landscape",
         "attributes": {
           "people": [
@@ -152,8 +180,35 @@
           "ratio": 4.5
         },
         "severity": "block"
+      },
+      {
+        "id": "always-a-crowd",
+        "text": "There is always a crowd. Never an empty room.",
+        "severity": "warn"
+      },
+      {
+        "id": "energy-over-elegance",
+        "text": "Loud and packed beats tidy and elegant, every time.",
+        "severity": "warn"
+      },
+      {
+        "id": "screens-in-frame",
+        "text": "A screen is visible somewhere in the frame.",
+        "severity": "warn"
       }
-    ]
+    ],
+    "advertising": {
+      "direction": "Loud match-day poster. Packed to the edges, no breathing room, type at full volume in caps. Red and gold on navy. Energy over elegance.",
+      "shows": [
+        "badges",
+        "price"
+      ],
+      "avoid": [
+        "white space",
+        "delicate type",
+        "soft gradients"
+      ]
+    }
   },
   "locations": [
     {

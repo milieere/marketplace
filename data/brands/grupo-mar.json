@@ -48,6 +48,15 @@
         "pairsWith": [
           "deep"
         ]
+      },
+      {
+        "id": "foam",
+        "hex": "#7FB2D4",
+        "role": "secondary",
+        "pairsWith": [
+          "deep",
+          "white"
+        ]
       }
     ],
     "typography": [
@@ -70,7 +79,23 @@
         "fallback": "system-ui, sans-serif"
       }
     ],
-    "logos": [],
+    "logos": [
+      {
+        "variant": "primary",
+        "url": "/assets/grupo-mar/logo.svg",
+        "onBackgrounds": [
+          "white"
+        ]
+      },
+      {
+        "variant": "mono",
+        "url": "/assets/grupo-mar/logo-mono.svg",
+        "onBackgrounds": [
+          "sea",
+          "deep"
+        ]
+      }
+    ],
     "style": {
       "radius": 10,
       "density": "balanced",
@@ -107,16 +132,19 @@
       ]
     },
     "imagery": {
-      "style": "Bright seaside light, big paella pans, family tables",
+      "style": "Bright seaside daylight, huge paella pans shot from above, long family tables, white linen, blue and sand tones",
       "avoid": [
-        "raw fish close-ups"
+        "raw fish close-ups",
+        "dim lighting",
+        "single diners",
+        "cluttered plating"
       ]
     },
     "photos": [
       {
         "id": "paella-table",
         "url": "/assets/grupo-mar/photos/paella-table.jpg",
-        "description": "Big family table with a paella pan by the sea",
+        "description": "An enormous paella pan shot from above on a long family table, seaside daylight and white linen",
         "orientation": "landscape",
         "attributes": {
           "people": [
@@ -134,7 +162,7 @@
       {
         "id": "private-dining",
         "url": "/assets/grupo-mar/photos/private-dining.jpg",
-        "description": "Private dining room set for a celebration",
+        "description": "The private dining room set for a large family lunch, blue tiles and a long dressed table",
         "orientation": "landscape",
         "attributes": {
           "people": [
@@ -169,8 +197,36 @@
           "ratio": 4.5
         },
         "severity": "block"
+      },
+      {
+        "id": "the-pan-is-the-hero",
+        "text": "The paella pan is the hero; shoot it from above.",
+        "severity": "warn"
+      },
+      {
+        "id": "family-scale",
+        "text": "Tables are long and shared; never set for two.",
+        "severity": "warn"
+      },
+      {
+        "id": "sea-light",
+        "text": "Light is bright and coastal, never dim or candlelit.",
+        "severity": "warn"
       }
-    ]
+    ],
+    "advertising": {
+      "direction": "Family seafood, generous and proud. Deep blue with a sand accent, classic serif, a centred lockup. Big table energy without shouting.",
+      "shows": [
+        "subline",
+        "place",
+        "price"
+      ],
+      "avoid": [
+        "minimalism",
+        "cool grey",
+        "single-portion framing"
+      ]
+    }
   },
   "locations": [
     {

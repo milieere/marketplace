@@ -45,15 +45,24 @@
         "pairsWith": [
           "espresso"
         ]
+      },
+      {
+        "id": "peach",
+        "hex": "#E9A178",
+        "role": "secondary",
+        "pairsWith": [
+          "paper",
+          "espresso"
+        ]
       }
     ],
     "typography": [
       {
         "role": "display",
-        "family": "Poppins",
+        "family": "Baloo 2",
         "weights": [
           600,
-          700
+          800
         ],
         "fallback": "system-ui, sans-serif"
       },
@@ -67,7 +76,22 @@
         "fallback": "system-ui, sans-serif"
       }
     ],
-    "logos": [],
+    "logos": [
+      {
+        "variant": "primary",
+        "url": "/assets/cafe-lumen/logo.svg",
+        "onBackgrounds": [
+          "paper"
+        ]
+      },
+      {
+        "variant": "mono",
+        "url": "/assets/cafe-lumen/logo-mono.svg",
+        "onBackgrounds": [
+          "espresso"
+        ]
+      }
+    ],
     "style": {
       "radius": 20,
       "density": "balanced",
@@ -104,16 +128,19 @@
       ]
     },
     "imagery": {
-      "style": "Bright morning light, pastel crockery, people laughing",
+      "style": "Bright morning daylight through big windows, pastel crockery on pale wood, people mid-laugh, plants, steam rising",
       "avoid": [
-        "night shots"
+        "night shots",
+        "flash photography",
+        "empty tables",
+        "moody or dark grading"
       ]
     },
     "photos": [
       {
         "id": "family-brunch",
         "url": "/assets/cafe-lumen/photos/family-brunch.jpg",
-        "description": "Family with two kids sharing pancakes at a big table",
+        "description": "A family mid-brunch at a big bright table, pastel crockery and pancakes, everyone talking at once",
         "orientation": "landscape",
         "attributes": {
           "people": [
@@ -130,7 +157,7 @@
       {
         "id": "laptop-corner",
         "url": "/assets/cafe-lumen/photos/laptop-corner.jpg",
-        "description": "Sunny corner with a laptop and a flat white",
+        "description": "A quiet corner table with a laptop, flat white and a plant, morning light through the window",
         "orientation": "portrait",
         "attributes": {
           "people": [
@@ -168,8 +195,37 @@
           "ratio": 4.5
         },
         "severity": "block"
+      },
+      {
+        "id": "mornings-only",
+        "text": "Every scene reads as morning or early afternoon, never evening.",
+        "severity": "warn"
+      },
+      {
+        "id": "come-as-you-are",
+        "text": "People look relaxed and unstyled, as if they just walked in.",
+        "severity": "warn"
+      },
+      {
+        "id": "colour-stays-soft",
+        "text": "Keep colour soft and pastel; never saturated or neon.",
+        "severity": "warn"
       }
-    ]
+    ],
+    "advertising": {
+      "direction": "Bright morning. Pale, soft and open, pastel accents, rounded type. The card should feel like sunlight on a table.",
+      "shows": [
+        "subline",
+        "body",
+        "place",
+        "price"
+      ],
+      "avoid": [
+        "night palettes",
+        "heavy type",
+        "dense stacks"
+      ]
+    }
   },
   "locations": [
     {

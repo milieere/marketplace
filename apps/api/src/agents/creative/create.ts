@@ -11,12 +11,24 @@ import { rankPhotos } from "../../domain/photo";
 import { describeLocal } from "../../domain/time";
 import type { ArtifactStore } from "../../ports/artifact-store";
 import type { Llm } from "../../ports/llm";
-import { pickLogo, preferredOrientation, renderCard } from "../../templates/card";
+import type { VisualGenerator } from "../../ports/visual-generator";
+import { designCard } from "./design";
+import { renderCardShell } from "../../templates/card-shell";
+import { cardCurrency, pickLogo, preferredOrientation, renderCard, renderImagePage } from "../../templates/card";
+import { editorialLayout } from "../../templates/editorial";
 
 const SYSTEM = readFileSync(new URL("../../prompts/create.md", import.meta.url), "utf8");
 
 export type Pick = { record: BrandRecord; location?: Location; needIds: string[]; candidates: Candidate[] };
-export type CreateContext = { intent: Intent; timezone: string; now: Date; llm: Llm; artifacts: ArtifactStore; loadAsset: (url: string) => Promise<string | undefined> };
+export type CreateContext = {
+  intent: Intent;
+  timezone: string;
+  now: Date;
+  llm: Llm;
+  artifacts: ArtifactStore;
+  loadAsset: (url: string) => Promise<string | undefined>;
+  visuals?: VisualGenerator;
+};
 
 function copySchema(offeringIds: string[]) {
   return z.object({
@@ -96,7 +108,7 @@ function prompt(ctx: CreateContext, pick: Pick, relaxed: Relaxation[], feedback?
       headlineMaxCharacters: headlineMax,
     },
     location: pick.location && { name: pick.location.name, attributes: pick.location.attributes },
-    offers: pick.candidates.map(({ offering: o }) => ({ id: o.id, name: o.name, description: o.description, conditions: o.conditions, attributes: o.attributes })),
+    offers: pick.candidates.map(({ offering: o }, i) => ({ id: o.id, bestFit: i === 0, name: o.name, description: o.description, conditions: o.conditions, attributes: o.attributes })),
   };
   const revision = feedback
     ? `\n\nYour previous draft broke brand rules. Fix exactly these and keep the rest:\n${feedback.issues.map((i) => `- ${i.ruleId}: ${i.message}`).join("\n")}\nPrevious draft:\n${JSON.stringify(feedback.draft)}`
@@ -136,10 +148,12 @@ export async function* createArtifact(ctx: CreateContext, pick: Pick): AsyncGene
   const party = needs[0]?.party ?? intent.party;
 
   let photo: { id: string; src: string; alt: string } | undefined;
+  let photoOrientation: "landscape" | "portrait" | "square" | undefined;
   for (const candidate of rankPhotos(kit.photos, party, needs, pick.location, preferredOrientation(kit))) {
     const src = await ctx.loadAsset(candidate.url).catch(() => undefined);
     if (src) {
       photo = { id: candidate.id, src, alt: candidate.description };
+      photoOrientation = candidate.orientation;
       break;
     }
   }
@@ -160,7 +174,7 @@ export async function* createArtifact(ctx: CreateContext, pick: Pick): AsyncGene
       cta: { label: copy.ctaLabel, url: ctaUrl(pick, party?.size) },
     };
     const priceLines = offerings.map((o) => ({ offeringId: o.id, label: o.name, amount: o.price.amount, unit: o.price.unit, from: o.price.from ?? false }));
-    const { html, colorPairs } = renderCard({ record, language: intent.language, slots, priceLines, currency: offerings[0]!.price.currency, photo, logo, location: pick.location });
+    const { html, colorPairs } = renderCard({ record, language: intent.language, slots, priceLines, currency: cardCurrency(record, priceLines), photo, logo, location: pick.location });
     const relaxed = [...new Map(chosen.flatMap((c) => c.relaxed).map((r) => [`${r.needId}:${r.constraint}`, r])).values()];
     return { chosen, offerings, slots, priceLines, html, relaxed, badgeTrace, issues: checkCopy(kit, slots, colorPairs) };
   };
@@ -204,6 +218,24 @@ export async function* createArtifact(ctx: CreateContext, pick: Pick): AsyncGene
     ],
     check: { passed: blocking(result.issues).length === 0, issues: result.issues },
     relaxed: result.relaxed,
+    presentation: {
+      brand: {
+        id: record.brand.id,
+        name: record.brand.name,
+        summary: record.brand.summary,
+      },
+      kit: {
+        colors: kit.colors,
+        typography: kit.typography,
+        logos: kit.logos,
+        style: kit.style,
+        voice: kit.voice,
+        imagery: kit.imagery,
+      },
+      photo: photo && photoOrientation ? { ...photo, orientation: photoOrientation } : undefined,
+      logo,
+      layout: editorialLayout(kit),
+    },
     htmlUrl: `/v1/artifacts/${id}`,
     createdAt: ctx.now.toISOString(),
   };
@@ -216,4 +248,28 @@ export async function* createArtifact(ctx: CreateContext, pick: Pick): AsyncGene
     : `Brand check: ${blocking(result.issues).length} issue(s) left`;
   yield { type: "step", agent: "creative", id: stepId, label: stepLabel, status: "done", detail };
   yield { type: "artifact", artifact, html: result.html };
+
+  if (ctx.visuals) {
+    const visualStep = { type: "step", agent: "creative", id: `visual-${record.brand.id}`, label: `Designing the card for ${record.brand.name}` } as const;
+    yield { ...visualStep, status: "started" };
+    try {
+      // The design needs no photograph, so it runs alongside the image
+      const shell = (css: string, image?: string) =>
+        renderCardShell({ record, language: intent.language, slots: artifact.slots, priceLines: result.priceLines, location: pick.location, image, logo: logo?.src, css });
+      const [visual, design] = await Promise.all([
+        ctx.visuals.generate({ artifact, record, intent }),
+        designCard(llm, { record, artifact, location: pick.location, hasPhoto: Boolean(photo), hasLogo: Boolean(logo) }),
+      ]);
+
+      const page = shell(design.css, visual.imageUrl);
+      await ctx.artifacts.put(id, page).catch((err: unknown) => console.error(`card page for ${id}`, err));
+      const detail = design.idea.slice(0, 80);
+      yield { ...visualStep, status: "done", detail };
+      yield { type: "visual", artifactId: artifact.id, imageUrl: visual.imageUrl, prompt: visual.prompt, mode: visual.mode, html: page };
+    } catch (err) {
+      console.error(err);
+      const detail = err instanceof Error ? err.message : "failed";
+      yield { ...visualStep, status: "failed", detail };
+    }
+  }
 }

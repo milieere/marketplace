@@ -2,7 +2,8 @@ import { mkdir, writeFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import { createJsonBrandRepository } from "../src/adapters/fs/json-brand-repository";
 import { rankPhotos } from "../src/domain/photo";
-import { preferredOrientation, renderCard } from "../src/templates/card";
+import { pickLogo, preferredOrientation } from "../src/templates/card";
+import { renderEditorialCard } from "../src/templates/editorial-card";
 
 const root = fileURLToPath(new URL("../../../", import.meta.url));
 const out = `${root}out/samples`;
@@ -15,11 +16,12 @@ for (const record of await repo.listVerified()) {
   const offering = record.offerings[0]!;
   const photo = rankPhotos(record.brandKit.photos, { size: 2 }, [], location, preferredOrientation(record.brandKit))[0];
   const src = photo && (await repo.asset(photo.url));
-  const { html } = renderCard({
+  const declared = pickLogo(record.brandKit);
+  const logoSrc = declared && (await repo.asset(declared.url));
+  const html = renderEditorialCard({
     record,
     location,
     language: "en",
-    currency: offering.price.currency,
     slots: {
       headline: record.brandKit.voice.samples[0] ?? record.brand.name,
       subline: offering.name,
@@ -28,13 +30,14 @@ for (const record of await repo.listVerified()) {
       cta: { label: "Reserve for 2", url: location?.reserveUrl ?? "#" },
     },
     priceLines: record.offerings.slice(0, 2).map((o) => ({ offeringId: o.id, label: o.name, amount: o.price.amount, unit: o.price.unit, from: o.price.from ?? false })),
-    photo: src ? { src, alt: photo.description } : undefined,
+    image: src,
+    logo: logoSrc,
   });
   await writeFile(`${out}/${record.brand.id}.html`, html);
   links.push(`<iframe src="${record.brand.id}.html" title="${record.brand.name}"></iframe>`);
 }
 await writeFile(
   `${out}/index.html`,
-  `<!doctype html><meta charset="utf-8"><style>body{margin:0;padding:16px;background:#ddd;display:grid;grid-template-columns:repeat(auto-fill,minmax(400px,1fr));gap:18px}iframe{width:100%;height:820px;border:0;background:#fff}</style>${links.join("")}`,
+  `<!doctype html><meta charset="utf-8"><style>body{margin:0;padding:20px;background:#12141a;display:grid;grid-template-columns:repeat(auto-fill,minmax(440px,1fr));gap:22px}iframe{width:100%;height:760px;border:0;background:#fff;border-radius:14px}</style>${links.join("")}`,
 );
 console.log(`wrote ${links.length} samples to ${out}/index.html`);

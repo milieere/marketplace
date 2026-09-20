@@ -22,6 +22,16 @@ export const AgentEvent = z.discriminatedUnion("type", [
   z.object({ type: z.literal("relaxed"), relaxations: z.array(Relaxation) }),
   z.object({ type: z.literal("revision"), brandId: z.string(), issues: z.array(z.string()) }),
   z.object({ type: z.literal("artifact"), artifact: Artifact, html: z.string() }),
+  z.object({
+    type: z.literal("visual"),
+    artifactId: z.string(),
+    imageUrl: z.string(),
+    prompt: z.string().optional(),
+    // full-card images already contain the copy, so the frontend must not overlay it
+    mode: z.enum(["scene", "full-card", "background"]).default("background"),
+    // The finished card: our markup, the model's stylesheet, the generated scene
+    html: z.string().optional(),
+  }),
   z.object({ type: z.literal("no-match"), noMatch: NoMatch }),
   z.object({ type: z.literal("error"), message: z.string() }),
   z.object({ type: z.literal("done") }),

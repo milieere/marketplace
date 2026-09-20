@@ -8,6 +8,7 @@
 |---|---|
 | Merged | #2 monorepo scaffold (npm workspaces, `apps/web` JS, `apps/api` TS, `packages/contracts`); #3 API contract + mock mode (`MOCK=1` replays recorded event streams; the frontend builds against it) |
 | Merged | #4 Match (`domain/time.ts`, `cost.ts`, `match.ts`); #5 Creative Agent pipeline + card render + `GET /v1/artifacts/:id` + stand-in photos; #6 Nebius adapter (`MODEL_TEXT=deepseek-ai/DeepSeek-V4-Pro-0813`, global endpoint `https://api.tokenfactory.nebius.com/v1`; us-north1 serves only 4 models) and `npm run e2e:live`: **12/12 coverage queries pass live** |
+| Merged | **Full-card visuals** `feat/fal-full-card-visual`: the whole card is one generated image from fal Nano Banana Pro (`VISUAL_MODE=full-card`), built on the `VisualGenerator` port from `feat/ui-design`. Nine SVG brand marks + `npm run build:logos`; brand fixtures levelled up for distinctiveness; `cardDesign()` shared by the HTML and image renderers; `npm run visual:samples` for a per-brand contact sheet |
 | In flight | **Brand Agent** #7 `feat/06-brand-agent`: Casa Brisa source pack (`npm run build:sources`), `agents/brand/*`, live `POST /v1/brands/ingest`, `npm run eval:extraction` |
 | Next | Frontend on top of the live API (handoff message sent), `eval:intents` (optional; `e2e:live` already covers Q1–Q12 end to end) |
 | Frontend | the colleague owns `apps/web` and builds against `MOCK=1`. Don't edit `apps/web` beyond wiring. |
