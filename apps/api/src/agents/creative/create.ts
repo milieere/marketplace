@@ -14,7 +14,7 @@ import type { Llm } from "../../ports/llm";
 import type { VisualGenerator } from "../../ports/visual-generator";
 import { designCard } from "./design";
 import { renderCardShell } from "../../templates/card-shell";
-import { cardCurrency, pickLogo, preferredOrientation, renderCard, renderImagePage } from "../../templates/card";
+import { cardCurrency, pickLogo, preferredOrientation, renderCard } from "../../templates/card";
 import { editorialLayout } from "../../templates/editorial";
 
 const SYSTEM = readFileSync(new URL("../../prompts/create.md", import.meta.url), "utf8");
@@ -253,22 +253,16 @@ export async function* createArtifact(ctx: CreateContext, pick: Pick): AsyncGene
     const visualStep = { type: "step", agent: "creative", id: `visual-${record.brand.id}`, label: `Designing the card for ${record.brand.name}` } as const;
     yield { ...visualStep, status: "started" };
     try {
-      const visual = await ctx.visuals.generate({ artifact, record, intent });
-      const page =
-        visual.mode === "full-card"
-          ? renderImagePage({ record, language: intent.language, imageUrl: visual.imageUrl, alt: artifact.slots.headline })
-          : renderCardShell({
-              record,
-              language: intent.language,
-              slots: artifact.slots,
-              priceLines: result.priceLines,
-              location: pick.location,
-              image: visual.imageUrl,
-              logo: logo?.src,
-              css: (await designCard(llm, { record, artifact, location: pick.location, hasPhoto: Boolean(photo), hasLogo: Boolean(logo) })).css,
-            });
+      const shell = (css: string, image?: string) =>
+        renderCardShell({ record, language: intent.language, slots: artifact.slots, priceLines: result.priceLines, location: pick.location, image, logo: logo?.src, css });
+      const [visual, design] = await Promise.all([
+        ctx.visuals.generate({ artifact, record, intent }),
+        designCard(llm, { record, artifact, location: pick.location, hasPhoto: Boolean(photo), hasLogo: Boolean(logo) }),
+      ]);
+
+      const page = shell(design.css, visual.imageUrl);
       await ctx.artifacts.put(id, page).catch((err: unknown) => console.error(`card page for ${id}`, err));
-      const detail = visual.mode === "full-card" ? "Generated full-card image" : "Generated composited card";
+      const detail = design.idea.slice(0, 80);
       yield { ...visualStep, status: "done", detail };
       yield { type: "visual", artifactId: artifact.id, imageUrl: visual.imageUrl, prompt: visual.prompt, mode: visual.mode, html: page };
     } catch (err) {

@@ -85,10 +85,6 @@ export default function Hero() {
           ))}
         </div>
       </section>
-      <Link className={styles.brandCta} href="/marcas">
-        <strong>¿Eres una marca?</strong>
-        <span>Sube tu definición de marca, ofertas y fotos: el agente extrae tu brand kit y lo pones a generar.</span>
-      </Link>
       <Image src="/bg.png" alt="Hero" fill={true} className={styles.bgImage} />
     </section>
   );

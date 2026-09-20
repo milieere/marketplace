@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "oli:generate:";
-const CACHE_VERSION = 3;
+const CACHE_VERSION = 5;
 
 function cacheKey(query) {
   return `${CACHE_PREFIX}${CACHE_VERSION}:${query.trim().toLowerCase()}`;

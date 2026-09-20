@@ -14,10 +14,10 @@ export default function Header() {
       <Link href="/">
         <Image src="/logo.png" alt="Logo" width={73} height={50} />
       </Link>
-      <button className={styles.btnAction}>
-        Dashboard
+      <Link href="/marcas" className={styles.btnAction}>
+        Panel de marcas
         <FontAwesomeIcon icon={faUser} />
-      </button>
+      </Link>
     </section>
   );
 }

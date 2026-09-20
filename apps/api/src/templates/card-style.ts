@@ -28,7 +28,7 @@ export type CardTokens = {
 
 const PAD = 28;
 const CARD_H = 573;
-const HEADLINE = { s: 29, m: 34, l: 41, xl: 47 } as const;
+const HEADLINE = { s: 34, m: 40, l: 48, xl: 56 } as const;
 const TRACKING = { tight: "-.02em", normal: "0", wide: ".04em" } as const;
 // Capped: a solid scrim would hide the photograph
 const PEAK = { light: 0.68, medium: 0.84, heavy: 0.94 } as const;
@@ -97,9 +97,9 @@ export function renderCardStyle(kit: BrandKit, tokens: CardTokens): string {
   const centred = tokens.align === "centre";
 
   const priceCss = {
-    hero: `.price{font:900 ${Math.round(head * 1.32)}px/0.95 ${font(kit, "display")};color:${price};margin-top:12px}`,
-    inline: `.price{font:800 ${Math.round(head * 0.82)}px/1 ${font(kit, "display")};color:${price};margin-top:10px}`,
-    "corner-mark": `.price{position:absolute;top:${PAD}px;right:${PAD}px;font:900 ${Math.round(head * 0.82)}px/1 ${font(kit, "display")};color:${price};background:${rgba(scrim, 0.9)};padding:10px 16px;border-radius:999px;margin:0}`,
+    hero: `.price{font:950 ${Math.round(head * 1.55)}px/0.88 ${font(kit, "display")};color:${price};margin-top:16px;letter-spacing:-.01em}`,
+    inline: `.price{font:900 ${Math.round(head * 1.02)}px/0.95 ${font(kit, "display")};color:${price};margin-top:12px;letter-spacing:-.01em}`,
+    "corner-mark": `.price{position:absolute;top:${PAD}px;right:${PAD}px;font:950 ${Math.round(head * 0.98)}px/0.95 ${font(kit, "display")};color:${price};background:${rgba(scrim, 0.9)};padding:12px 18px;border-radius:999px;margin:0;letter-spacing:-.01em}`,
   }[tokens.priceTreatment];
 
 
@@ -115,13 +115,13 @@ export function renderCardStyle(kit: BrandKit, tokens: CardTokens): string {
 .mark{height:34px;width:auto;display:block}
 .name{font:700 15px ${font(kit, "display")};letter-spacing:.18em;text-transform:uppercase;color:${ink}}
 .copy{position:absolute;${PLACE[tokens.copyAnchor]};padding:${PAD}px;display:flex;flex-direction:column;align-items:${centred ? "center" : "flex-start"};text-align:${centred ? "center" : "inherit"};color:${body};max-height:${CARD_H - PAD}px;overflow:hidden}
-.headline{font:800 ${head}px/${tokens.headlineUpper ? 1.02 : 1.12} ${font(kit, "display")};letter-spacing:${TRACKING[tokens.headlineTracking]};text-transform:${tokens.headlineUpper ? "uppercase" : "none"};color:${ink};margin:0;text-wrap:balance}
+.headline{font:900 ${head}px/${tokens.headlineUpper ? 0.98 : 1.04} ${font(kit, "display")};letter-spacing:${TRACKING[tokens.headlineTracking]};text-transform:${tokens.headlineUpper ? "uppercase" : "none"};color:${ink};margin:0;text-wrap:balance}
 ${tokens.rule ? `.headline::after{content:"";display:block;width:${Math.round(head * 1.4)}px;height:4px;background:${accent};margin-top:14px;border-radius:2px}` : ""}
-.subline{font-size:15px;font-weight:600;color:${accent};margin:14px 0 0}
+.subline{font-size:17px;font-weight:750;color:${accent};margin:14px 0 0}
 .body{font-size:14px;line-height:1.5;color:${body};opacity:.88;margin:10px 0 0;max-width:40ch}
 .badges{display:flex;flex-wrap:wrap;gap:6px;margin:16px 0 0;padding:0}
 ${badgeCss}
-.place{font-size:13px;font-weight:600;color:${body};opacity:.85;margin:16px 0 0}
-.offer{font-size:13px;color:${body};opacity:.7;margin:8px 0 0}
+.place{font-size:15px;font-weight:750;color:${body};opacity:.9;margin:16px 0 0}
+.offer{font-size:15px;font-weight:700;color:${body};opacity:.78;margin:10px 0 0}
 ${priceCss}`).trim();
 }
