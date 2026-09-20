@@ -59,6 +59,7 @@
   align-items: center;
   justify-content: center;
   gap: 15px;
+  z-index: 1;
 }
 
 .heroForm label {
@@ -108,6 +109,17 @@
   background-color: #0d7f9f;
   border: 1px solid #1fb2db;
   cursor: pointer;
+  font-size: 1rem;
+  padding: 0;
+}
+
+.heroForm label .btnHero:hover:enabled {
+  background-color: #1fb2db;
+}
+
+.heroForm label .btnHero:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
 }
 
 .heroForm .btnGenerator {

@@ -4,10 +4,9 @@ import { useState } from "react";
 import styles from "./hero.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faMicrophone,
+  faArrowRight,
   faAngleDown,
   faHexagonNodes,
-  faUser,
 } from "../../lib/fontawesome";
 import Image from "next/image";
 import Link from "next/link";
@@ -21,7 +20,7 @@ const DEMO_QUERIES = [
 
 export default function Hero() {
   const router = useRouter();
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState(DEMO_QUERIES[0]);
 
   function generate(text) {
     const cleanText = text.trim();
@@ -50,9 +49,14 @@ export default function Hero() {
             placeholder="Ej. Una cena romántica en Barcelona por menos de 50€..."
             onChange={(event) => setQuery(event.target.value)}
           />
-          <div className={styles.btnHero}>
-            <FontAwesomeIcon className={styles.icon} icon={faMicrophone} />
-          </div>
+          <button
+            type="submit"
+            className={styles.btnHero}
+            disabled={!query.trim()}
+            aria-label="Generar"
+          >
+            <FontAwesomeIcon className={styles.icon} icon={faArrowRight} />
+          </button>
         </label>
         <button
           className={styles.btnGenerator}

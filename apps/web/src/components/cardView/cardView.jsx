@@ -1,6 +1,8 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBullseye, faTriangleExclamation } from "../../lib/fontawesome";
 import { getApiUrl } from "../../lib/api/generate";
 import styles from "./cardView.module.css";
 
@@ -28,6 +30,20 @@ const FALLBACK_THEME = {
     },
     voice: { summary: "Clear, useful and direct." },
     imagery: { style: "Personalized ad direction" },
+  },
+};
+
+// `subtitle` carries the raw NoMatch reason; never show the enum itself
+const NO_MATCH = {
+  "no-results": {
+    label: "Sin coincidencias",
+    icon: faBullseye,
+    hint: "Las dietas, la accesibilidad y el tamaño del grupo nunca se relajan.",
+  },
+  "out-of-domain": {
+    label: "Fuera de alcance",
+    icon: faTriangleExclamation,
+    hint: "Oli trabaja con restaurantes, bares y hoteles.",
   },
 };
 
@@ -185,16 +201,17 @@ export default function CardView({ title, subtitle, artifact, html, visual, visu
   const router = useRouter();
 
   if (!artifact) {
+    const reason = NO_MATCH[subtitle];
     return (
       <article className={`${styles.cardView} ${styles.emptyState}`} style={cssVars(FALLBACK_THEME)}>
         <div className={styles.emptyPanel}>
-          <span className={styles.kicker}>{subtitle || "Oli"}</span>
+          <span className={styles.emptyGlow} aria-hidden="true" />
+          <span className={styles.emptyBadge} aria-hidden="true">
+            <FontAwesomeIcon icon={reason?.icon || faBullseye} />
+          </span>
+          <span className={styles.kicker}>{reason?.label || "Oli"}</span>
           <h2>{title}</h2>
-          <p>
-            {suggestions.length
-              ? "Prueba una consulta de ejemplo para generar una creatividad personalizada."
-              : "Cuando el agente termine, el anuncio generado aparecera aqui."}
-          </p>
+          <p>{reason?.hint || "Cuando el agente termine, el anuncio generado aparecerá aquí."}</p>
           {suggestions.length > 0 && (
             <div className={styles.suggestions}>
               {suggestions.map((suggestion) => (

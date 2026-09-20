@@ -1,6 +1,7 @@
 import { config, library } from "@fortawesome/fontawesome-svg-core";
 import {
   faAngleDown,
+  faArrowRight,
   faBullseye,
   faCheck,
   faHexagonNodes,
@@ -14,6 +15,6 @@ import {
 
 config.autoAddCss = false;
 
-library.add(faMicrophone, faAngleDown, faHexagonNodes, faUser, faBullseye, faLayerGroup, faRankingStar, faPenNib, faCheck, faTriangleExclamation);
+library.add(faArrowRight, faMicrophone, faAngleDown, faHexagonNodes, faUser, faBullseye, faLayerGroup, faRankingStar, faPenNib, faCheck, faTriangleExclamation);
 
-export { faMicrophone, faAngleDown, faHexagonNodes, faUser, faBullseye, faLayerGroup, faRankingStar, faPenNib, faCheck, faTriangleExclamation };
+export { faArrowRight, faMicrophone, faAngleDown, faHexagonNodes, faUser, faBullseye, faLayerGroup, faRankingStar, faPenNib, faCheck, faTriangleExclamation };
