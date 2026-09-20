@@ -11,43 +11,27 @@ export default function Opciones() {
       <Head>
         <meta charSet="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>
-          Quesada Coach App - Planes de entrenamiento y nutrición personalizados
-          creados por expertos
-        </title>
+        <title>Oli - Opciones generadas para tu intención</title>
         <meta
           name="description"
-          content="Descubre Quesada Coach App, Planes de entrenamiento y nutrición personalizados creados por
-            expertos, diseñados para transformar tu cuerpo y tu vida"
+          content="Explora cómo Oli interpreta una intención, encuentra marcas compatibles y genera creatividades listas para reservar."
         />
         <meta name="robots" content="index, follow" />
         <meta
           name="keywords"
-          content="fitness, Quesada Coach, alimentación saludalbe, bienestar, entrenamiento personalizado"
+          content="Oli, resultados personalizados, intent matching, anuncios hospitality, brand kit, ofertas reales"
         />
         <link rel="icon" href="/favicon.ico" />
-        <link
-          rel="apple-touch-icon"
-          sizes="180x180"
-          href="https://quesadacoach.com/logo512.png"
-        />
-        <meta
-          property="og:title"
-          content="Quesada Coach App - Planes de entrenamiento y nutrición personalizados
-          creados por expertos"
-        />
+        <link rel="apple-touch-icon" sizes="180x180" href="/favicon.ico" />
+        <meta property="og:title" content="Oli - Opciones generadas para tu intención" />
         <meta
           property="og:description"
-          content="Descubre Quesada Coach App, Planes de entrenamiento y nutrición personalizados creados por
-            expertos, diseñados para transformar tu cuerpo y tu vida."
+          content="Visualiza el stream del agente creativo: intención, matches, revisiones y artifacts personalizados por marca."
         />
-        <meta
-          property="og:image"
-          content="https://quesadacoach.com/logo512.png"
-        />
-        <meta property="og:url" content="https://quesadacoach.com" />
+        <meta property="og:image" content="/favicon.ico" />
+        <meta property="og:url" content="https://oli.intent-demo.com/opciones" />
         <meta property="og:type" content="website" />
-        <link rel="canonical" href="https://quesadacoach.com" />
+        <link rel="canonical" href="https://oli.intent-demo.com/opciones" />
       </Head>
       <main className={styles.main}>
         <Header />

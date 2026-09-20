@@ -13,7 +13,7 @@ export default function Visualizer() {
 
   return (
     <section className={styles.visualizer}>
-      <VisualizerSidebar query={query} state={state} latestStep={latestStep} />
+      {/* <VisualizerSidebar query={query} state={state} latestStep={latestStep} /> */}
       <VisualizerResults query={query} state={state} />
     </section>
   );

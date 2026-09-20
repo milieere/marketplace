@@ -6,3 +6,24 @@
   justify-content: flex-start;
   position: relative;
 }
+
+.homeIcon {
+  position: absolute;
+  top: clamp(82px, 10vw, 132px);
+  right: clamp(18px, 6vw, 72px);
+  z-index: 2;
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(31, 222, 245, 0.28);
+  border-radius: 50%;
+  background: rgba(8, 35, 62, 0.36);
+  color: #1fdef5;
+  box-shadow: 0 12px 40px rgba(31, 152, 185, 0.18);
+}
+
+.homeIcon svg {
+  width: 18px;
+  height: 18px;
+}

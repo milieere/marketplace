@@ -1,17 +1,11 @@
 .visualizer {
   width: 100%;
-  min-height: 100vh;
-  display: grid;
-  grid-template-columns: minmax(280px, 360px) 1fr;
   gap: 24px;
-  padding: 88px 24px 24px;
   color: #f4f8ff;
   background: #010c16;
-}
-
-.sidebar,
-.results {
-  min-width: 0;
+  display:flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .sidebar {
@@ -116,15 +110,10 @@
 }
 
 .results {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  align-content: start;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   gap: 20px;
-}
-
-@media (max-width: 860px) {
-  .visualizer {
-    grid-template-columns: 1fr;
-    padding: 76px 16px 20px;
-  }
 }

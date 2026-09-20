@@ -8,43 +8,27 @@ export default function Acceso() {
       <Head>
         <meta charSet="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>
-          Quesada Coach App - Planes de entrenamiento y nutrición personalizados
-          creados por expertos
-        </title>
+        <title>Oli - Acceso para marcas</title>
         <meta
           name="description"
-          content="Descubre Quesada Coach App, Planes de entrenamiento y nutrición personalizados creados por
-            expertos, diseñados para transformar tu cuerpo y tu vida"
+          content="Acceso para marcas hospitality que quieren convertir guías de marca, ofertas y assets en creatividades personalizadas y verificables."
         />
         <meta name="robots" content="index, follow" />
         <meta
           name="keywords"
-          content="fitness, Quesada Coach, alimentación saludalbe, bienestar, entrenamiento personalizado"
+          content="Oli, acceso marcas, brand agent, brand kit, hospitality marketing, creatividad personalizada"
         />
         <link rel="icon" href="/favicon.ico" />
-        <link
-          rel="apple-touch-icon"
-          sizes="180x180"
-          href="https://quesadacoach.com/logo512.png"
-        />
-        <meta
-          property="og:title"
-          content="Quesada Coach App - Planes de entrenamiento y nutrición personalizados
-          creados por expertos"
-        />
+        <link rel="apple-touch-icon" sizes="180x180" href="/favicon.ico" />
+        <meta property="og:title" content="Oli - Acceso para marcas" />
         <meta
           property="og:description"
-          content="Descubre Quesada Coach App, Planes de entrenamiento y nutrición personalizados creados por
-            expertos, diseñados para transformar tu cuerpo y tu vida."
+          content="Conecta los datos de una marca hospitality y prepara experiencias personalizadas, on-brand y basadas en ofertas reales."
         />
-        <meta
-          property="og:image"
-          content="https://quesadacoach.com/logo512.png"
-        />
-        <meta property="og:url" content="https://quesadacoach.com" />
+        <meta property="og:image" content="/favicon.ico" />
+        <meta property="og:url" content="https://oli.intent-demo.com/acceso" />
         <meta property="og:type" content="website" />
-        <link rel="canonical" href="https://quesadacoach.com" />
+        <link rel="canonical" href="https://oli.intent-demo.com/acceso" />
       </Head>
       <main>
         <h1>Acceso Page</h1>

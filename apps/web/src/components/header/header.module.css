@@ -1,10 +1,53 @@
-.header{
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border: 1px solid red;
-    position: absolute;
-    top: 0px;
-    height: 60px;
+.header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 0px;
+  height: 100px;
+  background: linear-gradient(#1fb2db28, #1fb2db12, #036d8a00);
+}
+
+.legal {
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 5px;
+  position: absolute;
+  left: 20px;
+}
+
+.legal p,
+.legal h3 {
+  font-size: 0.8rem;
+  letter-spacing: 0.5px;
+  color: rgba(255, 255, 255, 0.367);
+}
+
+.logo {
+  color: white;
+  font-weight: 600;
+  font-size: 1.9rem;
+  letter-spacing: 1px;
+}
+
+.btnAction {
+  position: absolute;
+  right: 20px;
+  padding: 10px 15px;
+  border: 1px solid rgba(31, 152, 185, 0.45);
+  background: rgba(31, 152, 185, 0.12);
+  color: rgba(255, 255, 255, 0.86);
+  border-radius: 50px;
+  font-size: 0.9rem;
+  letter-spacing: 0.5px;
+  color: white;
+  cursor: pointer;
+}
+
+.btnAction:hover {
+  background: linear-gradient(to Left, #24cefd, #1fb2db, #24cefd);
 }

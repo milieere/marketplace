@@ -77,13 +77,13 @@ export default function VisualizerSidebar({ query, state, latestStep }) {
     <aside className={styles.sidebar}>
       <p className={styles.eyebrow}>Intent request</p>
       <h1>{query || "Escribe una idea para generar opciones"}</h1>
-      <p className={styles.status}>{getStatusLabel(state.status, latestStep)}</p>
-
+      <p className={styles.status}>
+        {getStatusLabel(state.status, latestStep)}
+      </p>
       <IntentSummary intent={state.intent} />
       <Timeline steps={state.steps} />
       <Matches matches={state.matches} />
       <Revisions revisions={state.revisions} />
-
       {state.errors.map((error) => (
         <p className={styles.error} key={error}>
           {error}

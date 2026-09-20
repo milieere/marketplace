@@ -6,6 +6,7 @@ import type { IntentDraft } from "../../../src/agents/creative/understand";
 import { loadConfig } from "../../../src/config";
 import { createApp } from "../../../src/http/app";
 import type { Llm } from "../../../src/ports/llm";
+import type { VisualGenerator } from "../../../src/ports/visual-generator";
 import { loadRepository, parseSse } from "../../support";
 
 const NOW = "2026-09-18T17:00:00+02:00";
@@ -39,10 +40,10 @@ function fakeLlm(script: Script) {
   return { llm, prompts };
 }
 
-async function generate(text: string, script: Script) {
+async function generate(text: string, script: Script, visuals?: VisualGenerator) {
   const { llm, prompts } = fakeLlm(script);
   const artifacts = createMemoryArtifactStore();
-  const agent = createCreativeAgent({ llm, brands: await loadRepository(), artifacts });
+  const agent = createCreativeAgent({ llm, brands: await loadRepository(), artifacts, visuals });
   const app = createApp(loadConfig({ NEBIUS_API_KEY: "test" }), { agent, artifacts });
   const res = await app.request("/v1/generate", {
     method: "POST",
@@ -88,6 +89,9 @@ describe("Creative Agent over HTTP with a scripted LLM", () => {
         expect(line.amount).toBe(offering.price.amount);
       }
       expect(a.check.passed).toBe(true);
+      expect(a.presentation?.brand.name).toBe(record.brand.name);
+      expect(a.presentation?.kit.colors).toEqual(record.brandKit.colors);
+      expect(a.presentation?.photo?.src).toMatch(/^data:image\//);
       expect(a.slots.badges).toEqual(expect.arrayContaining(["🌱 Vegan", "Gluten free", "Terrace"]));
       const page = await app.request(a.htmlUrl);
       expect(page.status).toBe(200);
@@ -138,6 +142,26 @@ describe("Creative Agent over HTTP with a scripted LLM", () => {
     const verde = artifacts.find((a) => a.brandId === "verde")!;
     expect(verde.slots.body).not.toContain("€");
     expect(verde.check.passed).toBe(true);
+  });
+
+  it("streams a generated visual after each artifact when a visual generator is configured", async () => {
+    const visuals: VisualGenerator = {
+      async generate({ artifact, record, intent }) {
+        return {
+          artifactId: artifact.id,
+          imageUrl: "data:image/jpeg;base64,ZmFrZQ==",
+          prompt: `${record.brand.name} | ${intent.raw.text} | ${artifact.offeringIds.join(",")}`,
+        };
+      },
+    };
+    const { events, artifacts, types } = await generate("Friday, 8 friends, two vegans, one celiac, terrace, ~€30 each", q1, visuals);
+    const visualEvents = events.filter((e): e is Extract<AgentEvent, { type: "visual" }> => e.type === "visual");
+
+    expect(visualEvents).toHaveLength(artifacts.length);
+    expect(visualEvents[0]).toMatchObject({ artifactId: artifacts[0]!.id, imageUrl: "data:image/jpeg;base64,ZmFrZQ==" });
+    expect(visualEvents[0]?.prompt).toContain("Friday, 8 friends");
+    expect(types).toContain("visual-casa-brisa:started");
+    expect(types).toContain("visual-casa-brisa:done");
   });
 
   it("keeps streaming when one brand's copy step fails", async () => {

@@ -10,12 +10,21 @@ import { rankPhotos } from "../../domain/photo";
 import { describeLocal } from "../../domain/time";
 import type { ArtifactStore } from "../../ports/artifact-store";
 import type { Llm } from "../../ports/llm";
+import type { VisualGenerator } from "../../ports/visual-generator";
 import { renderCard } from "../../templates/card";
 
 const SYSTEM = readFileSync(new URL("../../prompts/create.md", import.meta.url), "utf8");
 
 export type Pick = { record: BrandRecord; location?: Location; needIds: string[]; candidates: Candidate[] };
-export type CreateContext = { intent: Intent; timezone: string; now: Date; llm: Llm; artifacts: ArtifactStore; loadPhoto: (url: string) => Promise<string | undefined> };
+export type CreateContext = {
+  intent: Intent;
+  timezone: string;
+  now: Date;
+  llm: Llm;
+  artifacts: ArtifactStore;
+  loadPhoto: (url: string) => Promise<string | undefined>;
+  visuals?: VisualGenerator;
+};
 
 function copySchema(offeringIds: string[]) {
   return z.object({
@@ -117,10 +126,12 @@ export async function* createArtifact(ctx: CreateContext, pick: Pick): AsyncGene
   const party = needs[0]?.party ?? intent.party;
 
   let photo: { id: string; src: string; alt: string } | undefined;
+  let photoOrientation: "landscape" | "portrait" | "square" | undefined;
   for (const candidate of rankPhotos(kit.photos, party, needs, pick.location)) {
     const src = await ctx.loadPhoto(candidate.url).catch(() => undefined);
     if (src) {
       photo = { id: candidate.id, src, alt: candidate.description };
+      photoOrientation = candidate.orientation;
       break;
     }
   }
@@ -180,6 +191,22 @@ export async function* createArtifact(ctx: CreateContext, pick: Pick): AsyncGene
     ],
     check: { passed: blocking(result.issues).length === 0, issues: result.issues },
     relaxed: result.relaxed,
+    presentation: {
+      brand: {
+        id: record.brand.id,
+        name: record.brand.name,
+        summary: record.brand.summary,
+      },
+      kit: {
+        colors: kit.colors,
+        typography: kit.typography,
+        logos: kit.logos,
+        style: kit.style,
+        voice: kit.voice,
+        imagery: kit.imagery,
+      },
+      photo: photo && photoOrientation ? { ...photo, orientation: photoOrientation } : undefined,
+    },
     htmlUrl: `/v1/artifacts/${id}`,
     createdAt: ctx.now.toISOString(),
   };
@@ -192,4 +219,18 @@ export async function* createArtifact(ctx: CreateContext, pick: Pick): AsyncGene
     : `Brand check: ${blocking(result.issues).length} issue(s) left`;
   yield { type: "step", agent: "creative", id: stepId, label: stepLabel, status: "done", detail };
   yield { type: "artifact", artifact, html: result.html };
+
+  if (ctx.visuals) {
+    const visualStep = { type: "step", agent: "creative", id: `visual-${record.brand.id}`, label: `Generating brand visual for ${record.brand.name}` } as const;
+    yield { ...visualStep, status: "started" };
+    try {
+      const visual = await ctx.visuals.generate({ artifact, record, intent });
+      yield { ...visualStep, status: "done", detail: "Brand visual ready" };
+      yield { type: "visual", artifactId: artifact.id, imageUrl: visual.imageUrl, prompt: visual.prompt };
+    } catch (err) {
+      console.error(err);
+      const detail = err instanceof Error ? err.message : "failed";
+      yield { ...visualStep, status: "failed", detail };
+    }
+  }
 }

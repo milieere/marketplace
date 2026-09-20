@@ -1,6 +1,10 @@
 import CardView from "../../cardView/cardView";
 import styles from "../visualizer.module.css";
 
+function artifactVisualStatus(state, artifact) {
+  return state.steps.findLast((step) => step.id === `visual-${artifact.brandId}`)?.status;
+}
+
 export default function VisualizerResults({ query, state }) {
   return (
     <div className={styles.results}>
@@ -20,13 +24,16 @@ export default function VisualizerResults({ query, state }) {
           subtitle={artifact.slots.subline || artifact.brandId}
           artifact={artifact}
           html={html}
+          visual={state.visuals?.[artifact.id]}
+          visualStatus={artifactVisualStatus(state, artifact)}
+          isGenerating={state.status === "loading"}
         />
       ))}
 
       {!query && <CardView title="Sin consulta" subtitle="Vuelve al inicio y genera una búsqueda para ver el stream." />}
 
       {query && state.status === "loading" && state.artifacts.length === 0 && !state.noMatch && (
-        <CardView title="Generando opciones..." subtitle="Los artifacts aparecerán aquí cuando llegue el stream." />
+        <CardView title="Generando opciones..." subtitle="Los artifacts aparecerán aquí cuando llegue el stream." generationState={state} />
       )}
     </div>
   );

@@ -4,6 +4,7 @@ export const INITIAL_GENERATE_STATE = {
   intent: null,
   matches: [],
   artifacts: [],
+  visuals: {},
   relaxations: [],
   revisions: [],
   noMatch: null,
@@ -34,6 +35,8 @@ export function reduceGenerateEvent(state, event) {
       return { ...state, revisions: [...state.revisions, event] };
     case "artifact":
       return { ...state, artifacts: [...state.artifacts, { artifact: event.artifact, html: event.html }] };
+    case "visual":
+      return { ...state, visuals: { ...state.visuals, [event.artifactId]: event } };
     case "no-match":
       return { ...state, noMatch: event.noMatch };
     case "error":

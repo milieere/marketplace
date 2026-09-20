@@ -1,7 +1,9 @@
 import { fileURLToPath } from "node:url";
 import { createJsonBrandRepository } from "./adapters/fs/json-brand-repository";
+import { createSvgVisualGenerator } from "./adapters/local/svg-visual-generator";
 import { createMemoryArtifactStore } from "./adapters/memory/artifact-store";
 import { createAiSdkLlm } from "./adapters/nebius/ai-sdk-llm";
+import { createNebiusImageVisualGenerator } from "./adapters/openai/image-visual-generator";
 import { createCreativeAgent } from "./agents/creative/creative-agent";
 import type { Config } from "./config";
 import type { AppDeps } from "./http/app";
@@ -18,5 +20,19 @@ export async function createContainer(config: Config): Promise<AppDeps> {
     models: [config.MODEL_TEXT, config.MODEL_TEXT_FALLBACK],
   });
   const brands = await createJsonBrandRepository(DATA_DIR);
-  return { agent: createCreativeAgent({ llm, brands, artifacts }), artifacts };
+  const svgVisuals = createSvgVisualGenerator();
+  const visuals =
+    config.VISUAL_PROVIDER === "svg"
+      ? svgVisuals
+      : createNebiusImageVisualGenerator({
+          apiKey: config.NEBIUS_API_KEY!,
+          baseURL: config.NEBIUS_IMAGE_BASE_URL ?? config.NEBIUS_BASE_URL,
+          model: config.MODEL_IMAGE,
+          size: config.IMAGE_SIZE,
+          responseExtension: config.IMAGE_EXTENSION,
+          inferenceSteps: config.IMAGE_INFERENCE_STEPS,
+          seed: config.IMAGE_SEED,
+          fallback: config.VISUAL_PROVIDER === "auto" ? svgVisuals : undefined,
+        });
+  return { agent: createCreativeAgent({ llm, brands, artifacts, visuals }), artifacts };
 }

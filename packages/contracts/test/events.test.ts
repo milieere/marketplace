@@ -10,6 +10,11 @@ describe("AgentEvent", () => {
   it("rejects an artifact event without html", () => {
     expect(AgentEvent.safeParse({ type: "artifact", artifact: {} }).success).toBe(false);
   });
+
+  it("accepts a generated visual event", () => {
+    const parsed = AgentEvent.parse({ type: "visual", artifactId: "art-1", imageUrl: "data:image/svg+xml,ok", prompt: "no text" });
+    expect(parsed.type).toBe("visual");
+  });
 });
 
 describe("GenerateRequest", () => {
