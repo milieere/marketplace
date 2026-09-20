@@ -97,9 +97,14 @@ export type DesignDeps = {
 
 // The designer cannot see its own output, so render it and let a vision model look
 export async function designCardChecked(deps: DesignDeps, input: DesignInput): Promise<CheckedDesign> {
-  const { llm, rasterizer, render, strings, size, attempts = 2 } = deps;
-  let design = await designCard(llm, input);
+  const { llm, rasterizer, render, strings, size, attempts = 1 } = deps;
+  const design0 = await designCard(llm, input);
+  let design = design0;
   let defects: string[] = [];
+
+  // One pass by default: the design prompt carries the constraints the checker used
+  // to catch, and a render-and-look round trip costs more than it returns
+  if (attempts <= 1 || !rasterizer) return { ...design, attempts: 1, defects: [] };
 
   for (let attempt = 1; attempt <= attempts; attempt++) {
     if (!rasterizer) return { ...design, attempts: attempt, defects: [] };

@@ -53,5 +53,5 @@ export async function createContainer(config: Config): Promise<AppDeps> {
   const sources = createFsSourcePacks(`${DATA_DIR}/sources`);
   const brandAgent = createBrandAgent({ llm, brands, sources, reader: createPdfReader() });
   const visuals = selectVisualGenerator(config);
-  return { agent: createCreativeAgent({ llm, brands, artifacts, visuals, rasterizer: createChromeRasterizer() }), brandAgent, artifacts, brands, sources };
+  return { agent: createCreativeAgent({ llm, brands, artifacts, visuals, rasterizer: createChromeRasterizer(), designPasses: config.DESIGN_PASSES }), brandAgent, artifacts, brands, sources };
 }

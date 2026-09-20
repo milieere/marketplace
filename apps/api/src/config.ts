@@ -22,6 +22,7 @@ const ConfigSchema = z
     FAL_API_KEY: z.string().optional(),
     FAL_MODEL: z.string().default("fal-ai/nano-banana"),
     FAL_RESOLUTION: z.enum(["1K", "2K", "4K"]).default("2K"),
+    DESIGN_PASSES: z.coerce.number().int().min(1).max(4).default(1),
     IMAGE_SIZE: z.string().default("1024x1024"),
     IMAGE_EXTENSION: z.enum(["jpeg", "png", "webp"]).default("webp"),
     IMAGE_INFERENCE_STEPS: z.coerce.number().int().positive().default(28),

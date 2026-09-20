@@ -30,6 +30,7 @@ export type CreateContext = {
   loadAsset: (url: string) => Promise<string | undefined>;
   visuals?: VisualGenerator;
   rasterizer?: Rasterizer;
+  designPasses?: number;
 };
 
 function copySchema(offeringIds: string[]) {
@@ -264,7 +265,7 @@ export async function* createArtifact(ctx: CreateContext, pick: Pick): AsyncGene
       const [visual, design] = await Promise.all([
         ctx.visuals.generate({ artifact, record, intent }),
         designCardChecked(
-          { llm, rasterizer: ctx.rasterizer, render: (css) => shell(css, photo?.src), strings, size: { width: 480, height: 640 } },
+          { llm, rasterizer: ctx.rasterizer, render: (css) => shell(css, photo?.src), strings, size: { width: 480, height: 640 }, attempts: ctx.designPasses },
           { record, artifact, location: pick.location, hasPhoto: Boolean(photo), hasLogo: Boolean(logo) },
         ),
       ]);
