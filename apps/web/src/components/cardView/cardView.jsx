@@ -391,8 +391,8 @@ export default function CardView({
         }}
       >
         <div className={styles.visual}>
-          {}
           {imageSrc ? (
+            // eslint-disable-next-line @next/next/no-img-element -- Generated/API image URLs are not known to Next at build time.
             <img src={imageSrc} alt={presentation.photo?.alt || ""} />
           ) : (
             <div className={styles.generatedBackdrop} />

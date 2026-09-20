@@ -43,7 +43,7 @@ export function renderCardShell(input: CardShellInput): string {
 *{box-sizing:border-box}
 html,body{width:100%;height:100%;margin:0;overflow:hidden;background:${d.palette.background}}
 body{display:block}
-.card{position:relative;width:100%;height:100%;aspect-ratio:${CARD_ASPECT};border-radius:16px;overflow:hidden;isolation:isolate}
+.card{position:relative;width:100%;height:100%;aspect-ratio:${CARD_ASPECT};border-radius:${kit.style.radius}px;overflow:hidden;isolation:isolate}
 .card .media{position:absolute!important;inset:0!important;margin:0!important;width:100%!important;height:100%!important;z-index:0}
 .card .photo{display:block!important;width:100%!important;height:100%!important;object-fit:cover!important}
 .card .scrim{position:absolute!important;inset:0!important;display:block}
